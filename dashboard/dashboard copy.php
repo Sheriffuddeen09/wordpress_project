@@ -85,8 +85,16 @@ ob_end_flush(); // End output buffering
             <button onClick={handleLogout} style="background-color: #FFCCEA;" class='bg-[#FFCCEA] py-2 px-6 sm:px-2 w-40 rounded items-center gap-2 font-bold text-sm text-[#D2016A] flex whitespace-nowrap justify-center '> <img src="<?php echo esc_url(site_url('/dashboard/image/Vector (7).png')); ?>" alt="Logo" class='h-4 w-4'> <p> Log Out </p></button>
           
             </div>
-    <div  class="mb-10 flex gap-4 flex-row my-8 flex-wrap justify-center">
-    <div id="user-profile" class="mt-4"></div>
+<div  class="mb-10 flex gap-4 flex-row my-8 flex-wrap justify-center">
+    <div class="flex justify-center mt-10 max-w-sm w-96 bg-blue-200 flex-col items-center" style="background-image: url('<?php echo esc_url(site_url('/dashboard/image/Untitled design (10) 2.png')); ?>');">
+            <?php if (!empty($user['profile_image'])): ?>
+                <img src="uploads/<?php echo htmlspecialchars($user['profile_image']); ?>" class="w-24 h-24 rounded-full mx-auto" alt="Profile">
+            <?php endif; ?>
+            <a href="edit-profile.php" class="text-blue-500 text-center text-sm font-bold mt-2 block">Edit Profile</a>
+            <p class="text-sm mb-2 font-bold"><?php echo htmlspecialchars($user['firstname'] . " " . $user['lastname']); ?></p>
+            <p class="text-sm mb-2 font-bold">Email: <?php echo htmlspecialchars($user['email']); ?></p>
+            <p class="text-sm mb-2 font-bold">Phone: <?php echo htmlspecialchars($user['phone']); ?></p>
+        </div>
             
     <div class="flex flex-col gap-2">
             <a href='/notification'>
