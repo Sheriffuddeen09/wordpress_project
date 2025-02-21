@@ -1,58 +1,57 @@
 <?php
-
+ob_start(); // Start output buffering
 require_once './wp-load.php';
 require_once './database/function.php';
 
-if ($_SERVER['REQUEST_METHOD'] === 'OPTIONS') {
-    http_response_code(204);
-    exit;
+if (!is_user_logged_in()) {
+    wp_redirect("login.php");
+    exit();
 }
 
-// ✅ Fix missing semicolon & incorrect input handling
-$userId = trim($_POST['user_id'] ?? '');  
+global $conn;
+$user_id = get_current_user_id();
 
-    try{
-        global $pdo;
+if (!$user_id) {
+    wp_redirect("login.php");
+    exit();
+}
 
-    if (!isset($_FILES['profile_image']) || !$userId) {
-        http_response_code(400);
-        echo json_encode(['error' => 'Image and user ID are required']);
-        exit;
-    }
+// Fetch user details from WordPress database (wp_users and wp_usermeta)
+$user = get_userdata($user_id);
 
-    $uploadDir = __DIR__ . '/upload/'; 
-    
-    if (!is_dir($uploadDir)) {
-        mkdir($uploadDir, 0777, true);
-    }
+if (!$user) {
+    wp_redirect("login.php");
+    exit();
+}
 
+// Fetch additional user details from custom `users` table (if needed)
+$sql = "SELECT firstname, lastname, phone, profile_image FROM users WHERE email = ?";
+$stmt = $conn->prepare($sql);
+$stmt->bind_param("s", $user->user_email);
+$stmt->execute();
+$result = $stmt->get_result();
+$custom_user = $result->fetch_assoc();
 
-    $imageName = time() . '_' . basename($_FILES['profile_image']['name']);
+// Merge WordPress and custom user data
+$user_data = [
+    'id' => $user->ID,
+    'email' => $user->user_email,
+    'firstname' => $custom_user['firstname'] ?? $user->first_name,
+    'lastname' => $custom_user['lastname'] ?? $user->last_name,
+    'phone' => $custom_user['phone'] ?? '',
+    'profile_image' => $custom_user['profile_image'] ?? '',
+];
 
-    $imagePath =  $uploadDir . $imageName;
+// Handle logout
+if (isset($_POST['logout'])) {
+    wp_logout();
+    wp_redirect("login.php");
+    exit();
+}
 
-        if(move_uploaded_file($_FILES['profile_image']['tmp_name'], $imagePath)){
-
-        $query = "UPDATE users SET profile_image = :profile_image WHERE id = :id";
-        $stmt =$pdo->prepare($query);
-        $stmt->execute(['profile_image'=>$imagePath, 'id'=>$userId]);
-
-        echo json_encode([
-            "success" => true,
-            "message" => "Image uploaded successfully!", 
-            "profile_image" => $imageName]);
-        }
-        else {
-            http_response_code(500);
-            echo json_encode(["error" => "Failed to upload image."]);
-        }
-    } catch (PDOException $e) {
-        http_response_code(500);
-        echo json_encode(["error" => "Database error: " . $e->getMessage()]);
-    }
-
-
+ob_end_flush(); // End output buffering
 ?>
+
 
 <!DOCTYPE html>
 <html lang="en">
@@ -138,49 +137,3 @@ $userId = trim($_POST['user_id'] ?? '');
     </div>
             
  </div>
- <script>
-document.addEventListener("DOMContentLoaded", () => {
-    const userProfileContainer = document.getElementById("user-profile");
-
-    const fetchUser = async () => {
-        const userId = localStorage.getItem("user_id");
-        if (!userId) {
-            console.error("No user_id found in localStorage.");
-            return;
-        }
-
-        try {
-            const response = await fetch(`http://localhost/source_code/get_user.php?user_id=${userId}`);
-            const data = await response.json();
-
-            if (data.success && data.user) {
-                const user = data.user;
-                userProfileContainer.innerHTML = `
-                    <div class="profile-container">
-                        <img src="http://localhost/source_code/${user.profile_image}" alt="Profile Image" class="profile-img">
-                        <h2>${user.firstname || "No Name"} ${user.lastname || "No Name"}</h2>
-                        <p>Email: ${user.email || "No Email"}</p>
-                        <p>Phone: ${user.phone || "No Number"}</p>
-                        <a href="/edit.html">Edit Profile</a>
-                        <button onclick="handleLogout()">Logout</button>
-                    </div>
-                `;
-            } else {
-                console.error("Error: Invalid user data structure.", data);
-                userProfileContainer.innerHTML = `<p>User data not found.</p>`;
-            }
-        } catch (error) {
-            console.error("Error fetching user:", error);
-        }
-    };
-
-    fetchUser();
-});
-
-// Logout function
-function handleLogout() {
-    localStorage.removeItem("user_id");
-    window.location.href = "/login.html";
-}
-
-</script>
