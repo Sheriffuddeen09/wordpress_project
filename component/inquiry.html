@@ -1,0 +1,77 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Inquiry Form</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="">
+    <div class="min-h-screen bg-image -translate-y-10 flex p-4 flex-col items-end justify-end" style="background-image: url('component/image/pexels-renya-sh-3464464-11312080\ 1.png');">
+        <h1 class="text-2xl font-bold text-center p-3">We're Here to Assist You!</h1>
+
+        <div class="p-8 bg-pink-300 rounded-lg mx-4 my-5 shadow-lg w-full max-w-lg bg-white">
+            <div class="bg-pink-500 flex px-2 flex-row sm:w-96 w-72 my-10 items-center p-1 justify-between">
+                <h1 class="font-bold text-sm">Submit a request</h1>
+                <button class="p-1 w-24 text-white text-sm bg-pink-800">Search</button>
+            </div>
+        <p id="message" class="text-center text-lg font-bold mb-5"></p>
+
+        <form id="inquiryForm" class="space-y-4">
+            <div class="grid grid-cols-2 gap-4">
+                <div>
+                    <label class="font-bold text-sm">Firstname</label>
+                    <input type="text" name="firstname" id="firstname" placeholder="First Name *" class="p-2 mt-2 w-full border rounded text-sm" required>
+                </div>
+                <div>
+                    <label class="font-bold text-sm">Lastname</label>
+                    <input type="text" name="lastname" id="lastname" placeholder="Last Name *" class="text-sm p-2 w-full border mt-2 rounded" required>
+                </div>
+            </div>
+            <div>
+                <label class="font-bold text-sm">Email</label>
+                <input type="email" name="email" id="email" placeholder="Email Address *" class="text-sm p-2 w-full border mt-2 rounded" required>
+            </div>
+            <div>
+                <label class="font-bold text-sm">Phone</label>
+                <input type="text" name="phone" id="phone" placeholder="Phone Number *" class="text-sm p-2 w-full border mt-2 rounded" required>
+            </div>
+            <div>
+                <label class="font-bold text-sm">Remark</label>
+                <textarea name="remark" id="remark" placeholder="Remark *" class="text-sm p-2 w-full border rounded h-24 mt-2" required></textarea>
+            </div>
+            <button type="submit" class="bg-pink-500 text-white py-2 text-sm px-4 w-full rounded hover:bg-blue-600 transition">
+                Submit
+            </button>
+        </form>
+    </div>
+</div>
+
+    <script>
+        document.getElementById("inquiryForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+            let messageBox = document.getElementById("message");
+
+            fetch("http://localhost/mywebsite/function/inquiry.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                messageBox.textContent = data.message;
+                messageBox.className = data.success ? "text-green-500" : "text-red-500";
+
+                if (data.success) {
+                    document.getElementById("inquiryForm").reset();
+                }
+            })
+            .catch(error => {
+                messageBox.textContent = "An error occurred. Please try again.";
+                messageBox.className = "text-red-500";
+            });
+        });
+    </script>
+</body>
+</html>

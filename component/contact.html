@@ -1,0 +1,99 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Contact Customer Support</title>
+    <script defer src="contact.js"></script>
+</head>
+<body>
+    <img src="component/image/Frame 129.png" alt="imagepicture" class="w-full -mt-2 -translate-y-10 rounded-none" />
+    <div class="min-h-screen bg-contact flex flex-col -mt-8 items-center justify-center p-6" style="background-image: url('layout/image/background.png');">
+        <h1 class="text-black text-3xl my-5">Contact Customer Support</h1>
+
+        <div class="flex gap-2 flex-wrap mx-auto text-sm my-6">
+            <div class="inline-flex gap-2 text-sm">
+                <img src="component/image/Vector (1).png" alt="logo" class="bg-[#d9286c] w-8 p-2 h-8 rounded-full bg-pink-700"/>
+                <div>
+                    <p class="font-bold text-xs">Address</p>
+                    <p class="w-36 font-bold text-center text-xs">Sentral DTLA at 755 S. Spring</p>
+                </div>
+            </div>
+            <div class="inline-flex gap-2 text-sm">
+                <img src="component/image/Vector (2).png" alt="logo" class="bg-[#d9286c] w-8 p-2 h-8 rounded-full bg-pink-700"/>
+                <div>
+                    <p class="font-bold text-xs">Phone</p>
+                    <p class="w-20 font-bold text-xs">+(123) 654 6540</p>
+                </div>
+            </div>
+            <div class="inline-flex gap-2 text-sm">
+                <img src="component/image/Vector.png" alt="logo" class="bg-[#d9286c] w-8 p-2 h-8 rounded-full bg-pink-700"/>
+                <div>
+                    <p class="font-bold text-xs">Email</p>
+                    <p class="w-20 font-bold text-xs">petrental@123.com</p>
+                </div>
+            </div>
+        </div>
+
+        <div class="p-8 rounded-lg w-full max-w-lg">
+            <p id="messageBox" class="text-center text-xl font-bold mb-5"></p>
+
+            <form id="contactForm" class="space-y-4">
+                <div class="grid grid-cols-2 gap-4">
+                    <div>
+                        <label class="font-bold text-sm">Firstname</label>
+                        <input type="text" name="firstname" placeholder="First Name *" class="p-2 text-sm w-full border rounded" required />
+                    </div>
+                    <div>
+                        <label class="font-bold text-sm">Lastname</label>
+                        <input type="text" name="lastname" placeholder="Last Name *" class="p-2 text-sm w-full border rounded" required />
+                    </div>
+                </div>
+                <div>
+                    <label class="font-bold text-sm">Email</label>
+                    <input type="email" name="email" placeholder="Email Address *" class="p-2 text-sm w-full border rounded" required />
+                </div>
+                <div>
+                    <label class="font-bold text-sm">Phone</label>
+                    <input type="text" name="phone" placeholder="Phone Number *" class="p-2 text-sm w-full border rounded" required />
+                </div>
+                <div>
+                    <label class="font-bold text-sm">Message</label>
+                    <textarea name="message" placeholder="Message *" class="p-2 text-sm w-full border rounded h-24" required></textarea>
+                </div>
+                <button type="submit" class="bg-pink-500 text-sm text-white py-2 px-4 w-full rounded hover:bg-pink-600 transition">
+                    Submit
+                </button>
+            </form>
+        </div>
+    </div>
+
+    <script>
+        document.getElementById("contactForm").addEventListener("submit", function(event) {
+            event.preventDefault();
+
+            let formData = new FormData(this);
+            let messageBox = document.getElementById("messageBox");
+
+            fetch("http://localhost/mywebsite/function/contact.php", {
+                method: "POST",
+                body: formData
+            })
+            .then(response => response.json())
+            .then(data => {
+                messageBox.textContent = data.message;
+                messageBox.className = data.success ? "text-green-500" : "text-red-500";
+
+                if (data.success) {
+                    document.getElementById("contactForm").reset();
+                }
+            })
+            .catch(error => {
+                messageBox.textContent = "An error occurred. Please try again.";
+                messageBox.className = "text-red-500";
+            });
+        });
+
+    </script>
+</body>
+</html>

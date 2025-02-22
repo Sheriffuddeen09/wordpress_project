@@ -1,0 +1,195 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<style>
+    .custom-sky-blue {
+    background-color: #38bdf8 !important;
+}
+
+     @media (min-width: 310px) {
+ 
+.scroll-wi {
+    width: 250px; 
+    overflow-x: auto; 
+    white-space: nowrap; 
+}
+
+
+#categoryList {
+    display: flex;
+    gap: 10px; 
+    overflow-x: auto; 
+    white-space: nowrap; 
+    padding-bottom: 5px; 
+}
+
+
+#categoryList::-webkit-scrollbar {
+    width: 6px; /* Thin scrollbar */
+    height: 6px;
+}
+
+
+#categoryList::-webkit-scrollbar-track {
+    background: rgb(143, 143, 253); 
+}
+
+#categoryList::-webkit-scrollbar-thumb {
+    background: rgb(143, 143, 253); 
+    border-radius: 10px;
+}
+
+
+
+     }
+    @media (min-width: 768px) {
+        .scroll-wi{
+      width: 650px;
+    }
+    .scroll-wid{
+      width: 800px;
+    }
+    
+    #categoryList::-webkit-scrollbar {
+        display: none; /* Fully hide scrollbar */
+    }
+    #categoryList::-webkit-scrollbar-track {
+        background: transparent; /* Transparent track */
+    }
+    #categoryList::-webkit-scrollbar-thumb {
+        background: transparent; /* Transparent thumb */
+    }
+    }
+</style>
+<body>
+    
+    <div class="flex flex-col text-sm items-center justify-center w-full">
+        <div id="categorysList" class="grid sm:grid-cols-3 grid-cols gap-4 p-4 mx-auto justify-center justify-items-center"></div>
+    </div>
+
+    <script>
+        const productUrl = 'http://localhost/mywebsite/category/';
+        const categories = [
+            { title: "Dogs" },
+            { title: "Cats"},
+            { title: "Pet Clothing"},
+            { title: "Pet Carriers"},
+            { title: "Dog & Cat Beds"}
+        ];
+    
+        function categoriesFunction() {
+            fetchCategory();
+            loadCategories();
+        }
+    
+        function loadCategories() {
+            const categoryContainer = document.getElementById("categoryList");
+            categoryContainer.innerHTML = ""; // Clear previous content
+            categories.forEach(category => {
+                const button = document.createElement("button");
+                button.className = "flex flex-col text-xs justify-center items-center mx-auto px-3 h-16 rounded border hover:bg-gray-200 hover:text-black w-52 border border-pink-400 shadow-md";
+                button.innerHTML = `<img src="${category.icon}" alt="icon" class="h-6 sm:h-8">${category.title}`;
+                button.onclick = () => fetchCategory(category.title);
+                categoryContainer.appendChild(button);
+            });
+        }
+    
+        async function fetchCategory(category = '') {
+    const categoryContainer = document.getElementById("categorysList");
+    categoryContainer.innerHTML = "<p>Loading Category...</p>";
+
+    let url = `http://localhost/mywebsite/function/category.php${category ? `?category=${encodeURIComponent(category)}` : ''}`;
+
+    try {
+        const response = await fetch(url);
+        const data = await response.json();
+
+        if (Array.isArray(data.message)) {
+            categoryContainer.innerHTML = "";
+            const colors = ["bg-pink-700", "bg-blue-300"]; // Using bg-sky-400 instead
+
+            data.message.forEach((product, index) => {
+                const productDiv = document.createElement("div");
+                productDiv.className = "relative group border p-4 shadow-lg sm:w-80 w-72";
+
+                const buttonColor = colors[index % 2]; // Alternating colors
+
+                productDiv.innerHTML = `
+                    <div class="relative group w-72 sm:w-80">
+                        <a href="categorys/categoryid.html?id=${product.id}" class="block relative z-10">
+                            <img src="${productUrl}${product.image}" alt="${product.title}" class="w-full h-64 object-cover cursor-pointer">
+                            <button class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center px-4 py-2 rounded-full w-60 justify-between text-white ${buttonColor}">
+                                <p style="font-size: 12px;" class="font-bold">${product.title}</p>
+                                <span class="text-lg bg-white p-1 rounded-full translate-x-4">
+                                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="size-8 text-black">
+                                        <path stroke-linecap="round" stroke-linejoin="round" d="M17.25 8.25 21 12m0 0-3.75 3.75M21 12H3" />
+                                    </svg>
+                                </span>
+                            </button>
+                        </a>
+                    </div>
+                `;
+
+                categoryContainer.appendChild(productDiv);
+            });
+        } else {
+            categoryContainer.innerHTML = "<p>No Products to display</p>";
+        }
+    } catch (error) {
+        console.error("Error Displaying Products:", error);
+        categoryContainer.innerHTML = `<p class="text-center text-sm text-red-500 font-semibold">Error loading products</p>`;
+    }
+}
+    
+        function handleAddToCart(product) {
+            console.log("Added to cart:", product);
+            const userId = parseInt(localStorage.getItem('user_id'), 10) || null;
+            if (!userId) {
+                alert("You must be logged in to add items to the cart.");
+                return;
+            }
+    
+            const quantity = 1;
+            const totalPrice = product ? quantity * parseFloat(product.price) + parseFloat(product.security_amount) : 0;
+            const category = product?.category || "Uncategorized";
+            const payload = {
+                user_id: userId,
+                quantity,
+                product_id: product.id || null,
+                total_price: totalPrice,
+                category
+            };
+    
+            fetch('/add_to_cart.php', {
+                method: 'POST',
+                headers: { 'Content-Type': 'application/json' },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.json())
+            .then(data => alert('Product is Added Successfully'))
+            .catch(error => console.log(error));
+        }
+    
+        // Function to Get Product ID from HTML
+        function getProductId(productId) {
+            const productElement = document.getElementById(`product-${productId}`);
+            if (productElement) {
+                console.log("Found Product ID:", productId);
+                return productId;
+            } else {
+                console.log("Product ID Not Found");
+                return null;
+            }
+        }
+    
+        document.addEventListener("DOMContentLoaded", categoriesFunction);
+    </script>    
+</body>
+</html>

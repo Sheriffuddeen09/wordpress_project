@@ -1,0 +1,857 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Product Details</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<style>
+     @media (min-width: 310px) {
+ 
+ .scroll-wi {
+     width: 280px; 
+     overflow-x: auto; 
+     white-space: nowrap; 
+ }
+ 
+ 
+ #accordion {
+     display: flex;
+     gap: 10px; 
+     overflow-x: auto; 
+     white-space: nowrap; 
+     padding-bottom: 5px; 
+ }
+ 
+ 
+ #accordion::-webkit-scrollbar {
+     width: 6px; /* Thin scrollbar */
+     height: 6px;
+ }
+ 
+
+ #accordion::-webkit-scrollbar-thumb { 
+     border-radius: 10px;
+ }
+ 
+ 
+ 
+      }
+     @media (min-width: 768px) {
+         .scroll-wi{
+       width: 650px;
+     }
+     .scroll-wid{
+       width: 800px;
+     }
+     
+     #categoryList::-webkit-scrollbar {
+         display: none; /* Fully hide scrollbar */
+     }
+     #categoryList::-webkit-scrollbar-track {
+         background: transparent; /* Transparent track */
+     }
+     #categoryList::-webkit-scrollbar-thumb {
+         background: transparent; /* Transparent thumb */
+     }
+    .id-width{
+      width: 500px;
+      margin: 5px 0px;
+      font-size: 13px;
+    }
+}
+
+</style>
+
+<body class="">
+    <header>
+        <div class="head font-roboto text-center text-sm sm:block hidden text-white p-1 -mb-8">
+            Special Discount Alert: Flat 20% Off on Your Rental Needs!
+        </div>
+        <div class="head font-roboto text-center sm:hidden block text-white p-1 -mb-2" style="font-size: 8px;">
+            Special Discount Alert: Flat 20% Off on Your Rental Needs!
+        </div>
+        <div class="flex flex-row justify-between items-center p-1 shadow-md">
+            <div class="inline-flex sm:gap-6 items-center">
+                <span>
+                    <img src="../shop/image/logo.png" alt="Logo" class="w-20 sm:h-16 relative left-6 sm:left-0 sm:h-12 h-10 mt-2">
+
+                </span>
+                <div class="sm:block hidden">
+                    <ul class="inline-flex gap-6 mt-4 items-center text-sm">
+                        <li><a href="index.html" class="hover:bg-gray-100 px-2 py-1 rounded">Home</a></li>
+                        <li><a href="../shoppage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Shop</a></li>
+                        <li class="inline-flex items-center">
+                            <a href="category.html" class="hover:bg-gray-100 px-2 py-1 rounded">Category</a>
+                            <svg onclick="toggleDropdown()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 font-bold">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
+                            </svg>
+                        </li>
+                        <li><a href="../aboutpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">About</a></li>
+                        <li><a href="../blogpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Blogs</a></li>
+                    </ul>
+                </div>
+            </div>
+            <div class="inline-flex sm:gap-6 mt-4 text-sm sm:mr-10 items-center">
+                <a href="contact.html" class="hover:bg-gray-100 whitespace-nowrap px-2 py-1 rounded sm:block hidden">Help Center</a>
+                <div class="flex flex-col w-full max-w-md mx-auto mt-4">
+                    <div class="relative sm:left-0 left-5">
+                        <!-- Search Button (Icon) -->
+                        <button id="toggleSearch" class=" p-2 sm:ml-10 rounded-full hover:bg-blue-600 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-black">
+                                <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path>
+                            </svg>
+                        </button>
+                    
+                        <!-- Search Input (Initially Hidden) -->
+                        <div id="searchContainer" class="fixed flex justify-center  mx-auto trans right-0 top-0 w-full h-full p-3 shadow-lg rounded-lg border border-gray-300 hidden duration-300">
+                            <div class=" bg-white w-full inline-flex items-center h-10 rounded-lg">
+                                <input type="text" id="searchInput" placeholder="Search products..." class="w-full p-2 border bg-white border-gray-300 rounded-lg focus:outline-none">
+                                <button id="searchButton" class="bg-blue-500 text-white px-4 py-2 ml-2 rounded-lg hover:bg-blue-600 transition">
+                                    Search
+                                </button>
+                            </div>
+                            <div id="searchResults" class="mt-2"></div>
+                        </div>
+                    </div>                    
+                    <div id="searchResults" class="mt-3 w-full"></div>
+                </div>
+                <div class="relative w-28 flex items-center">
+                    <!-- Flag Image -->
+                    <div class="absolute left-2 flex items-center">
+                        <img id="flag" class="w-6 h-6 rounded-full border" alt="Flag">
+                    </div>
+                
+                    <!-- Select Dropdown -->
+                    <select id="countrySelect" class="w-full p-3 pl-10 outline-pink-700 rounded-md appearance-none cursor-pointer">
+                        <option value="+1" data-flag="https://flagcdn.com/w40/us.png">United States (+1)</option>
+                        <option value="+44" data-flag="https://flagcdn.com/w40/gb.png">United Kingdom (+44)</option>
+                        <option value="+1" data-flag="https://flagcdn.com/w40/ca.png">Canada (+1)</option>
+                        <option value="+61" data-flag="https://flagcdn.com/w40/au.png">Australia (+61)</option>
+                        <option value="+49" data-flag="https://flagcdn.com/w40/de.png">Germany (+49)</option>
+                        <option value="+33" data-flag="https://flagcdn.com/w40/fr.png">France (+33)</option>
+                        <option value="+91" data-flag="https://flagcdn.com/w40/in.png">India (+91)</option>
+                        <option value="+234" data-flag="https://flagcdn.com/w40/ng.png">Nigeria (+234)</option>
+                    </select>
+                </div>
+                                <a href="dashboard.html" class="size-10 hover:bg-gray-100 mt-3 px-2 py-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-black">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                  </svg>
+                  </a>
+                <a href="cart.html" class="inline-flex size-10 hover:bg-gray-100 px-2 mt-3 py-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-black w-5 h-5">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
+                  </svg>
+                   <span id="cartCount">0</span></a>
+            </div>
+            <div id="menuIcon" class="sm:hidden fixed top-10 mt-1 left-0 bg-none z-50 p-2 rounded-full cursor-pointer">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
+                  </svg>
+                  
+            </div>
+        </div>
+     <!-- Mobile Menu -->
+     <div id="menu" class="sm:hidden fixed top-0 right-0 w-52 h-full bg-white shadow-lg z-50 hidden">
+        <div class="flex flex-col h-full">
+            <!-- Menu Header -->
+            <div class="flex justify-between items-center p-4">
+                <img src="layout/image/logo.png" alt="Logo" class="w-32 h-20">
+                <svg id="closeMenu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 cursor-pointer">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
+                </svg>
+            </div>
+
+            <!-- Navigation Links -->
+            <nav class="flex flex-col gap-4 p-4">
+                <a href="/" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Home</a>
+                <div class="w-full bg-gray-200 h-0.5"></div>
+
+                <a href="shoppage" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Shop</a>
+                <div class="w-full bg-gray-200 h-0.5"></div>
+
+                <!-- Category Dropdown -->
+                <div id="dropMobileButton" class="flex items-center justify-between cursor-pointer hover:bg-gray-100 px-5 py-1 rounded">
+                    <p class="text-black font-bold text-sm">Category</p>
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
+                    </svg>
+                </div>
+                <div id="dropMobileMenu" class="hidden bg-white shadow-md rounded mt-2">
+                    <a href="/category/all" class="block text-black font-bold text-sm py-1 px-4 hover:bg-gray-100">All</a>
+                    <a href="/category/dogs" class="block text-black font-bold text-sm py-1 px-4 hover:bg-gray-100">Dogs</a>
+                    <a href="/category/cats" class="block text-black font-bold text-sm py-1 px-4 hover:bg-gray-100">Cats</a>
+                </div>
+
+                <div class="w-full bg-gray-200 h-0.5"></div>
+                <a href="/about" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">About</a>
+                <div class="w-full bg-gray-200 h-0.5"></div>
+
+                <a href="/blogs" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Blogs</a>
+                <div class="w-full bg-gray-200 h-0.5"></div>
+
+                <a href="/help" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Help Center</a>
+            </nav>
+        </div>
+    </div>
+
+    
+</header>
+
+    <div id="product-container" class="flex sm:px-16 p-3 sm:py-5 flex-wrap sm:flex-nowrap justify-around sm:gap-12 sm:my-5">
+        <div class="flex flex-col">
+            <div id="image-container">
+                <img id="main-image" src="" alt="Product Image" class="w-80">
+            </div>
+            <div class="inline-flex flex-wrap sm:flex-nowrap gap-3 sm:my-10">
+                <img id="color1" src="" alt="Color 1" class="w-28 h-28 cursor-pointer hidden sm:block" onclick="handleColor(1)">
+                <img id="color2" src="" alt="Color 2" class="w-28 h-28 cursor-pointer hidden sm:block" onclick="handleColor(2)">
+                <img id="color3" src="" alt="Color 3" class="w-28 h-28 cursor-pointer hidden sm:block" onclick="handleColor(3)">
+                <img id="color4" src="" alt="Color 4" class="w-28 h-28 cursor-pointer hidden sm:block" onclick="handleColor(4)">
+            </div>
+        </div>
+        <div class="flex flex-col justify-center mx-auto">
+            <h2 id="productTitle" class="text-2xl font-bold"></h2>
+            <p class="text-lg font-bold my-2">Price: $<span id="productPrice" class="font-semibold">0.00</span></p>
+            <p class="text-lg font-bold">Security Amount: $<span id="securityAmount" class="font-semibold">0.00</span></p>
+            <label class="font-bold my-2">Size:</label>
+            <select id="size-selector" class="border border-2 border-pink-700 p-2 w-40 border-[#D2016A] rounded my-2" onchange="sizeUpdate()">
+                <option value="S">Small</option>
+                <option value="M">Medium</option>
+                <option value="L">Large</option>
+                <option value="XL">Extra</option>
+            </select>
+            <label class="block my-2 font-bold">Quantity:</label>
+            <select id="quantitySelect" class="border p-2 w-40 border-2 border-pink-700 rounded-lg" onchange="updateQuantity()">
+                <option value="1">1</option>
+                <option value="2">2</option>
+                <option value="3">3</option>
+                <option value="4">4</option>
+                <option value="5">5</option>
+                <option value="6">6</option>
+                <option value="7">7</option>
+                <option value="8">8</option>
+                <option value="9">9</option>
+                <option value="10">10</option>
+            </select>
+            <p class="text-xl font-bold mt-4">Total Price: $<span id="totalPrice">0.00</span></p>
+            <div class="flex flex-col mb-10">
+                <div class="inline-flex gap-3">
+                    <div class="flex flex-col relative">
+                        <label class="font-bold text-sm my-2">Pick up date</label>
+                        <input type="date" id="pickupDate" class="border p-2 sm:w-40 w-32 pl-8 border-pink-700 border rounded-md" onchange="updateDateTime()">
+                    </div>
+                    <div class="flex flex-col relative">
+                        <label class="font-bold text-sm my-2">Drop off date</label>
+                        <input type="date" id="dropoffDate" class="border p-2 sm:w-40 w-32 pl-8 rounded-md border-pink-700 border" onchange="updateDateTime()">
+                    </div>
+                </div>
+                <div class="inline-flex gap-3 mb-10">
+                    <div class="flex flex-col relative">
+                        <label class="font-bold text-sm my-2">Pick up time</label>
+                        <input type="time" id="pickupTime" class="border p-2 sm:w-40 w-32 pl-8 rounded-md border-pink-700 border" onchange="updateDateTime()">
+                    </div>
+                    <div class="flex flex-col relative">
+                        <label class="font-bold text-sm my-2">Drop off time</label>
+                        <input type="time" id="dropoffTime" class="border p-2 sm:w-40 w-32 pl-8 rounded-md border-pink-700 border" onchange="updateDateTime()">
+                    </div>
+                </div>
+                <p class="id-width sm:text-center"><strong class="text-sm">Material:</strong> <span id="material"></span></p>
+                <p class="id-width sm:text-center"><strong class="text-sm">Features:</strong> <span id="features"></span></p>
+                <p class="id-width sm:text-center"><strong class="text-sm">Stretchable:</strong> <span id="stretchable"></span></p>
+                <p class="id-width sm:text-center"><strong class="text-sm">Stylish Design:</strong> <span id="stylish_design"></span></p>
+                <p class="id-width sm:text-center"><strong class="text-sm">Machine Washable:</strong> <span id="machine_washable"></span></p>
+
+            </div>
+        </div>
+    </div>
+    <div id="accordion" class="flex text-xl font-bold sm:text-2xl sm:gap-16 gap-5 px-3  sm:justify-start sm:translate-x-14 sm:items-start flex  scroll-wi">
+        <button class="tab-btn text-xl font-bold px-4 py-2 text-black border-b-2 border-transparent hover:border-pink-700" onclick="showTab('description', this)">Description</button>
+        <button class="tab-btn text-xl font-bold px-4 py-2 text-black border-b-2 border-transparent hover:border-pink-700"  onclick="showTab('shipping', this)">Shipping</button>
+        <button class="tab-btn text-xl font-bold px-4 py-2 text-black border-b-2 border-transparent hover:border-pink-700"  onclick="showTab('reviews', this)">Reviews</button>
+    </div>
+    <div id="description" class="tab-content -mt-5">
+        <div class="max-w-3xl bg-white p-3">
+            <div class="flex flex-col sm:justify-start p-3 justify-center sm:translate-x-14 sm:items-start mx-auto">
+                <p class="font-bold text-lg my-2">Category: <small class="text-sm" id="category"></small></p>
+                <p class="font-bold text-lg mb-1">Life Stage: <small class="text-sm" id="life_stage"></small></p>
+                
+                <h1 class="font-bold sm:text-lg text-sm my-2">Benefits of Renting Pet Accessories:</h1>
+                
+                <p class="text-lg font-semibold">Comfortable Fit</p>
+                <p class="my-1 text-gray-600 text-sm" id="fit"></p>
+    
+                <p class="text-lg font-semibold my-2">High-Quality Materials</p>
+                <p class="text-gray-600 text-sm" id="functional_designs"></p>
+    
+                <p class="text-lg font-semibold my-2">Easy to Use & Maintain</p>
+                <p class="text-gray-600 text-sm" id="maintenance"></p>
+
+            </div>
+        </div>
+    </div>
+
+    <div id="shipping" class="tab-content hidden">
+        <div class="max-w-10xl mx-auto bg-white shadow-md rounded-lg sm:p-6 py-6">
+            <form id="checkoutForm" class="border w-72 px-2 sm:py-4 sm:px-2 sm:w-4/12 border-pink-600 flex flex-col justify-center mx-auto sm:mx-40 font-bold rounded">
+                <p class="text-sm sm:text-xl font-bold my-2 text-black">Kindly enter your Information Details</p>
+                
+                <label class="text-sm mt-2 text-black">Recipient First Name:</label>
+                <input class="border-2  border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_firstname" required>
+                
+                <label class="text-sm mt-2 text-black">Recipient Last Name:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96  p-1 my-1 rounded-lg outline-none" type="text" id="recipient_lastname" required>
+                
+                <label class="text-sm mt-2 text-black">Recipient Phone Number:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96  p-1 my-1 rounded-lg outline-none" type="text" id="recipient_phone" required>
+                
+                <label class="text-sm mt-2 text-black">Recipient Address:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96  p-1 my-1 rounded-lg outline-none" type="text" id="address" required>
+                
+                <label class="text-sm mt-2 text-black">Country:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96  p-1 my-1 rounded-lg outline-none" type="text" id="country" required>
+                
+                <label class="text-sm mt-2 text-black">City:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96  p-1 my-1 rounded-lg outline-none" type="text" id="city" required>
+                
+                <label class="text-sm mt-2 text-black">State:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96  p-1 my-1 rounded-lg outline-none" type="text" id="state" required>
+                
+                <label class="text-sm mt-2 text-black">Zip Code:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96  p-1 my-1 rounded-lg outline-none" type="text" id="zip_code" required>
+                
+                <button type="submit" class="my-5 w-64 bg-red-500 text-white sm:w-96 mx-auto p-1 my-1 rounded-lg outline-none">Submit Form</button>
+            </form>
+            <p id="message" class="text-red-600 my-2 font-bold"></p>
+        </div>
+    
+    </div>
+
+    <div id="reviews" class="tab-content hidden flex flex-col sm:justify-start p-3 justify-center sm:mx-20 sm:items-start">
+        <div class="w-full bg-white shadow-md rounded-lg p-6">
+            <h2 class="text-2xl font-semibold text-center text-pink-500">Reviews</h2>
+            <div id="reviewsList" class="mt-4 text-gray-700">Loading...</div>
+    
+            <h3 class="mt-6 text-xl font-medium">Leave a Review</h3>
+            <form id="reviewForm" class="mt-4 mx-auto">
+                <div class="mb-4">
+                    <label class="block text-gray-600">Rating:</label>
+                    <select id="rating" class="w-20 border border-gray-300 p-2 rounded">
+                        <option value="5">5 ⭐</option>
+                        <option value="4">4 ⭐</option>
+                        <option value="3">3 ⭐</option>
+                        <option value="2">2 ⭐</option>
+                        <option value="1">1 ⭐</option>
+                    </select>
+                </div>
+                <div class="mb-4">
+                    <label class="block text-gray-600">Review:</label>
+                    <textarea id="reviewText" required class="sm:w-96 w-64  border h-52 border-gray-300 p-2 rounded"></textarea>
+                </div>
+                <button type="submit" class="sm:w-96 w-64  bg-pink-500 text-white py-2 rounded hover:bg-pink-600" id="submitBtn">Submit Review</button>
+            </form>
+            <p id="message" class="mt-2 text-center text-sm text-gray-600"></p>
+        </div>
+    </div>
+
+<footer class="bg-cover bg-center bg-no-repeat py-8 px-6" style="background-image: url('../shop/image/background.png');">
+    <div class="container mx-auto flex flex-wrap justify-around items-start gap-8">
+        <!-- Left Section -->
+        <div class="max-w-sm -mt-5">
+            <div class="logo">
+                <a href="/">
+                    <img src="../shop/image/logo.png" alt="Logo" class='w-28 h-16'>
+                </a>
+            </div>
+            
+            <p class="mt-2 text-sm text-black font-bold">
+                Create heartwarming memories with this lovable Golden Retriever puppy – 
+                the perfect addition to your special moments! 🐾
+            </p>
+
+            <div class="mt-4">
+                <form action="/subscribe" method="POST">
+                    <input type="email" name="email" placeholder="Email Address" class="p-2 w-full border border-pink-400 rounded-xl focus:outline-none text-sm" required />
+                    <button type="submit" class="mt-2 w-full text-sm bg-pink-600 text-white py-2 rounded-xl hover:bg-black transition">
+                        Sign Up
+                    </button>
+                </form>
+            </div>
+
+            <!-- Social Icons -->
+            <div class="flex space-x-4 mt-4">
+                <a href="#" class="text-black text-xl"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-black text-xl"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-black text-xl"><i class="fab fa-google"></i></a>
+                <a href="#" class="text-black text-xl"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" class="text-black text-xl"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+
+        <!-- Middle Section -->
+        <div class="grid grid-cols-2 gap-6 text-sm">
+            <div>
+                <h3 class="font-bold text-black">Quick Links</h3>
+                <ul class="space-y-1 mt-2">
+                    <li><a href="/about" class="hover:text-pink-700">About Us</a></li>
+                    <li><a href="/contact" class="hover:text-pink-700">Contact Us</a></li>
+                    <li><a href="/blogs" class="hover:text-pink-700">Blog</a></li>
+                    <li><a href="#" class="hover:text-pink-700">FAQ</a></li>
+                    <li><a href="/help" class="hover:text-pink-700">Help</a></li>
+                    <li><a href="#" class="hover:text-pink-700">Returns</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-black">Product</h3>
+                <ul class="space-y-1 mt-2">
+                    <li><a href="#" class="hover:text-pink-700">Pet Clothing</a></li>
+                    <li><a href="#" class="hover:text-pink-700">Pet Carriers</a></li>
+                    <li><a href="/category/dog-cat-beds" class="hover:text-pink-700">Dog & Cat Beds</a></li>
+                    <li><a href="shoppage.html" class="hover:text-pink-700">Shop</a></li>
+                    <li><a href="#" class="hover:text-pink-700">Shipping</a></li>
+                    <li><a href="#" class="hover:text-pink-700">Delivery</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="text-sm">
+            <h3 class="font-bold text-black">Our Locations</h3>
+            <p class="mt-2 inline-flex gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                </svg>
+                635 Rogers Street <br/> Downers Grove, IL 60515 USA
+            </p>
+            <p class="mt-1">
+                <a href="tel:+12345472344376" class="hover:text-pink-700">📞 +1 (234) 547 234 4376</a>
+            </p>
+            <div class="mt-4 flex sm:flex-col flex-row gap-2">
+                <img src="layout/image/store.png" alt="Store" class='w-32 h-10'>
+                <img src="layout/image/play.png" alt="Play Store" class='w-32 h-10'>
+            </div>
+        </div>
+    </div>
+
+    <hr class="my-6 border-pink-400"/>
+    <p class="text-center text-sm font-bold">&copy; 2025 Shofx. All rights reserved.</p>
+</footer>
+
+
+    <script>
+      document.addEventListener("DOMContentLoaded", function() {
+    const urlParams = new URLSearchParams(window.location.search);
+    const productId = urlParams.get("id");
+    const productUrl = 'http://localhost/mywebsite/image/';
+
+    if (productId) {
+        fetch(`http://localhost/mywebsite/function/productid.php?id=${productId}`)
+            .then(response => response.json())
+            .then(data => {
+                console.log("Fetched Data:", data); // ✅ Debugging log
+                
+                if (data.success && data.product) {
+                    const product = data.product;
+
+                    document.getElementById("productTitle").textContent = product.title;
+                    document.getElementById("productPrice").textContent = parseFloat(product.price).toFixed(2);
+                    document.getElementById("securityAmount").textContent = parseFloat(product.security_amount).toFixed(2);
+                    
+                    document.getElementById("main-image").src = `${productUrl}${product.image}`;
+
+                    // Update color images
+                    const colorMappings = {
+                        "color_image_pink": "color1",
+                        "color_image_orange": "color2",
+                        "color_image_sky": "color3",
+                        "color_image_red": "color4"
+                    };
+
+                    Object.keys(colorMappings).forEach((apiKey) => {
+                        let imageElement = document.getElementById(colorMappings[apiKey]);
+                        if (imageElement && product[apiKey]) {
+                            imageElement.src = `${productUrl}${encodeURIComponent(product[apiKey])}`;
+                            imageElement.classList.remove("hidden"); // Show the image
+                            console.log(`Updated ${colorMappings[apiKey]} with src:`, imageElement.src); // ✅ Debugging log
+                        } else if (imageElement) {
+                            imageElement.classList.add("hidden"); // Hide if no image
+                        }
+                    });
+        
+
+
+                    if (product.material) document.getElementById("material").textContent = product.material;
+                    if (product.features) document.getElementById("features").textContent = product.features;
+                    if (product.stretchable) document.getElementById("stretchable").textContent = product.stretchable;
+                    if (product.stylish_design) document.getElementById("stylish_design").textContent = product.stylish_design;
+                    if (product.machine_washable) document.getElementById("machine_washable").textContent = product.machine_washable;
+                    if (product.category) document.getElementById("category").textContent = product.category;
+                    if (product.life_stage) document.getElementById("life_stage").textContent = product.life_stage;
+                    if (product.fit) document.getElementById("fit").textContent = `* ${product.fit}`;
+                    if (product.functional_designs) document.getElementById("functional_designs").textContent = `* ${product.functional_designs}`;
+                    if (product.maintenance) document.getElementById("maintenance").textContent = `* ${product.maintenance}`;
+                    if (product.material) document.getElementById("material").textContent = product.material;
+                    if (product.features) document.getElementById("features").textContent = product.features;
+                    if (product.stretchable) document.getElementById("stretchable").textContent = product.stretchable;
+                
+                } else {
+                    console.error("Product not found or invalid response");
+                }
+            })
+            .catch(error => console.error("Error fetching product details:", error));
+    }
+});
+
+        function updateQuantity() {
+    let quantity = parseInt(document.getElementById("quantitySelect").value) || 1;
+    let price = parseFloat(document.getElementById("productPrice").textContent) || 0;
+    let security = parseFloat(document.getElementById("securityAmount").textContent) || 0;
+    let total = (price * quantity) + security;
+
+    document.getElementById("totalPrice").textContent = total.toFixed(2);
+}
+
+
+        function handleColor(colorIndex) {
+            let selectedColor = document.getElementById(`color${colorIndex}`).src;
+            document.getElementById("main-image").src = selectedColor;
+        }
+
+        function sizeUpdate() {
+            console.log("Size updated: ", document.getElementById("size-selector").value);
+        }
+
+        function updateDateTime() {
+            console.log("Date/Time updated:", document.getElementById("pickupDate").value, document.getElementById("dropoffDate").value, document.getElementById("pickupTime").value, document.getElementById("dropoffTime").value);
+        }
+
+
+        document.addEventListener("DOMContentLoaded", function () {
+    fetch("../layout/header.html")
+        .then(response => response.text())
+        .then(data => {
+            const headerContainer = document.getElementById("header");
+            headerContainer.innerHTML = data;
+
+            // ✅ Manually execute any script tags inside header.html
+            headerContainer.querySelectorAll("script").forEach(script => {
+                const newScript = document.createElement("script");
+                newScript.textContent = script.textContent;
+                document.body.appendChild(newScript); // Append to execute
+            });
+
+            // ✅ Call the function to initialize the menu after inserting header
+            initializeMenu();
+            searchMenu()
+            initializeCountrySelect()
+        })
+        .catch(error => console.error("Error loading header:", error));
+
+        
+        fetch("../layout/footer.html")
+        .then(response => response.text())
+        .then(data => {
+            const footerContainer = document.getElementById("footer");
+            footerContainer.innerHTML = data;
+
+            // ✅ Manually execute any script tags inside header.html
+            footerContainer.querySelectorAll("script").forEach(script => {
+                const newScript = document.createElement("script");
+                newScript.textContent = script.textContent;
+                document.body.appendChild(newScript); // Append to execute
+            });
+        })
+        .catch(error => console.error("Error loading footer:", error));
+});
+
+
+function searchMenu () {
+    const toggleSearch = document.getElementById("toggleSearch");
+    const searchContainer = document.getElementById("searchContainer");
+    const searchInput = document.getElementById("searchInput");
+    const searchButton = document.getElementById("searchButton");
+    const resultsContainer = document.getElementById("searchResults");
+
+    toggleSearch.addEventListener("click", () => {
+        // Toggle visibility
+        if (searchContainer.classList.contains("hidden")) {
+            searchContainer.classList.remove("hidden");
+            setTimeout(() => searchContainer.classList.remove("opacity-0"), 10);
+            searchInput.focus(); // Focus on input when opened
+        } else {
+            searchContainer.classList.add("opacity-0");
+            setTimeout(() => searchContainer.classList.add("hidden"), 300);
+        }
+    });
+
+    // Close search box when clicking outside
+    document.addEventListener("click", (event) => {
+        if (!searchContainer.contains(event.target) && !toggleSearch.contains(event.target)) {
+            searchContainer.classList.add("opacity-0");
+            setTimeout(() => searchContainer.classList.add("hidden"), 300);
+        }
+    });
+
+    const handleSearch = async () => {
+        const query = searchInput.value.trim();
+
+        if (query === "") {
+            resultsContainer.innerHTML = "";
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost/mywebsite/function/product.php?search=${encodeURIComponent(query)}`);
+            const data = await response.json();
+            displayResults(data.products || []);
+        } catch (error) {
+            console.error("Search error:", error);
+        }
+    };
+
+    const displayResults = (products) => {
+        resultsContainer.innerHTML = products.length === 0
+            ? `<p class="text-gray-500 text-sm">No products found.</p>`
+            : products.map(product => `
+                <div class="flex items-center gap-3 p-2 hover:bg-gray-100 cursor-pointer transition duration-200 border-b last:border-none"
+                    onclick="window.location.href='/shop/${product.id}'">
+                    <img src="${productUrl}${product.image}" alt="${product.title}" class="w-10 h-10 object-cover rounded-md"/>
+                    <span class="text-gray-700 font-medium">${product.title}</span>
+                </div>
+            `).join("");
+
+    };
+
+    searchInput.addEventListener("input", handleSearch);
+    searchButton.addEventListener("click", handleSearch);
+}
+
+function initializeMenu() {
+    const menu = document.getElementById("menu");
+    const menuIcon = document.getElementById("menuIcon");
+    const closeMenu = document.getElementById("closeMenu");
+
+    if (menu && menuIcon && closeMenu) {
+        // Open menu
+        menuIcon.addEventListener("click", function () {
+            menu.classList.remove("hidden"); // Show menu
+            menuIcon.classList.add("hidden"); // Hide menu icon
+        });
+
+        // Close menu
+        closeMenu.addEventListener("click", function () {
+            menu.classList.add("hidden"); // Hide menu
+            menuIcon.classList.remove("hidden"); // Show menu icon
+        });
+    }
+}
+
+function initializeCountrySelect() {
+    const countrySelect = document.getElementById("countrySelect");
+    const flagImg = document.getElementById("flag");
+
+    countrySelect.addEventListener("change", function () {
+        const selectedOption = this.options[this.selectedIndex];
+        flagImg.src = selectedOption.getAttribute("data-flag");
+        flagImg.alt = selectedOption.textContent;
+    });
+
+    // Initialize with the first selected country's flag
+    const initialOption = countrySelect.options[countrySelect.selectedIndex];
+    flagImg.src = initialOption.getAttribute("data-flag");
+    flagImg.alt = initialOption.textContent;
+}
+
+// Call the function after the page loads
+document.addEventListener("DOMContentLoaded", initializeCountrySelect);
+
+
+function showTab(tabId, element) {
+            // Hide all tab contents
+            document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
+            document.getElementById(tabId).classList.remove("hidden");
+
+            // Remove pink underline from all tabs
+            document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("border-pink-500", "text-pink-500"));
+
+            // Add pink underline to active tab
+            element.classList.add("border-pink-500", "text-pink-500");
+        }
+
+        
+
+        initializeCountrySelect()
+        initializeMenu()
+        searchMenu()
+
+
+// shipment data
+
+  document.getElementById("checkoutForm").addEventListener("submit", async function (event) {
+    event.preventDefault();
+
+    // Get user ID from localStorage
+    const userId = parseInt(localStorage.getItem("user_id"), 10);
+    if (!userId) {
+        console.error("Error: User ID is missing in localStorage");
+        document.getElementById("message").textContent = "Error: User ID is missing. Please log in.";
+        return;
+    }
+
+    const shipment = {
+        recipient_firstname: document.getElementById("recipient_firstname").value.trim(),
+        recipient_lastname: document.getElementById("recipient_lastname").value.trim(),
+        recipient_phone: document.getElementById("recipient_phone").value.trim(),
+        address: document.getElementById("address").value.trim(),
+        country: document.getElementById("country").value.trim(),
+        city: document.getElementById("city").value.trim(),
+        state: document.getElementById("state").value.trim(),
+        zip_code: document.getElementById("zip_code").value.trim(),
+    };
+
+    if (Object.values(shipment).some(value => value === "")) {
+        document.getElementById("message").textContent = "Please fill in all required fields.";
+        return;
+    }
+
+    const order = JSON.parse(localStorage.getItem("order")) || [];
+    if (order.length === 0) {
+        document.getElementById("message").textContent = "Your cart is empty.";
+        return;
+    }
+
+    const paymentMethod = "Cash on Delivery";
+    const totalPrice = order.reduce((sum, item) => sum + item.price * item.quantity, 0);
+
+  
+    const requestData = {
+        user_id: userId,
+        payment_method: paymentMethod,
+        total_price: totalPrice,
+        shipment: shipment,
+        items: order.map(item => ({
+            product_id: item.product_id,
+            image: item.image,
+            title: item.title,
+            price: item.price,
+            color: item.color,
+            size: item.size,
+            quantity: item.quantity,
+            pick_up_date: item.pick_up_date,
+            pick_up_time: item.pick_up_time,
+            drop_off_date: item.drop_off_date,
+            drop_off_time: item.drop_off_time,
+        })),
+    };
+
+    console.log("Submitting data:", requestData); // Debugging log
+
+    try {
+        const response = await fetch("http://localhost/mywebsite/function/checkout.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestData),
+        });
+
+        if (!response.ok) {
+            throw new Error(`Server responded with status: ${response.status}`);
+        }
+
+        const data = await response.json();
+        console.log("Server response:", data);
+
+        if (data.success) {
+            document.getElementById("message").textContent = "Your Information has been Saved";
+            localStorage.removeItem("order"); // Clear order after checkout
+            setTimeout(() => {
+                window.location.href = "/checkout/checkout";
+            }, 1500);
+        } else {
+            document.getElementById("message").textContent = "Error: " + (data.message || "Something went wrong.");
+        }
+    } catch (error) {
+        console.error("Error during submission:", error);
+        document.getElementById("message").textContent = "Submission failed. Please try again.";
+    }
+});
+
+
+// reviews data
+
+document.addEventListener("DOMContentLoaded", function() {
+            const reviewsList = document.getElementById("reviewsList");
+            const reviewForm = document.getElementById("reviewForm");
+            const rating = document.getElementById("rating");
+            const reviewText = document.getElementById("reviewText");
+            const submitBtn = document.getElementById("submitBtn");
+            const message = document.getElementById("message");
+
+            const userId = localStorage.getItem("user_id");
+            const productId = 1; // Replace with actual product ID if dynamic
+
+            function fetchReviews() {
+                fetch("http://localhost/mywebsite/function/categoryid.php?product_id=" + productId)
+                    .then(response => response.json())
+                    .then(data => {
+                        if (data.length === 0) {
+                            reviewsList.innerHTML = "<p class='text-gray-500'>No reviews yet.</p>";
+                        } else {
+                            reviewsList.innerHTML = data.map(review => `
+                                <div class='border-b border-gray-200 py-2'>
+                                    <strong class='text-pink-600'>${review.firstname} ${review.lastname}</strong> - ${review.rating}⭐
+                                    <p class='text-gray-700'>${review.review_text}</p>
+                                </div>
+                            `).join("");
+                        }
+                    })
+                    .catch(error => {
+                        console.error("Error fetching reviews:", error);
+                        reviewsList.innerHTML = "<p class='text-red-500'>Error loading reviews.</p>";
+                    });
+            }
+
+            fetchReviews();
+
+            reviewForm.addEventListener("submit", function(e) {
+                e.preventDefault();
+                if (!userId) {
+                    alert("User not logged in!");
+                    return;
+                }
+
+                submitBtn.disabled = true;
+                message.textContent = "Submitting...";
+
+                fetch("http://localhost/mywebsite/review.php", {
+                    method: "POST",
+                    headers: { "Content-Type": "application/json" },
+                    body: JSON.stringify({
+                        user_id: userId,
+                        product_id: productId,
+                        review_text: reviewText.value,
+                        rating: rating.value
+                    })
+                })
+                .then(response => response.json())
+                .then(data => {
+                    message.textContent = "Review added successfully!";
+                    reviewText.value = "";
+                    fetchReviews();
+                })
+                .catch(error => {
+                    message.textContent = "Error submitting review.";
+                    console.error("Error:", error);
+                })
+                .finally(() => {
+                    submitBtn.disabled = false;
+                });
+            });
+        });
+    </script>
+</body>
+
+</html>
