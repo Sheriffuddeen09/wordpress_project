@@ -7,7 +7,7 @@
 </head>
 <body>
     <div id="header"></div>
-    <div id="profile"></div>
+    <div id="editprofile"></div>
     <div id="footer"></div>
 
 <script>
@@ -32,10 +32,10 @@
         })
         .catch(error => console.error("Error loading header:", error));
 
-        fetch("dashboard/profile.html")
+        fetch("dashboard/editprofile.html")
         .then(response => response.text())
         .then(data => {
-            const shopContainer = document.getElementById("profile");
+            const shopContainer = document.getElementById("editprofile");
             shopContainer.innerHTML = data;
 
             // ✅ Manually execute any script tags inside header.html

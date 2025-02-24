@@ -1,0 +1,117 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Update Profile</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+</head>
+<body class="bg-gray-100 flex justify-center items-center min-h-screen">
+
+    <div class="bg-white px-8 pt-4 pb-8 rounded-xl border my-10 border-green-200 shadow-lg max-w-sm w-full">
+        <h1 class="text-2xl text-green-400 font-serif text-center">Update Profile</h1>
+
+        <p id="message" class="text-center mt-3 text-sm font-semibold text-green-500 hidden"></p>
+
+        <form id="profileForm" class="flex flex-col mt-4">
+            <label class="text-sm my-2">Firstname:</label>
+            <input type="text" id="firstname" name="firstname" class="border border-green-200  text-sm p-2 rounded" required>
+
+            <label class="my-2 text-sm">Lastname:</label>
+            <input type="text" id="lastname" name="lastname" class="border border-green-200  text-sm p-2 rounded" required>
+
+            <label class="my-2 text-sm">Phone:</label>
+            <input type="text" id="phone" name="phone" class="border border-green-200  text-sm p-2 rounded" required>
+
+            <!-- Profile Image Upload -->
+            <label class="mt-2 text-sm">Profile Image:</label>
+            <div class="relative flex justify-center items-center text-sm">
+                <input type="file" id="profile_image" name="profile_image" accept="image/*" class="hidden">
+                <label for="profile_image" class="cursor-pointer w-full my-4 bg-green-500 text-white px-4 py-2 rounded flex items-center">
+                    Choose File
+                </label>
+            </div>
+            <img id="imagePreview" class="w-20 h-20 rounded-full mt-2 mx-auto hidden" />
+
+            <!-- Submit Button -->
+            <button type="submit" id="submitBtn" class="mt-4 text-sm bg-green-500 text-white p-2 rounded flex justify-center items-center">
+                Update Profile
+            </button>
+
+            <!-- Loading Spinner -->
+            <div id="loading" class="hidden text-center mt-2">
+                <svg class="animate-spin h-5 w-5 text-green-500 mx-auto" viewBox="0 0 24 24">
+                    <circle class="opacity-25" cx="12" cy="12" r="10" stroke="currentColor" stroke-width="4" fill="none"></circle>
+                    <path class="opacity-75" fill="currentColor" d="M4 12a8 8 0 018-8v8H4z"></path>
+                </svg>
+            </div>
+        </form>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const form = document.getElementById("profileForm");
+            const message = document.getElementById("message");
+            const submitBtn = document.getElementById("submitBtn");
+            const loading = document.getElementById("loading");
+            const imageInput = document.getElementById("profile_image");
+            const imagePreview = document.getElementById("imagePreview");
+
+            // Load current user data
+            fetch("get_user_data.php")
+                .then(res => res.json())
+                .then(data => {
+                    if (data.user) {
+                        document.getElementById("firstname").value = data.user.firstname;
+                        document.getElementById("lastname").value = data.user.lastname;
+                        document.getElementById("phone").value = data.user.phone;
+                        if (data.user.profile_image) {
+                            imagePreview.src = data.user.profile_image;
+                            imagePreview.classList.remove("hidden");
+                        }
+                    }
+                })
+                .catch(err => console.error("Error fetching user data:", err));
+
+            // Handle image preview
+            imageInput.addEventListener("change", function () {
+                const file = this.files[0];
+                if (file) {
+                    imagePreview.src = URL.createObjectURL(file);
+                    imagePreview.classList.remove("hidden");
+                }
+            });
+
+            // Handle form submission
+            form.addEventListener("submit", function (e) {
+                e.preventDefault();
+
+                submitBtn.classList.add("hidden");
+                loading.classList.remove("hidden");
+                message.classList.add("hidden");
+
+                const formData = new FormData(form);
+                
+                fetch("http://localhost/mywebsite/function/editprofile.php", {
+                    method: "POST",
+                    body: formData
+                })
+                .then(response => response.json())
+                .then(result => {
+                    message.textContent = result.message;
+                    message.classList.remove("hidden");
+                })
+                .catch(() => {
+                    message.textContent = "Error updating profile. Please try again.";
+                    message.classList.remove("hidden");
+                })
+                .finally(() => {
+                    submitBtn.classList.remove("hidden");
+                    loading.classList.add("hidden");
+                });
+            });
+        });
+    </script>
+
+</body>
+</html>

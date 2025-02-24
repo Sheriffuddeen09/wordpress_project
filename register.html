@@ -7,7 +7,7 @@
 </head>
 <body>
     <div id="header"></div>
-    <div id="login"></div>
+    <div id="registration"></div>
     <div id="footer"></div>
 
 <script>
@@ -32,10 +32,10 @@
         })
         .catch(error => console.error("Error loading header:", error));
 
-        fetch("formdata/login.html")
+        fetch("formdata/registration.html")
         .then(response => response.text())
         .then(data => {
-            const shopContainer = document.getElementById("login");
+            const shopContainer = document.getElementById("registration");
             shopContainer.innerHTML = data;
 
             // ✅ Manually execute any script tags inside header.html
@@ -44,7 +44,6 @@
                 newScript.textContent = script.textContent;
                 document.body.appendChild(newScript); // Append to execute
             });
-
         })
         .catch(error => console.error("Error loading footer:", error));
 

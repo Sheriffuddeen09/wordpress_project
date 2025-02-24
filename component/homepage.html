@@ -1,0 +1,372 @@
+    <!DOCTYPE html>
+    <html lang="en">
+    <head>
+        <meta charset="UTF-8">
+        <meta name="viewport" content="width=device-width, initial-scale=1.0">
+        <title>Pet Rental</title>
+        <script src="https://cdn.tailwindcss.com"></script>
+        <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.css">
+        <script src="https://cdnjs.cloudflare.com/ajax/libs/axios/1.4.0/axios.min.js"></script>
+    </head>
+    <body class="bg-gray-100">
+
+        <!-- Search Section -->
+        <div class="bg-gray-200 p-2  flex flex-wrap items-center z-10 isolate justify-center">
+            <div class="bg-pink-100 p-3 translate-y-20 rounded-xl sm:w-8/12 flex z-10 flex-wrap items-center justify-center gap-4 shadow-md">
+                <div class="flex items-center bg-white p-2 rounded-lg shadow-sm w-44">
+                    <input id="location" style="font-size:9px;" type="text" placeholder="Location, Address" class="w-full outline-none">
+                </div>
+                <div class="flex items-center bg-white p-2 rounded-lg shadow-sm w-44">
+                    <input id="pickDate" style="font-size:9px;" type="text" placeholder="Pick Up Date & Time" class="w-full outline-none">
+                </div>
+                <div class="flex items-center bg-white p-2 rounded-lg shadow-sm w-44">
+                    <input id="dropDate" style="font-size:9px;" type="text" placeholder="Drop Off Date & Time" class="w-full outline-none">
+                </div>
+                <button id="searchBtn" class="bg-pink-500 text-white px-6 py-2 rounded-lg flex items-center">
+                    Search
+                </button>
+            </div>
+        </div>
+
+        <!-- Image Section -->
+        <div class="mt-6 flex justify-center relative bottom-10" >
+            <img src="component/homeimage/real-natures-food-IONRpiJcOJI-unsplash 1.png" alt="Dogs on couch" class="rounded-2xl shadow-lg">
+        </div>
+
+        <!-- Deals Section -->
+        <div class="mt-0 text-center" data-aos="fade-up">
+            <h2 class="text-xl font-bold text-gray-800">Deals by Pet Type</h2>
+            <div id="petTypesContainer" class="flex justify-center text-xs flex-wrap gap-6 my-4"></div>
+            
+        </div>
+
+        <div data-aos="fade-up" id="petsContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 px-4"></div>
+
+    <!-- Pagination Controls -->
+       <!-- Pagination Controls -->
+        <div data-aos="zoom-in" class="flex justify-center my-4">
+            <button id="prevPage" class="px-4 py-2 mx-2 bg-gray-300 text-gray-700 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+              </button>
+            <button id="viewAll" class="px-4 py-2 mx-2 bg-pink-500 text-white rounded-lg">View All</button>
+            <button id="nextPage" class="px-4 py-2 mx-2 bg-pink-500 text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+              </button>
+        </div>
+
+        <div data-aos="zoom-out" id="petContainer" class="grid grid-cols-1 sm:grid-cols-2 md:grid-cols-3 lg:grid-cols-4 gap-6 mt-6 px-4"></div>
+        <div data-aos="fade-up" class="flex justify-center my-4">
+            <button id="previousPage" class="px-4 py-2 mx-2 bg-gray-300 text-gray-700 rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="M15.75 19.5 8.25 12l7.5-7.5" />
+              </svg>
+              </button>
+            <button id="view" class="px-4 py-2 mx-2 bg-pink-500 text-white rounded-lg">View All</button>
+            <button id="nextPages" class="px-4 py-2 mx-2 bg-pink-500 text-white rounded-lg"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4">
+                <path stroke-linecap="round" stroke-linejoin="round" d="m8.25 4.5 7.5 7.5-7.5 7.5" />
+              </svg>
+              </button>
+        </div>
+
+        <div data-aos="fade-right" class="mt-0 text-center">
+            <div id="imageContainer" class="flex justify-center text-xs flex-wrap gap-5 my-14"></div>
+            
+        </div>
+        <div data-aos="zoom-in">
+            <div class="grid grid-cols-1 lg:grid-cols-4 md:grid-cols-3 gap-2 justify-items-center mt-5 mb-10" id="animalContainer"></div>
+        </div>
+
+        <div data-aos="flip-right" id="gridSection" class="grid grid-cols-1 md:grid-cols-3 gap-4">
+            <div class="relative">
+                <img src="component/homeimage/happy1.png" alt="Happy 1" class="w-full h-auto rounded-lg">
+                <p class="absolute bottom-4 left-4 text-white font-semibold bg-black bg-opacity-50 p-2 rounded">
+                    Weekend Getaway Companions: Special rates on renting playful, family-friendly dogs for weekends.
+                </p>
+            </div>
+            <div data-aos="fade-up" class="relative fade-in">
+                <img src="component/homeimage/happy2.png" alt="Happy 2" class="w-full h-auto rounded-lg">
+                <p class="absolute bottom-4 left-4 text-white font-semibold bg-black bg-opacity-50 p-2 rounded">
+                    Therapy Dogs: Discounted rentals for emotional support and therapy sessions.
+                </p>
+            </div>
+            <div data-aos="fade-up" class="relative">
+                <img src="component/homeimage/happy3.png" alt="Happy 3" class="w-full h-auto rounded-lg">
+                <p class="absolute bottom-4 left-4 text-white font-semibold bg-black bg-opacity-50 p-2 rounded">
+                    Adventurous Breeds: Deals on active breeds like Huskies or Retrievers for outdoor trips.
+                </p>
+            </div>
+        </div>
+
+        <!-- Title Animation -->
+        <h2 data-aos="fade-up" id="title" class="text-center text-2xl font-bold my-6 fade-in">
+            We are truly grateful that you’ve entrusted us with the care of your beloved pup
+        </h2>
+
+        <!-- Animated Pet Care Section -->
+        <div data-aos="zoom-out" id="petCareSection" class="flex flex-col md:flex-row items-center justify-end bg-[#1E293B] rounded-lg p-6" style="background-image: url('component/homeimage/happy4.png');">
+            <div class="p-6 text-center md:text-left flex flex-col justify-end items-center">
+                <h3 class="text-5xl text-white font-bold">Pet Care?</h3>
+                <p class="text-white text-2xl mt-2 font-bold">How to Start a Pet-Sitting</p>
+                <p class="mt-2 text-white w-64 text-center text-xl">
+                    Thank you for trusting us to care for your furry friend. We promise to treat them with love and care, just like family.
+                </p>
+                <button class="mt-4 bg-[#D2016A] text-white py-1 px-4 w-60 rounded-full shadow-lg hover:bg-pink-600">
+                    Search Your Puppy
+                </button>
+            </div>
+        </div>
+
+        <script>
+
+    let page = 1;
+    const limit = 4;
+    let isViewAll = false;
+
+    const productUrl = 'http://localhost/mywebsite/image/';
+    const apiUrl = "http://localhost/mywebsite/function/homepage.php"; 
+    const apiUrlPage = "http://localhost/mywebsite/function/homepages.php"; 
+
+    async function fetchPets() {
+        const location = document.getElementById("location").value;
+        const pickDate = document.getElementById("pickDate").value;
+        const dropDate = document.getElementById("dropDate").value;
+        const url = isViewAll 
+            ? `${apiUrl}?viewAll=true&location=${location}&dateSearch=${pickDate}&dropSearch=${dropDate}`
+            : `${apiUrl}?limit=${limit}&location=${location}&dateSearch=${pickDate}&dropSearch=${dropDate}&pages=${page}`;
+
+        try {
+            const response = await fetch(url);
+            const data = await response.json();
+
+            if (Array.isArray(data.message)) {
+                pets = data.message;
+                updatePet();
+            }
+        } catch (error) {
+            console.error("Error fetching pets:", error);
+        }
+    }
+
+    function updatePet() {
+        const petContainer = document.getElementById("petsContainer");
+        petContainer.innerHTML = ""; // Clear previous pets
+
+        pets.forEach((pet) => {
+            const petCard = `
+                <div class="border rounded-lg p-3 shadow-lg bg-white">
+                    <img src="${productUrl}${pet.image}" alt="${pet.title}" class="w-full h-40 object-cover rounded">
+                    <h3 class="text-lg font-bold mt-2">${pet.title}</h3>
+                    <p class="text-sm">Price: $${pet.price}</p>
+                    <p class="text-xs my-2">Pick-up Date: ${new Date(pet.pick_up_date).toLocaleString()}</p>
+                    <p class="text-xs">Drop-off Date: ${new Date(pet.drop_off_date).toLocaleString()}</p>
+                   <a href="component/homepageid.html?id=${pet.id}" class="block bg-pink-500 text-white px-4 py-2 rounded-lg mt-3 text-center">
+                        Rent Now
+                    </a>
+                </div>
+            `;
+            petContainer.innerHTML += petCard;
+        });
+    }
+
+    // Event Listeners
+    document.getElementById("searchBtn").addEventListener("click", fetchPets);
+    document.getElementById("prevPage").addEventListener("click", () => {
+        if (!isViewAll && page > 1) {
+            page--;
+            fetchPets();
+        }
+    });
+    document.getElementById("nextPage").addEventListener("click", () => {
+        if (!isViewAll) {
+            page++;
+            fetchPets();
+        }
+    });
+    document.getElementById("viewAll").addEventListener("click", () => {
+        isViewAll = true;
+        fetchPets();
+    });
+
+    fetchPets();            // Load initial pets
+   
+    
+
+    function updatePets() {
+        const petContainer = document.getElementById("petTypesContainer");
+        petContainer.innerHTML = ""; // Clear previous content
+
+        const petTypes = [
+            { name: "Dogs", img: "component/homeimage/amy-humphries-AllEP6K_TAg-unsplash 1.png", color: "bg-pink-500" },
+            { name: "Cat", img: "component/homeimage/andy-bodemer-eXIIXFpf49k-unsplash 1.png", color: "bg-blue-300" },
+            { name: "Pet Accessories", img: "component/homeimage/Frame 6.png", color: "bg-pink-500" },
+            { name: "Pet Beds", img: "component/homeimage/Frame 7.png", color: "bg-blue-300" },
+            { name: "Pet Clothes", img: "component/homeimage/Frame 8.png", color: "bg-pink-500" },
+        ];
+
+        petTypes.forEach(pet => {
+            const petCard = `
+                <div class="w-60 sm:w-52 text-center p-2 shadow-lg rounded-lg bg-white">
+                    <div class="flex flex-col items-center">
+                        <img src="${pet.img}" alt="${pet.name}" class="w-24 h-24 rounded-full border-2 border-white shadow-md">
+                        <p class="text-white font-semibold text-xs px-3 py-1 rounded-full mt-2 ${pet.color}">
+                            ${pet.name}
+                        </p>
+                    </div>
+                </div>
+            `;
+            petContainer.innerHTML += petCard;
+        });
+    }
+
+
+        async function fetchPet() {
+        const location = document.getElementById("location").value;
+        const pickDate = document.getElementById("pickDate").value;
+        const dropDate = document.getElementById("dropDate").value;
+        const urls = isViewAll 
+            ? `${apiUrlPage}?viewAll=true&location=${location}&dateSearch=${pickDate}&dropSearch=${dropDate}`
+            : `${apiUrlPage}?limit=${limit}&location=${location}&dateSearch=${pickDate}&dropSearch=${dropDate}&pages=${page}`;
+
+        try {
+            const response = await fetch(urls);
+            const data = await response.json();
+
+            if (Array.isArray(data.message)) {
+                cats = data.message;
+                updatedPet();
+            }
+        } catch (error) {
+            console.error("Error fetching pets:", error);
+        }
+    }
+
+    function updatedPet() {
+        const petContain = document.getElementById("petContainer");
+        petContain.innerHTML = ""; // Clear previous pets
+
+        cats.forEach((pet) => {
+            const petCards = `
+                <div class="border rounded-lg p-3 shadow-lg bg-white">
+                    <img src="${productUrl}${pet.image}" alt="${pet.title}" class="w-full h-40 object-cover rounded">
+                    <h3 class="text-lg font-bold mt-2">${pet.title}</h3>
+                    <p class="text-sm">Price: $${pet.price}</p>
+                    <p class="text-xs my-2">Pick-up Date: ${new Date(pet.pick_up_date).toLocaleString()}</p>
+                    <p class="text-xs">Drop-off Date: ${new Date(pet.drop_off_date).toLocaleString()}</p>
+                     <a href="component/homepagesid.html?id=${pet.id}" class="block bg-pink-500 text-white px-4 py-2 rounded-lg mt-3 text-center">
+                        Rent Now
+                    </a>
+                </div>
+            `;
+            petContain.innerHTML += petCards;
+        });
+    }
+
+    // Event Listeners
+    document.getElementById("searchBtn").addEventListener("click", fetchPet);
+    document.getElementById("previousPage").addEventListener("click", () => {
+        if (!isViewAll && page > 1) {
+            page--;
+            fetchPet();
+        }
+    });
+    document.getElementById("nextPages").addEventListener("click", () => {
+        if (!isViewAll) {
+            page++;
+            fetchPet();
+        }
+    });
+    document.getElementById("view").addEventListener("click", () => {
+        isViewAll = true;
+        fetchPet();
+    });
+
+    fetchPet();  
+    
+    
+
+
+function updateContainer() {
+        const Container = document.getElementById("imageContainer");
+        Container.innerHTML = ""; // Clear previous content
+        
+        const icon = 'component/homeimage/Frame 53.png'
+
+        const testimonials = [
+        {
+            name: "Benjamin",
+            image: "component/homeimage/author1.png",
+            bgColor: "bg-pink-200",
+            review:
+            "I rented an adorable rabbit, Snowball, for my kids, and they had so much fun! Snowball was friendly, clean, and came with all the supplies we needed. The website made the booking process effortless, and the customer support team was fantastic. Renting a rabbit was such a unique and joyful experience. Perfect for families or anyone looking for a cuddly companion. Highly recommended!",
+        },
+        {
+            name: "Ava",
+            image: "component/homeimage/author2.png",
+            bgColor: "bg-blue-200",
+            review:
+            "I rented a beautiful Persian cat, Luna, from [CatRental Hub], and it was an absolute delight! The process was simple, and Luna arrived well-groomed, healthy, and super cuddly. She was the perfect companion for a cozy weekend. The customer service was excellent, answering all my questions promptly. I loved how easy it was to find the right cat for my needs. Highly recommend this service to all cat lovers.",
+        },
+        {
+            name: "Isabella",
+            image: "component/homeimage/author3.png",
+            bgColor: "bg-pink-200",
+            review:
+            "I had a fantastic time renting a Golden Retriever, Max, through [Pet Rental Hub]. The website was easy to use, and the process was quick and seamless. Max came well-groomed, vaccinated, and with all the supplies I needed. The customer service team was friendly and helpful, making the entire experience stress-free. It’s the perfect way to enjoy the company of a dog without long-term commitment. Highly recommend!",
+        },
+        ];
+
+        testimonials.forEach(item => {
+            const itemCard = `
+                <div class="w-72 flex flex-col items-center border border-gray-200 justify-center p-4 text-center rounded-xl mx-2 ${item.bgColor}">
+                    <div class="flex flex-col items-center">
+                        <img src="${item.image}" alt="${item.name}" class="p-3 w-24 h-24 rounded-full -mb-3">
+                       <p className="text-sm font-semibold w-32">${item.name}</p>
+                        <img src="${icon}" alt="logo" className="p-3 w-20 h-9 rounded-full" />
+                        <p className="text-black text-xs w-64">${item.review}</p>
+                    </div>
+                </div>
+            `;
+            Container.innerHTML += itemCard;
+        });
+    }
+
+    function AnimalsContainer() {
+    const mapAnimal = document.getElementById("animalContainer");
+        mapAnimal.innerHTML = ""; // Clear previous content
+    const animals = [{
+    image:"component/homeimage/Frame 18.png"},{image:"component/homeimage/Frame 19.png"},{image:"component/homeimage/Frame 20.png"},{image:"component/homeimage/Frame 21.png"},{image:"component/homeimage/Frame 22.png"},{image:"component/homeimage/Frame 23.png"},
+    {image:"component/homeimage/Frame 24.png"},{image:"component/homeimage/Frame 25.png"}]
+
+    animals.forEach(anim => {
+            const animCard = `
+                <div>
+                     <img src="${anim.image}" alt="${anim.name}" class=" h-auto rounded-lg">
+                </div>
+            `;
+            mapAnimal.innerHTML += animCard;
+        });
+   
+    }
+
+    document.getElementById("searchBtn").addEventListener("click", 
+            updatePets(), fetchPets(),fetchPet(), updateContainer(),AnimalsContainer()
+    );
+
+
+    document.addEventListener("DOMContentLoaded", function() {
+        setTimeout(() => {
+            AOS.init({
+                duration: 1000,
+                easing: 'ease-in-out',
+                once: true
+            });
+            AOS.refresh();
+        }, 500);
+    });
+        </script>
+
+<script src="https://cdnjs.cloudflare.com/ajax/libs/aos/2.3.4/aos.js"></script>
+
+</body>
+    </html>

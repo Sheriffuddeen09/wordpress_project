@@ -1,0 +1,143 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Registration Form</title>
+    <script src="https://kit.fontawesome.com/a076d05399.js" crossorigin="anonymous"></script>
+    <style>
+        .error {
+            color: red;
+            font-weight: bold;
+        }
+        .hidden {
+            display: none;
+        }
+    </style>
+</head>
+<body>
+    <div class="bg-white sm:px-8 pt-4 my-6 pb-8 rounded-xl border border-green-200 shadow-lg max-w-sm sm:w-full w-72 flex justify-center items-center flex-col mx-auto">
+        <h1 class="text-3xl text-center text-green-400 font-serif">
+            <!-- <span class="text-black my-5 text-center font-bold">Create Account</span> -->
+        </h1>
+        
+        <form id="registrationForm" class="flex flex-col mx-auto justify-center items-center">
+            <div class="flex flex-wrap items-center justify-center">
+                <div>
+                    <label class="block text-sm font-bold mb-2">Firstname:</label>
+                    <input required class="border-2 border-green-200 sm:40 w-64 px-2 py-1 rounded-lg text-black outline-none" type="text" name="firstname" placeholder="First Name">
+                </div>
+                <div>
+                    <label class="block text-sm font-bold mt-2 mb-2">Lastname:</label>
+                    <input required class="border-2 border-green-200 sm:40 w-64 px-2 py-1 rounded-lg text-black outline-none" type="text" name="lastname" placeholder="Last Name">
+                </div>
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mt-2 mb-2">Email Address:</label>
+                <input required class="border-2 border-green-200 w-64 px-2 py-1 rounded-lg text-black outline-none" type="email" name="email" placeholder="Email">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mt-2 mb-2">Phone Number:</label>
+                <input required class="border-2 border-green-200 w-64 px-2 py-1 rounded-lg text-black outline-none" type="text" name="phone" placeholder="Phone Number">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mt-2 mb-2">Password:</label>
+                <input required class="border-2 border-green-200 w-64 px-2 py-1 rounded-lg text-black outline-none" type="password" name="password" placeholder="Password">
+            </div>
+
+            <div>
+                <label class="block text-sm font-bold mt-2 mb-2">Profile Image:</label>
+                <input type="file" name="profile_image" id="profile_image" accept="image/*" class="text-xs hidden" onchange="previewFile()">
+                <label for="profile_image" id="file-label" class="cursor-pointer text-xs w-64 bg-green-500 text-white px-4 py-2 rounded flex items-center justify-center">
+                    <i class="fas fa-upload mr-2"></i> Choose File
+                </label>
+                <p id="file-preview" class="text-xs text-gray-500 mt-1">No file chosen</p>
+                <img id="image-preview" class="mt-2 rounded-lg w-16 h-16 hidden text-xs" />
+            </div>
+
+            <button id="registerButton" type="submit" class="mt-4 bg-green-500 w-64 px-2 py-2 text-sm font-bold rounded-lg text-white">
+                Register
+            </button>
+        </form>
+
+        <p id="message"></p>
+        <p id="error" class="error hidden"></p>
+    </div>
+
+    <script>
+        function previewFile() {
+            const fileInput = document.getElementById("profile_image");
+            const fileLabel = document.getElementById("file-label");
+            const filePreview = document.getElementById("file-preview");
+            const imagePreview = document.getElementById("image-preview");
+
+            if (fileInput.files.length > 0) {
+                const file = fileInput.files[0];
+                filePreview.textContent = file.name;
+                fileLabel.textContent = `Selected: ${file.name}`;
+
+                const reader = new FileReader();
+                reader.onload = function(e) {
+                    imagePreview.src = e.target.result;
+                    imagePreview.classList.remove("hidden");
+                };
+                reader.readAsDataURL(file);
+            } else {
+                filePreview.textContent = "No file chosen";
+                fileLabel.textContent = "Choose File";
+                imagePreview.classList.add("hidden");
+            }
+        }
+
+        document.getElementById("registrationForm").addEventListener("submit", async function(event) {
+        event.preventDefault();
+
+        let formData = new FormData(this);
+        let messageElement = document.getElementById("message");
+        let errorElement = document.getElementById("error");
+        let registerButton = document.getElementById("registerButton");
+
+        messageElement.textContent = "";
+        errorElement.textContent = "";
+        errorElement.classList.add("hidden");
+
+        // Disable button and show loading state
+        registerButton.disabled = true;
+        registerButton.textContent = "Registering...";
+        registerButton.classList.add("opacity-50", "cursor-not-allowed");
+
+        try {
+            let response = await fetch("http://localhost/mywebsite/function/register.php", {
+                method: "POST",
+                body: formData,
+            });
+
+            let data = await response.json();
+
+            if (data.success) {
+                messageElement.textContent = data.message;
+                errorElement.classList.add("hidden");
+
+                setTimeout(() => {
+                    window.location.href = data.redirect; // Redirect to login page
+                }, 2000);
+            } else {
+                errorElement.textContent = data.error;
+                errorElement.classList.remove("hidden");
+            }
+        } catch (error) {
+            errorElement.textContent = "Registration failed. Please try again.";
+            errorElement.classList.remove("hidden");
+        }
+
+        // Restore button state
+        registerButton.disabled = false;
+        registerButton.textContent = "Register";
+        registerButton.classList.remove("opacity-50", "cursor-not-allowed");
+    });
+    </script>
+</body>
+</html>
