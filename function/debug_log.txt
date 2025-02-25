@@ -1,5 +1,9 @@
 Array
 (
-    [cart_id] => 4
+    [cart_id] => 15
     [user_id] => 12
 )
+Received JSON: {"user_id":12,"product_id":1,"quantity":1,"total_price":3080}
+Received JSON: {"user_id":12,"product_id":3,"quantity":1,"total_price":3390}
+
+

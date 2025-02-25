@@ -29,18 +29,29 @@
                 <div class="sm:block hidden">
                     <ul class="inline-flex gap-6 mt-4 items-center text-sm">
                         <li><a href="index.html" class="hover:bg-gray-100 px-2 py-1 rounded">Home</a></li>
-                        <li><a href="shoppage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Shop</a></li>
-                        <li class="inline-flex items-center">
+                        <li><a href="shop.html" class="hover:bg-gray-100 px-2 py-1 rounded">Shop</a></li>
+                        <li class="relative inline-flex items-center">
+                            <!-- Category Button -->
                             <a href="categorypage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Category</a>
-                            <svg onclick="toggleDropdown()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 font-bold">
+                        
+                            <!-- Dropdown Toggle Button -->
+                            <svg onclick="toggleDropdown()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="h-4 w-4 font-bold cursor-pointer">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
                             </svg>
-                            <!-- <div>
-                                <p class="cursor-pointer" onclick="fetchProduct('All')">All</p>
-                                <p id="categoryList"></p>
-                            </div> -->
+                        
+                            <!-- Dropdown List -->
+                            <div id="categoryDropdown" class="hidden absolute top-9 left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg p-2 z-50">
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('')">All</p>
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Dogs')">Dogs</p>
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Cats')">Cats</p>
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Pet Carriers')">Pet Carriers</p>
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Pet Clothing')">Pet Clothing</p>
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Dog & Cat Beds')">Dog & Cat Beds</p>
+                            </div>
                         </li>
-                        <li><a href="aboutpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">About</a></li>
+                         
+                          <li><a href="aboutpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">About</a></li>
                         <li><a href="blogpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Blogs</a></li>
                     </ul>
                 </div>
@@ -121,7 +132,7 @@
                 <a href="index.html" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Home</a>
                 <div class="w-full bg-gray-200 h-0.5"></div>
 
-                <a href="shoppage.html" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Shop</a>
+                <a href="shop.html" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Shop</a>
                 <div class="w-full bg-gray-200 h-0.5"></div>
 
                 <!-- Category Dropdown -->
@@ -277,76 +288,27 @@ function initializeCountrySelect() {
     flagImg.alt = initialOption.textContent;
 }
 
-// Call the function after the page loads
-document.addEventListener("DOMContentLoaded", initializeCountrySelect);
+        // Call the function after the page loads
 
-// const categories = [
-//             { title: "Dogs" },
-//             { title: "Cats" },
-//             { title: "Pet Clothing" },
-//             { title: "Pet Carriers" },
-//             { title: "Dog & Cat Beds" }
-//         ];
+        document.addEventListener("DOMContentLoaded", function () {
+    // Apply category filtering when the page loads
+    applyCategoryFilter();
+});
+
+// Toggle dropdown visibility
+function toggleDropdown() {
+    const dropdown = document.getElementById("categoryDropdown");
+    dropdown.classList.toggle("hidden");
+}
+
+// Function to redirect to categorypage.html with selected category
+function filterCategory(category) {
+    toggleDropdown(); // Close the dropdown
+    window.location.href = `categorypage.html?category=${encodeURIComponent(category)}`;
+}
+
     
-//         function categoriesFunction() {
-//             fetchProduct();
-//             loadCategories();
-//         }
     
-//         function loadCategories() {
-//             const categoryContainer = document.getElementById("categoryList");
-//             categoryContainer.innerHTML = ""; // Clear previous content
-//             categories.forEach(category => {
-//                 const button = document.createElement("button");
-//                 button.className = "flex flex-col text-xs justify-center items-center mx-auto px-3 h-16 rounded border hover:bg-gray-200 hover:text-black w-52 border border-pink-400 shadow-md";
-//                 button.innerHTML = `${category.title}`;
-//                 button.onclick = () => fetchProduct(category.title);
-//                 categoryContainer.appendChild(button);
-//             });
-//         }
-
-//         async function fetchProduct(category = '') {
-//     const productContainer = document.getElementById("productList");
-//     productContainer.innerHTML = "<p>Loading Product...</p>";
-
-//     let url = `http://localhost/mywebsite/function/product.php${category ? `?category=${encodeURIComponent(category)}` : ''}`;
-
-//     try {
-//         const response = await fetch(url);
-//         const data = await response.json();
-
-//         if (Array.isArray(data.message)) {
-//             productContainer.innerHTML = "";
-//             data.message.forEach(product => {
-//                 const productDiv = document.createElement("div");
-//                 productDiv.className = "relative group border p-4 shadow-lg sm:w-80 w-72";
-                
-//                 productDiv.innerHTML = `
-//                     <div class="relative group">
-//                         <a href="shop/product.html?id=${product.id}" class="block relative z-10">
-//                             <img src="${productUrl}${product.image}" alt="${product.title}" class="w-full h-64 object-cover cursor-pointer">
-//                             <h2 class="text-sm mt-2 text-sm capitalize text-center">${product.title}</h2>
-//                             <p class="text-gray-600 text-center">$${product.price}</p>
-//                         </a>
-//                         <button onclick='handleAddToCart(${JSON.stringify(product)})' class="bg-pink-500 text-white px-4 group-hover:opacity-100 transition-opacity duration-500 ease-in-out rounded-xl hover:bg-black hover:text-white relative z-20 py-2 mt-2 w-60 mx-auto flex justify-center">
-//                             Add to Cart
-//                         </button>
-//                     </div>
-//                 `;
-                
-//                 productContainer.appendChild(productDiv);
-//             });
-//         } else {
-//             productContainer.innerHTML = "<p>No Products to display</p>";
-//         }
-//     } catch (error) {
-//         console.error("Error Display Products", error);
-//         productContainer.innerHTML = `<p class="text-center text-sm text-red-500 font-semibold">Error loading products</p>`;
-//     }
-// }
-
-
-//         document.addEventListener("DOMContentLoaded", categoriesFunction);
 </script>
     </body>
     </html>

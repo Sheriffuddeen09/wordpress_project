@@ -7,7 +7,7 @@
 </head>
 <body>
     <div id="header"></div>
-    <div id="shop"></div>
+    <div id="shoppage"></div>
     <div id="footer"></div>
 
 <script>
@@ -32,10 +32,10 @@
         })
         .catch(error => console.error("Error loading header:", error));
 
-        fetch("shop/shop.html")
+        fetch("shop/shoppage.html")
         .then(response => response.text())
         .then(data => {
-            const shopContainer = document.getElementById("shop");
+            const shopContainer = document.getElementById("shoppage");
             shopContainer.innerHTML = data;
 
             // ✅ Manually execute any script tags inside header.html

@@ -1,0 +1,202 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Shop Page</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+    <link rel="stylesheet" href="styles.css">
+
+</head>
+<style>
+     @media (min-width: 310px) {
+ 
+.scroll-wi {
+    width: 250px; 
+    overflow-x: auto; 
+    white-space: nowrap; 
+}
+
+
+#categoryList {
+    display: flex;
+    gap: 10px; 
+    overflow-x: auto; 
+    white-space: nowrap; 
+    padding-bottom: 5px; 
+}
+
+
+#categoryList::-webkit-scrollbar {
+    width: 6px; /* Thin scrollbar */
+    height: 6px;
+}
+
+
+#categoryList::-webkit-scrollbar-track {
+    background: rgb(143, 143, 253); 
+}
+
+#categoryList::-webkit-scrollbar-thumb {
+    background: rgb(143, 143, 253); 
+    border-radius: 10px;
+}
+
+
+
+     }
+    @media (min-width: 768px) {
+        .scroll-wi{
+      width: 650px;
+    }
+    .scroll-wid{
+      width: 800px;
+    }
+    
+    #categoryList::-webkit-scrollbar {
+        display: none; /* Fully hide scrollbar */
+    }
+    #categoryList::-webkit-scrollbar-track {
+        background: transparent; /* Transparent track */
+    }
+    #categoryList::-webkit-scrollbar-thumb {
+        background: transparent; /* Transparent thumb */
+    }
+    }
+</style>
+<body>
+    <div id="header"></div>
+    <div class="flex flex-col text-sm items-center justify-center w-full">
+        <div class="inline-flex text-xs items-center justify-items-center gap-3 justify-center mx-auto">
+            <div id="categoryList" class="flex text-xs scroll-wi rounded-lg mx-2 mx-auto my-2 gap-3"></div>
+            <img src="image/Vector (12).png" alt="icon" class="h-6 w-6 cursor-pointer" onclick="fetchProduct('All')">
+        </div>
+
+        <div id="productList" class="grid sm:grid-cols-3 grid-cols gap-4 p-4 mx-auto justify-center justify-items-center"></div>
+    </div>
+
+    <script>
+        const productUrl = 'http://localhost/mywebsite/image/';
+        const categories = [
+            { title: "Dogs", icon: "shop/image/Vector (10).png" },
+            { title: "Cats", icon: "shop/image/Cat--Streamline-Font-Awesome 1.png" },
+            { title: "Pet Clothing", icon: "shop/image/Vector (11).png" },
+            { title: "Pet Carriers", icon: "shop/image/Untitled design (14) 1.png" },
+            { title: "Dog & Cat Beds", icon: "shop/image/Untitled design (15) 1.png" }
+        ];
+
+        function categoriesFunction() {
+            fetchProduct();
+            loadCategories();
+        }
+
+        function loadCategories() {
+            const categoryContainer = document.getElementById("categoryList");
+            categoryContainer.innerHTML = ""; // Clear previous content
+            categories.forEach(category => {
+                const button = document.createElement("button");
+                button.className = "flex flex-col text-xs justify-center items-center mx-auto px-3 h-16 rounded border hover:bg-gray-200 hover:text-black w-36 border border-pink-400 shadow-md";
+                button.innerHTML = `<img src="${category.icon}" alt="icon" class="h-6 sm:h-8">${category.title}`;
+                button.onclick = () => fetchProduct(category.title);
+                categoryContainer.appendChild(button);
+            });
+        }
+
+        async function fetchProduct(category = '') {
+            const productContainer = document.getElementById("productList");
+            productContainer.innerHTML = "<p>Loading Product...</p>";
+
+            let url = `http://localhost/mywebsite/function/product.php${category ? `?category=${encodeURIComponent(category)}` : ''}`;
+
+            try {
+                const response = await fetch(url);
+                const data = await response.json();
+
+                if (Array.isArray(data.message)) {
+                    productContainer.innerHTML = "";
+                    data.message.forEach(product => {
+                        const productDiv = document.createElement("div");
+                        productDiv.className = "relative group border p-4 shadow-lg sm:w-80 w-72";
+                        
+                        productDiv.innerHTML = `
+                            <div class="relative group">
+                                <a href="shop/product.html?id=${product.id}" class="block relative z-10">
+                                    <img src="${productUrl}${product.image}" alt="${product.title}" class="w-full h-64 object-cover cursor-pointer">
+                                    <h2 class="text-sm mt-2 text-sm capitalize text-center">${product.title}</h2>
+                                    <p class="text-gray-600 text-center">$${product.price}</p>
+                                </a>
+                            </div>
+                        `;
+
+                        // ✅ Create and Append "Add to Cart" Button Correctly
+                        const button = document.createElement("button");
+                        button.textContent = "Add to Cart";
+                        button.className = "bg-pink-500 text-white px-4 group-hover:opacity-100 transition-opacity duration-500 ease-in-out rounded-xl hover:bg-black hover:text-white relative z-20 py-2 mt-2 w-60 mx-auto flex justify-center";
+                        button.onclick = function() { handleAddToCart(product); }; // ✅ Correct JavaScript Syntax
+                        
+                        productDiv.appendChild(button);
+                        productContainer.appendChild(productDiv);
+                    });
+                } else {
+                    productContainer.innerHTML = "<p>No Products to display</p>";
+                }
+            } catch (error) {
+                console.error("Error Displaying Products", error);
+                productContainer.innerHTML = `<p class="text-center text-sm text-red-500 font-semibold">Error loading products</p>`;
+            }
+        }
+
+        function handleAddToCart(product) {
+            if (!product || !product.id || !product.price || !product.security_amount) {
+                console.error("❌ Invalid product data:", product);
+                alert("❌ Product data is missing or incorrect!");
+                return;
+            }
+
+            console.log("🛒 Adding to cart:", product);
+
+            const quantity = 1; // Default quantity
+            const totalPrice = quantity * parseFloat(product.price) + parseFloat(product.security_amount);
+
+            const payload = {
+                user_id: localStorage.getItem('user_id') ? parseInt(localStorage.getItem('user_id'), 10) : null,
+                product_id: product.id,
+                quantity: quantity,
+                total_price: totalPrice
+            };
+
+            console.log("✅ Sending Payload:", JSON.stringify(payload));
+
+            fetch('http://localhost/mywebsite/function/add_to_cart.php', {
+                method: 'POST',
+                headers: {
+                    'Accept': 'application/json',
+                    'Content-Type': 'application/json'
+                },
+                body: JSON.stringify(payload)
+            })
+            .then(response => response.text()) // ✅ Use `.text()` first for debugging
+            .then(data => {
+                console.log("✅ Raw Response:", data);
+                try {
+                    const jsonData = JSON.parse(data);
+                    console.log("✅ Parsed JSON:", jsonData);
+
+                    if (jsonData.success) {
+                        alert("✅ Product added to cart!");
+                    } else {
+                        console.error("❌ Server Error:", jsonData.error);
+                        alert("❌ Failed to add product to cart!");
+                    }
+                } catch (error) {
+                    console.error("❌ JSON Parse Error:", error);
+                }
+            })
+            .catch(error => console.error("❌ Fetch error:", error));
+        }
+
+        // Load products and categories on page load
+        window.onload = categoriesFunction;
+    </script>    
+</body>
+</html>

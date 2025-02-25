@@ -25,9 +25,9 @@
   
 </style>
 <body class="bg-gray-100">
-    <div class="flex flex-col sm:flex-row gap-5 mx-10">
+    <div class="flex flex-col sm:flex-row gap-5 sm:mx-10">
 
-        <div class="border border-pink-700 p-4 w-full sm:w-96 mb-10 bg-white shadow-lg rounded-lg">
+        <div class="border border-pink-700 p-4 w-72 mx-auto mt-10 sm:w-96 mb-10 bg-white shadow-lg rounded-lg">
             <h2 class="text-pink-700 font-bold text-lg">Rental Duration</h2>
             <div id="rentalDuration"></div>
     
@@ -92,7 +92,7 @@
         let showAllLocations = false;
 
 
-async function fetchCart() {
+        async function fetchCart() {
     const userId = localStorage.getItem("user_id");
     try {
         document.getElementById("loading").style.display = "block";
@@ -102,10 +102,12 @@ async function fetchCart() {
 
         if (data.success) {
             globalCart = data.cart; // Store fetched cart globally
+            localStorage.setItem("cart", JSON.stringify(globalCart)); // ✅ Save cart in localStorage
             displayCart(globalCart);
             updateTotalPrice();
         } else {
             document.getElementById("cartContainer").innerHTML = "<p class='text-center font-bold text-xl my-32'>No Cart to display</p>";
+            localStorage.removeItem("cart"); // ✅ Clear localStorage if cart is empty
         }
     } catch (error) {
         console.error("Error fetching cart:", error);

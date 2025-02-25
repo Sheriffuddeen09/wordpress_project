@@ -31,12 +31,14 @@ $user_id = intval($data['user_id']);
 $cart_id = intval($data['cart_id']);
 
 try {
-    global $pdo;
+    global $conn;
 
     // Check if product exists in cart
-    $stmt = $pdo->prepare("SELECT p.title FROM cart c JOIN products p ON c.product_id = p.id WHERE c.id = ? AND c.user_id = ?");
-    $stmt->execute(['cart_id' => $cart_id, 'user_id' => $user_id]);
-    $product = $stmt->fetch(MYSQLI_ASSOC);
+    $stmt = $conn->prepare("SELECT p.title FROM cart c JOIN products p ON c.product_id = p.id WHERE c.id = ? AND c.user_id = ?");
+    $stmt->bind_param("ii", $cart_id, $user_id); // Bind parameters correctly
+    $stmt->execute();
+    $result = $stmt->get_result();
+    $product = $result->fetch_assoc();
 
     if (!$product) {
         echo json_encode(["success" => false, "error" => "Cart item not found"]);
@@ -44,14 +46,16 @@ try {
     }
 
     // Delete item from cart
-    $stmtDelete = $pdo->prepare("DELETE FROM cart WHERE id = ? AND user_id = ?");
-    $stmtDelete->execute(['cart_id' => $cart_id, 'user_id' => $user_id]);
+    $stmtDelete = $conn->prepare("DELETE FROM cart WHERE id = ? AND user_id = ?");
+    $stmtDelete->bind_param("ii", $cart_id, $user_id);
+    $stmtDelete->execute();
 
-    if ($stmtDelete->rowCount() > 0) {
+    if ($stmtDelete->affected_rows > 0) {
         // Add notification
         $message = "You removed " . $product['title'] . " from your cart.";
-        $stmtNotif = $pdo->prepare("INSERT INTO notifications (user_id, message, type) VALUES (:user_id, :message, 'cart_remove')");
-        $stmtNotif->execute(['user_id' => $user_id, 'message' => $message]);
+        $stmtNotif = $conn->prepare("INSERT INTO notifications (user_id, message, type) VALUES (?, ?, 'cart_remove')");
+        $stmtNotif->bind_param("is", $user_id, $message);
+        $stmtNotif->execute();
 
         echo json_encode(["success" => true, "message" => "Cart item deleted successfully"]);
     } else {

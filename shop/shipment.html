@@ -1,0 +1,134 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Pet Rental</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body>
+    <div id="shipping" class="tab-content hidden">
+        <div class="max-w-10xl mx-auto bg-white shadow-md rounded-lg sm:p-6 py-6">
+            <form id="checkoutForm" class="border w-72 px-2 sm:py-4 sm:px-2 sm:w-4/12 border-pink-600 flex flex-col justify-center mx-auto sm:mx-40 font-bold rounded">
+                <p class="text-sm sm:text-xl font-bold my-2 text-black">Kindly enter your Information Details</p>
+                
+                <label class="text-sm mt-2 text-black">Recipient First Name:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_firstname" required>
+                
+                <label class="text-sm mt-2 text-black">Recipient Last Name:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_lastname" required>
+                
+                <label class="text-sm mt-2 text-black">Recipient Phone Number:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_phone" required>
+                
+                <label class="text-sm mt-2 text-black">Recipient Address:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="address" required>
+                
+                <label class="text-sm mt-2 text-black">Country:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="country" required>
+                
+                <label class="text-sm mt-2 text-black">City:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="city" required>
+                
+                <label class="text-sm mt-2 text-black">State:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="state" required>
+                
+                <label class="text-sm mt-2 text-black">Zip Code:</label>
+                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="zip_code" required>
+                
+                <button type="submit" class="my-5 w-64 bg-red-500 text-white sm:w-96 mx-auto p-1 my-1 rounded-lg outline-none">Submit Form</button>
+            </form>
+            <p id="message" class="text-red-600 text-center my-2 font-bold"></p>
+        </div>
+    </div>
+
+    <script>
+document.addEventListener("DOMContentLoaded", function () {
+    document.getElementById("shipping").classList.remove("hidden");
+    document.getElementById("checkoutForm").addEventListener("submit", async function (e) {
+    e.preventDefault();
+
+    let userId = localStorage.getItem("user_id");
+    if (!userId) {
+        console.log("Error: User ID is missing in localStorage");
+        return;
+    }
+
+    // Fetch the cart from localStorage
+    let cartData = localStorage.getItem("cart");
+
+    // Debugging
+    console.log("Raw Cart Data from localStorage:", cartData);
+
+    // Ensure the cart is parsed correctly
+    let order = cartData ? JSON.parse(cartData) : [];
+
+    // Debugging - Check if cart is empty
+    console.log("Parsed Cart Data:", order);
+
+    if (!Array.isArray(order) || order.length === 0) {
+        console.log("Cart is empty, stopping checkout.");
+        document.getElementById("message").textContent = "Your cart is empty.";
+        return;
+    }
+
+    let shipment = {
+        recipient_firstname: document.getElementById("recipient_firstname").value,
+        recipient_lastname: document.getElementById("recipient_lastname").value,
+        recipient_phone: document.getElementById("recipient_phone").value,
+        address: document.getElementById("address").value,
+        city: document.getElementById("city").value,
+        state: document.getElementById("state").value,
+        zip_code: document.getElementById("zip_code").value,
+        country: document.getElementById("country").value
+    };
+
+    let requestData = {
+        user_id: userId,
+        payment_method: "Cash on Delivery",  // Change this if needed
+        total_price: order.reduce((sum, item) => sum + (item.price * item.quantity), 0),
+        shipment: shipment,
+        items: order.map(item => ({
+            product_id: item.product_id,
+            image: item.image,
+            title: item.title,
+            price: item.price,
+            color: item.color,
+            size: item.size,
+            quantity: item.quantity,
+            pick_up_date: item.pick_up_date,
+            pick_up_time: item.pick_up_time,
+            drop_off_date: item.drop_off_date,
+            drop_off_time: item.drop_off_time
+        }))
+    };
+
+    console.log("Sending Order Data:", requestData); // Debugging
+
+    try {
+        let response = await fetch("/checkout.php", {
+            method: "POST",
+            headers: { "Content-Type": "application/json" },
+            body: JSON.stringify(requestData)
+        });
+
+        let data = await response.json();
+        console.log("Server Response:", data);
+
+        if (data.success) {
+            document.getElementById("message").textContent = "Your order has been placed successfully!";
+            localStorage.removeItem("cart"); // Clear cart after successful order
+            window.location.href = "/checkout"; // Redirect to checkout page
+        } else {
+            document.getElementById("message").textContent = "Order submission failed. Please try again.";
+        }
+    } catch (err) {
+        console.error("Error submitting order:", err);
+        document.getElementById("message").textContent = "An error occurred. Please try again.";
+    }
+});
+
+});
+    </script>
+</body>
+</html>
