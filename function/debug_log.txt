@@ -1,0 +1,5 @@
+Array
+(
+    [cart_id] => 4
+    [user_id] => 12
+)
