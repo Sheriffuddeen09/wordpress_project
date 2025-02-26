@@ -3,15 +3,66 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Rental</title>
-    <script src="https://cdn.tailwindcss.com"></script>
+    <title>Dashboard</title>
+    <link href="https://cdn.jsdelivr.net/npm/tailwindcss@2.2.19/dist/tailwind.min.css" rel="stylesheet">
+    <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.4.2/css/all.min.css">
 </head>
 
 <style>
-    .head{
-    background-color: #20bc7e;
-  }
+     @media (min-width: 310px) {
+ 
+.scroll-wi {
+    width: 290px; 
+    overflow-x: auto; 
+    white-space: nowrap; 
+}
+
+
+#categoryList {
+    display: flex;
+    gap: 10px; 
+    overflow-x: auto; 
+    white-space: nowrap; 
+    padding-bottom: 5px; 
+}
+
+
+#categoryList::-webkit-scrollbar {
+    width: 6px; /* Thin scrollbar */
+    height: 2px;
+}
+
+
+#categoryList::-webkit-scrollbar-track {
+    background: rgb(143, 143, 253); 
+}
+
+#categoryList::-webkit-scrollbar-thumb {
+    background: rgb(143, 143, 253); 
+    border-radius: 10px;
+}
+
+
+
+     }
+    @media (min-width: 768px) {
+        .scroll-wi{
+      width: 900px;
+    }
+    #categoryList::-webkit-scrollbar {
+        display: none; /* Fully hide scrollbar */
+    }
+    #categoryList::-webkit-scrollbar-track {
+        background: transparent; /* Transparent track */
+    }
+    #categoryList::-webkit-scrollbar-thumb {
+        background: transparent; /* Transparent thumb */
+    }
+    }
 </style>
+
+
+
 <body>
     <header>
         <div class="head font-roboto text-center text-sm sm:block hidden text-white p-1 -mb-2">
@@ -166,40 +217,89 @@
     
 </header>
 
-
-
-    <div id="shipping" class="tab-content hidden">
-        <div class="max-w-10xl mx-auto bg-white shadow-md rounded-lg sm:p-6 py-6">
-            <form id="checkoutForm" class="border w-72 px-2 sm:py-4 sm:px-2 sm:w-4/12 border-pink-600 flex flex-col justify-center mx-auto sm:mx-40 font-bold rounded">
-                <p class="text-sm sm:text-xl font-bold my-2 text-black">Kindly enter your Information Details</p>
+<style>
+    .head{
+    background-color: #20bc7e;
+  }
+</style>
+    <div id="categoryList" class="flex text-xs scroll-wi mx-2 mx-auto my-2 gap-3">
+        <a href="profile.html">
+            <button class='bg-pink-200 p-2 sm:w-28 w-32 rounded flex items-center gap-2 font-bold text-sm text-pink-700 justify-center'>
+                <img src="../dashboard/image/Vector (4).png" alt="logo" class="h-4 w-4"/>
+                <p>Profile</p>
                 
-                <label class="text-sm mt-2 text-black">Recipient First Name:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_firstname" required>
+            </button>
+        </a>
+        <a href="../cart/carts.html">
+            <button class='bg-pink-200 p-2 w-36 rounded flex items-center gap-2 font-bold text-sm text-pink-700 justify-center'>
+                <img src="../dashboard/image/Vector (4).png" alt="Wishlist" class='h-4 w-4'> 
+                <p>My Wishlist</p>
+            </button>
+        </a>
+        <a href="../order/order.html" class="hidden sm:block">
+            <button class='bg-pink-200 p-2 w-40 rounded flex items-center gap-2 font-bold text-sm text-pink-700 justify-center'>
+                <img src="../dashboard/image/Vector (5).png" alt="Order History" class='h-4 w-4'> 
+                <p>Order History</p>
+            </button>
+        </a>
+        <a href="../contactpage.html">
+            <button class='bg-pink-200 p-2 sm:w-36 w-40 rounded flex items-center gap-2 font-bold text-sm text-pink-700 justify-center'>
+                <img src="../dashboard/image/Vector (6).png" alt="Help Center" class='h-4 w-4'> 
+                <p>Help Center</p>
+            </button>
+        </a>
+        <button id="logoutButton"  onclick="logout()" class='bg-pink-200 py-2 px-6 sm:px-2 w-40 rounded flex items-center gap-2 font-bold text-sm text-pink-700 justify-center'>
+            <img src="../dashboard/image/Vector (7).png" alt="Logout" class='h-4 w-4'> 
+            <p>Log Out</p>
+        </button>
+    </div>
+    
+    <div class="mb-10 flex gap-4 flex-wrap justify-center">
+        <div class="flex justify-center  mt-10 max-w-sm w-96 bg-blue-200 p-4 flex-col items-center" style="background-image: url('../dashboard/image/Untitled\ design\ \(10\)\ 2.png');">
+            <div class="profile flex flex-col justify-center items-center" >
+                <img id="profile-img" class="rounded-full w-40 h-40" alt="Profile Picture" />
+                <a href="../dashboard/updateprofile.html" class="text-black mt-4 font-bold text-sm hover:text-blue-500 cursor-pointer">Edit</a>
+                <h2 class="text-xl my-2 font-bold" id="user-name">Loading...</h2>
+                <p class="text-sm mb-2 font-bold">Email: <span id="email">Loading...</span></p>
+                <p class="text-sm mb-2 font-bold">Phone: <span id="phone">Loading...</span></p>
+            </div>
                 
-                <label class="text-sm mt-2 text-black">Recipient Last Name:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_lastname" required>
-                
-                <label class="text-sm mt-2 text-black">Recipient Phone Number:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_phone" required>
-                
-                <label class="text-sm mt-2 text-black">Recipient Address:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="address" required>
-                
-                <label class="text-sm mt-2 text-black">Country:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="country" required>
-                
-                <label class="text-sm mt-2 text-black">City:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="city" required>
-                
-                <label class="text-sm mt-2 text-black">State:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="state" required>
-                
-                <label class="text-sm mt-2 text-black">Zip Code:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="zip_code" required>
-                
-                <button type="submit" class="my-5 w-64 bg-red-500 text-white sm:w-96 mx-auto p-1 my-1 rounded-lg outline-none">Submit Form</button>
-            </form>
-            <p id="message" class="text-red-600 text-center my-2 font-bold"></p>
+        </div>
+        
+        <div class="flex flex-col gap-2">
+            <a href="../dashboard/notifications.html">
+                <div class="bg-green-100 sm:w-80 w-72 rounded p-4 border border-blue-200">
+                    <div class="inline-flex items-center gap-3">
+                        <img src="../dashboard/image/Vector (9).png" alt="Notification" class='h-4 w-3'>
+                        <p class="font-bold text-sm">Settings</p>
+                    </div>
+                    <p class="text-sm font-bold my-2">Notification</p>
+                    <p class="text-xs w-64">We send SMS messages for booking-related notifications. Select the notifications you want to receive.</p>
+                </div>
+            </a>
+            <div class="bg-green-100 sm:w-80 w-72 rounded px-4 py-2 border border-blue-200">
+                <div class="inline-flex items-center gap-3">
+                    <img src="../dashboard/image/Pets--Streamline-Rounded-Material 1.png" alt="Pets" class='h-4 w-3'>
+                    <p class="font-bold text-sm">Pets</p>
+                </div>
+                <p class="text-sm my-2 font-bold">Tell Us About Your Pets</p>
+                <p class="text-xs w-64 sm:w-72">Share details about your pets to help us provide the perfect rental experience. Add them one by one to ensure we understand their unique needs.</p>
+                <a href='../shop.html'><p class="text-pink-700 text-sm">View Pets</p></a>
+            </div>
+            <div class="bg-green-100 sm:w-80 w-72 rounded px-4 py-2 border border-blue-200">
+                <a href="../order/payment.html">
+                    <div class="inline-flex items-center gap-3">
+                        <img src="../dashboard/image/Vector (8).png" alt="Payment" class='h-4 w-3'>
+                        <p class="font-bold text-sm">Payment Methods</p>
+                    </div>
+                    <p class="text-xs w-64">We offer secure and convenient payment options for a hassle-free experience.</p>
+                    <div class="mt-4 mb-2 flex justify-around">
+                        <img src="../dashboard/image/Frame 144.png" alt="Payment1" class='h-8 w-16'>
+                        <img src="../dashboard/image/download (3) 1.png" alt="Payment2" class='h-6 w-16'>
+                        <img src="../dashboard/image/Frame 146.png" alt="Payment3" class='h-6 w-16'>
+                    </div>
+                </a>
+            </div>
         </div>
     </div>
 
@@ -290,85 +390,132 @@
     </footer>
     
 
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("shipping").classList.remove("hidden");
-    document.getElementById("checkoutForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
 
-    let userId = localStorage.getItem("user_id");
-    if (!userId) {
-        console.log("Error: User ID is missing in localStorage");
-        return;
-    }
+   <script>
+   document.addEventListener("DOMContentLoaded", function () {
+    console.log("Loading user profile...");
+    loadUserProfileFromLocalStorage();
+    fetchUserProfile();
+});
 
-    let order = [];
+function loadUserProfileFromLocalStorage() {
+    console.log("Fetching user profile from localStorage...");
 
-    console.log("Parsed Cart Data:", order);
+    let userProfileImage = localStorage.getItem("user_profile_image") || "default.jpg";
+    let userFirstName = localStorage.getItem("user_firstname") || "Guest";
+    let userLastName = localStorage.getItem("user_lastname") || "";
+    let userEmail = localStorage.getItem("user_email") || "";
+    let userPhone = localStorage.getItem("user_phone") || "N/A";
 
-    if (!Array.isArray(order) || order.length === 0) {
-        console.log("Cart is empty, stopping checkout.");
-        document.getElementById("message").textContent = "Your cart is empty.";
-        return;
-    }
+    console.log("LocalStorage Data Retrieved:", {
+        userProfileImage,
+        userFirstName,
+        userLastName,
+        userEmail,
+        userPhone
+    });
 
-    let shipment = {
-        recipient_firstname: document.getElementById("recipient_firstname").value,
-        recipient_lastname: document.getElementById("recipient_lastname").value,
-        recipient_phone: document.getElementById("recipient_phone").value,
-        address: document.getElementById("address").value,
-        city: document.getElementById("city").value,
-        state: document.getElementById("state").value,
-        zip_code: document.getElementById("zip_code").value,
-        country: document.getElementById("country").value
-    };
+    updateProfileUI(userProfileImage, `${userFirstName} ${userLastName}`, userEmail, userPhone);
+}
 
-    let requestData = {
-        user_id: userId,
-        payment_method: "",  // Change this if needed
-        total_price: order.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-        shipment: shipment,
-        items: order.map(item => ({
-            product_id: item.product_id,
-            image: item.image,
-            title: item.title,
-            price: item.price,
-            color: item.color,
-            size: item.size,
-            quantity: item.quantity,
-            pick_up_date: item.pick_up_date,
-            pick_up_time: item.pick_up_time,
-            drop_off_date: item.drop_off_date,
-            drop_off_time: item.drop_off_time
-        }))
-    };
-
-    console.log("Sending Order Data:", requestData); // Debugging
-
+async function fetchUserProfile() {
     try {
-        let response = await fetch("http://localhost/mywebsite/function/checkout.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestData)
+        console.log("Fetching user profile from API...");
+
+        let response = await fetch("http://localhost/mywebsite/function/user_profile.php", {
+            credentials: "include",
         });
 
         let data = await response.json();
-        console.log("Server Response:", data);
+        console.log("API Response:", data);
 
-        if (data.success) {
-            document.getElementById("message").textContent = "Your order has been placed successfully!";
-            localStorage.removeItem("cart"); // Clear cart after successful order
-            window.location.href = "shop/checkout.html"; // Redirect to checkout page
-        } else {
-            document.getElementById("message").textContent = "Order submission failed. Please try again.";
+        if (!data.success || !data.user) {
+            console.error("Error fetching profile:", data.error);
+            alert(data.error || "Failed to load profile.");
+            window.location.href = "../login.html";
+            return;
         }
-    } catch (err) {
-        console.error("Error submitting order:", err);
-        document.getElementById("message").textContent = "An error occurred. Please try again.";
-    }
-});
 
-});
+        console.log("Fetched User Data:", data.user);
+
+        // Construct the correct image URL
+        let imageUrl = data.user.profile_image.startsWith("http")
+            ? data.user.profile_image
+            : `http://localhost/mywebsite/uploads/${data.user.profile_image}`;
+
+        updateProfileUI(imageUrl, `${data.user.firstname} ${data.user.lastname}`, data.user.email, data.user.phone);
+
+        // Store in localStorage for future use
+        localStorage.setItem("user_profile_image", imageUrl);
+        localStorage.setItem("user_firstname", data.user.firstname);
+        localStorage.setItem("user_lastname", data.user.lastname);
+        localStorage.setItem("user_email", data.user.email);
+        localStorage.setItem("user_phone", data.user.phone);
+
+        console.log("User profile updated in localStorage.");
+    } catch (error) {
+        console.error("Error fetching profile:", error);
+    }
+}
+
+function updateProfileUI(image, name, email, phone) {
+    let profileImg = document.getElementById("profile-img");
+
+    if (!profileImg) {
+        console.error("Error: profile-img element not found in DOM.");
+        return;
+    }
+
+    console.log("Setting Profile Image Source:", image);
+    profileImg.src = image;
+
+    let userName = document.getElementById("user-name");
+    let userEmail = document.getElementById("email");
+    let userPhone = document.getElementById("phone");
+
+    if (userName) userName.textContent = name;
+    if (userEmail) userEmail.textContent = email;
+    if (userPhone) userPhone.textContent = phone;
+}
+
+
+function logout() {
+    console.log("Logging out...");
+
+    const logoutButton = document.getElementById("logoutButton");
+    logoutButton.innerHTML = "Logging out...";
+    logoutButton.disabled = true;
+
+    fetch("http://localhost/mywebsite/function/user_profile.php?logout=true")
+        .then(response => response.text()) // ✅ Get raw text first
+        .then(text => {
+            console.log("Raw Logout Response:", text);
+
+            try {
+                return JSON.parse(text); // ✅ Try parsing as JSON
+            } catch (error) {
+                throw new Error("Invalid JSON response: " + text);
+            }
+        })
+        .then(data => {
+            console.log("Logout Response:", data);
+            if (data.success) {
+                console.log("Logout successful. Redirecting to login page...");
+                localStorage.clear();
+                window.location.href = "../loginuser.html";
+            } else {
+                throw new Error(data.error || "Logout failed");
+            }
+        })
+        .catch(error => {
+            console.error("Logout failed:", error);
+            alert("Logout error: " + error.message);
+        })
+        .finally(() => {
+            logoutButton.innerHTML = "Logout";
+            logoutButton.disabled = false;
+        });
+}
 
 
              
@@ -514,6 +661,6 @@ searchMenu()
 initializeCountrySelect() 
 initializeMenu()
 
-    </script>
+   </script>
 </body>
 </html>

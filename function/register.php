@@ -69,7 +69,7 @@ if ($_SERVER["REQUEST_METHOD"] == "POST") {
         echo json_encode([
             "success" => true, 
             "message" => "Registration successful", 
-            "redirect" => "login.html",
+            "redirect" => "loginuser.html",
             "token" => $token,
             "profile_image" => $profileImage // Return file name for debugging
         ]);

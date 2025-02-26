@@ -1,0 +1,127 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Checkout</title>
+    <script src="https://cdn.tailwindcss.com"></script>
+</head>
+<body class="bg-gray-100 p-6">
+
+    <div class="max-w-lg mx-auto bg-white p-6 rounded-lg shadow-md">
+        <h2 class="text-xl font-semibold mb-4">Shipping Information</h2>
+        <form id="checkout-form">
+            <div class="mb-4">
+                <label class="block text-gray-700">First Name</label>
+                <input type="text" name="recipient_firstname" class="w-full p-2 border rounded-md" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700">Last Name</label>
+                <input type="text" name="recipient_lastname" class="w-full p-2 border rounded-md" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700">Phone</label>
+                <input type="text" name="recipient_phone" class="w-full p-2 border rounded-md" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700">City</label>
+                <input type="text" name="city" class="w-full p-2 border rounded-md" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700">Address</label>
+                <input type="text" name="address" class="w-full p-2 border rounded-md" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700">State</label>
+                <input type="text" name="state" class="w-full p-2 border rounded-md" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700">ZIP Code</label>
+                <input type="text" name="zip_code" class="w-full p-2 border rounded-md" required>
+            </div>
+
+            <div class="mb-4">
+                <label class="block text-gray-700">Country</label>
+                <input type="text" name="country" class="w-full p-2 border rounded-md" required>
+            </div>
+
+            <button type="submit" class="w-full bg-blue-500 text-white py-2 rounded-md hover:bg-blue-600">
+                Proceed to Checkout
+            </button>
+        </form>
+        
+        <p id="message" class="mt-4 text-green-600 hidden">Your information has been saved!</p>
+    </div>
+
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+    const form = document.getElementById("checkout-form");
+    const message = document.getElementById("message");
+
+    form.addEventListener("submit", async function (e) {
+        e.preventDefault();
+
+        const formData = new FormData(form);
+        const shipment = {};
+        formData.forEach((value, key) => {
+            shipment[key] = value;
+        });
+
+        const userId = parseInt(localStorage.getItem("user_id"), 10);
+        
+        // ✅ Retrieve cart items from localStorage
+        const storedCart = localStorage.getItem("cart");
+        let order = storedCart ? JSON.parse(storedCart) : [];
+
+        console.log("Retrieved Cart Data:", order); // Debugging
+
+        if (!userId) {
+            console.error("Error: User ID is missing in localStorage");
+            return;
+        }
+
+        if (order.length === 0) {
+            alert("Error: Cart is empty!");
+            return;
+        }
+
+        try {
+            const response = await fetch("http://localhost/mywebsite/function/checkout.php", {
+                method: "POST",
+                headers: { "Content-Type": "application/json" },
+                body: JSON.stringify({
+                    user_id: userId,
+                    payment_method: "PayPal", // Change based on selection
+                    total_price: 100, // Replace with actual total price calculation
+                    shipment: shipment,
+                    items: order // Send the cart items properly
+                }),
+            });
+
+            const data = await response.json();
+            console.log("Server Response:", data);
+
+            if (data.success) {
+                message.classList.remove("hidden");
+                setTimeout(() => {
+                    window.location.href = "/checkout";
+                }, 2000);
+            } else {
+                alert("Error processing checkout");
+            }
+        } catch (err) {
+            console.error("Invalid Data Input", err);
+        }
+    });
+});
+
+    </script>
+
+</body>
+</html>

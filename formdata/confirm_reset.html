@@ -3,16 +3,222 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Rental</title>
+    <title>New Password</title>
     <script src="https://cdn.tailwindcss.com"></script>
-</head>
 
-<style>
-    .head{
+    <style>
+        .head{
     background-color: #20bc7e;
   }
-</style>
-<body>
+    </style>
+    <script>
+        document.addEventListener("DOMContentLoaded", function () {
+            const urlParams = new URLSearchParams(window.location.search);
+            document.getElementById("email").value = urlParams.get("email");
+            document.getElementById("token").value = urlParams.get("token");
+        
+            const form = document.getElementById("resetPasswordForm");
+            const messageElement = document.getElementById("resetMessage");
+            const submitButton = form.querySelector("button");
+        
+            form.addEventListener("submit", async function (event) {
+                event.preventDefault(); // Prevent default form submission
+        
+                let formData = new FormData(form);
+                formData.append("reset_password", "true"); // Ensure correct key
+        
+                // Show loading state
+                submitButton.innerHTML = `<i class="fas fa-spinner fa-spin"></i> Resetting...`;
+                submitButton.disabled = true;
+        
+                try {
+                    let response = await fetch("http://localhost/mywebsite/function/reset-password.php", {
+                        method: "POST",
+                        body: formData
+                    });
+        
+                    let text = await response.text();
+                    console.log("Raw Response:", text); // Debug raw response
+        
+                    let result;
+                    try {
+                        result = JSON.parse(text);
+                    } catch (error) {
+                        console.error("JSON Parse Error:", error);
+                        throw new Error("Invalid JSON response from server");
+                    }
+        
+                    console.log("Parsed JSON:", result); // Debug parsed JSON
+        
+                    messageElement.innerText = result.message;
+                    messageElement.classList.remove("text-red-500", "text-green-500");
+                    messageElement.classList.add(result.status === "success" ? "text-green-500" : "text-red-500");
+        
+                    if (result.status === "success") {
+                        setTimeout(() => {
+                            window.location.href = result.redirect;
+                        }, 2000);
+                    }
+                } catch (error) {
+                    console.error("Fetch Error:", error);
+                    messageElement.innerText = "Something went wrong. Please try again.";
+                    messageElement.classList.add("text-red-500");
+                }
+        
+                // Reset button state
+                submitButton.innerHTML = "Reset Password";
+                submitButton.disabled = false;
+            });
+        });
+
+
+    
+             
+function searchMenu() {
+    const toggleSearch = document.getElementById("toggleSearch");
+    const searchContainer = document.getElementById("searchContainer");
+    const searchInput = document.getElementById("searchInput");
+    const searchButton = document.getElementById("searchButton");
+    const resultsContainer = document.getElementById("searchResults");
+
+    toggleSearch.addEventListener("click", () => {
+        if (searchContainer.classList.contains("hidden")) {
+            searchContainer.classList.remove("hidden");
+            toggleSearch.classList.add("hidden"); // Hide search icon
+            setTimeout(() => searchContainer.classList.remove("opacity-0"), 10);
+            searchInput.focus();
+        } else {
+            searchContainer.classList.add("opacity-0");
+            toggleSearch.classList.remove("hidden"); // Show search icon
+            setTimeout(() => searchContainer.classList.add("hidden"), 300);
+        }
+    });
+
+    // Close search box when clicking outside
+    document.addEventListener("click", (event) => {
+        if (!searchContainer.contains(event.target) && !toggleSearch.contains(event.target)) {
+            searchContainer.classList.add("opacity-0");
+            setTimeout(() => {
+                searchContainer.classList.add("hidden");
+                toggleSearch.classList.remove("hidden"); // Show search icon again
+            }, 300);
+        }
+    });
+
+    const handleSearch = async () => {
+        const query = searchInput.value.trim();
+
+        if (query === "") {
+            resultsContainer.innerHTML = "";
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost/mywebsite/function/product.php?search=${encodeURIComponent(query)}`);
+            if (!response.ok) throw new Error("Network response was not ok");
+
+            const data = await response.json();
+            console.log("Fetched Data:", data); // Debugging log
+
+            const products = data.message || [];
+            displayResults(products);
+        } catch (error) {
+            console.error("Search error:", error);
+            resultsContainer.innerHTML = `<p class="text-red-500 text-sm">Error fetching results. Check console.</p>`;
+        }
+    };
+
+    const productUrl = 'http://localhost/mywebsite/image/';
+
+    const searchResults = document.getElementById("searchResults");
+
+    const displayResults = (products) => {
+    if (!Array.isArray(products) || products.length === 0) {
+        searchResults.innerHTML = `<p class="text-gray-500 text-sm p-2">No products found.</p>`;
+        searchResults.classList.remove("hidden");
+        return;
+    }
+
+    searchResults.innerHTML = products.map(product => `
+        <div class="w-full p-4 flex items-center gap-4 border-b last:border-none hover:bg-gray-100 transition duration-200 cursor-pointer"
+            onclick="window.location.href='shop/product.html?id=${product.id}'">
+            <img src="http://localhost/mywebsite/image/${product.image}" alt="${product.title}" class="w-16 h-16 object-cover rounded-md"/>
+            <div class="flex-1">
+                <p class="text-gray-800 font-semibold">${product.title}</p>
+            </div>
+        </div>
+    `).join("");
+
+    searchResults.classList.remove("hidden");
+};
+
+    searchInput.addEventListener("input", handleSearch);
+    searchButton.addEventListener("click", handleSearch);
+}
+
+function initializeMenu() {
+    const menu = document.getElementById("menu");
+    const menuIcon = document.getElementById("menuIcon");
+    const closeMenu = document.getElementById("closeMenu");
+
+    if (menu && menuIcon && closeMenu) {
+        // Open menu
+        menuIcon.addEventListener("click", function () {
+            menu.classList.remove("hidden"); // Show menu
+            menuIcon.classList.add("hidden"); // Hide menu icon
+        });
+
+        // Close menu
+        closeMenu.addEventListener("click", function () {
+            menu.classList.add("hidden"); // Hide menu
+            menuIcon.classList.remove("hidden"); // Show menu icon
+        });
+    }
+}
+
+function initializeCountrySelect() {
+    const countrySelect = document.getElementById("countrySelect");
+    const flagImg = document.getElementById("flag");
+
+    countrySelect.addEventListener("change", function () {
+        const selectedOption = this.options[this.selectedIndex];
+        flagImg.src = selectedOption.getAttribute("data-flag");
+        flagImg.alt = selectedOption.textContent;
+    });
+
+    // Initialize with the first selected country's flag All
+    const initialOption = countrySelect.options[countrySelect.selectedIndex];
+    flagImg.src = initialOption.getAttribute("data-flag");
+    flagImg.alt = initialOption.textContent;
+}
+
+        // Call the function after the page loads
+
+        document.addEventListener("DOMContentLoaded", function () {
+    // Apply category filtering when the page loads
+    applyCategoryFilter();
+});
+
+// Toggle dropdown visibility
+function toggleDropdown() {
+    const dropdown = document.getElementById("categoryDropdown");
+    dropdown.classList.toggle("hidden");
+}
+
+// Function to redirect to categorypage.html with selected category
+function filterCategory(category) {
+    toggleDropdown(); // Close the dropdown
+    window.location.href = `categorypage.html?category=${encodeURIComponent(category)}`;
+}
+
+    
+searchMenu()
+initializeCountrySelect() 
+initializeMenu()
+        </script>
+        
+</head>
+<body class="bg-gray-100">
     <header>
         <div class="head font-roboto text-center text-sm sm:block hidden text-white p-1 -mb-2">
             Special Discount Alert: Flat 20% Off on Your Rental Needs!
@@ -165,44 +371,26 @@
 
     
 </header>
+    <div class="bg-white p-6 rounded-lg flex flex-col mx-auto my-20 justify-center  max-w-md">
+        <h2 class="text-xl font-semibold text-gray-700 mb-4">Enter a New Password</h2>
+        <form id="resetPasswordForm" class="space-y-4">
+            <input type="hidden" id="email" name="email">
+            <input type="hidden" id="token" name="token">
+            
+            <div>
+                <label for="new_password" class="block text-sm font-medium text-gray-600">New Password:</label>
+                <input type="password" id="new_password" name="new_password" class="w-full p-2 border rounded-md" required>
+            </div>
 
+            <div>
+                <label for="confirm_password" class="block text-sm font-medium text-gray-600">Confirm Password:</label>
+                <input type="password" id="confirm_password" name="confirm_password" class="w-full p-2 border rounded-md" required>
+            </div>
 
-
-    <div id="shipping" class="tab-content hidden">
-        <div class="max-w-10xl mx-auto bg-white shadow-md rounded-lg sm:p-6 py-6">
-            <form id="checkoutForm" class="border w-72 px-2 sm:py-4 sm:px-2 sm:w-4/12 border-pink-600 flex flex-col justify-center mx-auto sm:mx-40 font-bold rounded">
-                <p class="text-sm sm:text-xl font-bold my-2 text-black">Kindly enter your Information Details</p>
-                
-                <label class="text-sm mt-2 text-black">Recipient First Name:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_firstname" required>
-                
-                <label class="text-sm mt-2 text-black">Recipient Last Name:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_lastname" required>
-                
-                <label class="text-sm mt-2 text-black">Recipient Phone Number:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_phone" required>
-                
-                <label class="text-sm mt-2 text-black">Recipient Address:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="address" required>
-                
-                <label class="text-sm mt-2 text-black">Country:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="country" required>
-                
-                <label class="text-sm mt-2 text-black">City:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="city" required>
-                
-                <label class="text-sm mt-2 text-black">State:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="state" required>
-                
-                <label class="text-sm mt-2 text-black">Zip Code:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="zip_code" required>
-                
-                <button type="submit" class="my-5 w-64 bg-red-500 text-white sm:w-96 mx-auto p-1 my-1 rounded-lg outline-none">Submit Form</button>
-            </form>
-            <p id="message" class="text-red-600 text-center my-2 font-bold"></p>
-        </div>
+            <button type="submit" class="w-full bg-blue-500 text-white p-2 rounded-md hover:bg-blue-600">Reset Password</button>
+        </form>
+        <p id="resetMessage" class="text-sm text-gray-600 mt-3"></p>
     </div>
-
 
     <footer class="bg-cover bg-center bg-no-repeat py-8 px-6" style="background-image: url('../shop/image/background.png');">
         <div class="container mx-auto flex flex-wrap justify-around items-start gap-8">
@@ -289,231 +477,5 @@
         <p class="text-center text-sm font-bold">&copy; 2025 Shofx. All rights reserved.</p>
     </footer>
     
-
-    <script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("shipping").classList.remove("hidden");
-    document.getElementById("checkoutForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    let userId = localStorage.getItem("user_id");
-    if (!userId) {
-        console.log("Error: User ID is missing in localStorage");
-        return;
-    }
-
-    let order = [];
-
-    console.log("Parsed Cart Data:", order);
-
-    if (!Array.isArray(order) || order.length === 0) {
-        console.log("Cart is empty, stopping checkout.");
-        document.getElementById("message").textContent = "Your cart is empty.";
-        return;
-    }
-
-    let shipment = {
-        recipient_firstname: document.getElementById("recipient_firstname").value,
-        recipient_lastname: document.getElementById("recipient_lastname").value,
-        recipient_phone: document.getElementById("recipient_phone").value,
-        address: document.getElementById("address").value,
-        city: document.getElementById("city").value,
-        state: document.getElementById("state").value,
-        zip_code: document.getElementById("zip_code").value,
-        country: document.getElementById("country").value
-    };
-
-    let requestData = {
-        user_id: userId,
-        payment_method: "",  // Change this if needed
-        total_price: order.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-        shipment: shipment,
-        items: order.map(item => ({
-            product_id: item.product_id,
-            image: item.image,
-            title: item.title,
-            price: item.price,
-            color: item.color,
-            size: item.size,
-            quantity: item.quantity,
-            pick_up_date: item.pick_up_date,
-            pick_up_time: item.pick_up_time,
-            drop_off_date: item.drop_off_date,
-            drop_off_time: item.drop_off_time
-        }))
-    };
-
-    console.log("Sending Order Data:", requestData); // Debugging
-
-    try {
-        let response = await fetch("http://localhost/mywebsite/function/checkout.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestData)
-        });
-
-        let data = await response.json();
-        console.log("Server Response:", data);
-
-        if (data.success) {
-            document.getElementById("message").textContent = "Your order has been placed successfully!";
-            localStorage.removeItem("cart"); // Clear cart after successful order
-            window.location.href = "shop/checkout.html"; // Redirect to checkout page
-        } else {
-            document.getElementById("message").textContent = "Order submission failed. Please try again.";
-        }
-    } catch (err) {
-        console.error("Error submitting order:", err);
-        document.getElementById("message").textContent = "An error occurred. Please try again.";
-    }
-});
-
-});
-
-
-             
-function searchMenu() {
-    const toggleSearch = document.getElementById("toggleSearch");
-    const searchContainer = document.getElementById("searchContainer");
-    const searchInput = document.getElementById("searchInput");
-    const searchButton = document.getElementById("searchButton");
-    const resultsContainer = document.getElementById("searchResults");
-
-    toggleSearch.addEventListener("click", () => {
-        if (searchContainer.classList.contains("hidden")) {
-            searchContainer.classList.remove("hidden");
-            toggleSearch.classList.add("hidden"); // Hide search icon
-            setTimeout(() => searchContainer.classList.remove("opacity-0"), 10);
-            searchInput.focus();
-        } else {
-            searchContainer.classList.add("opacity-0");
-            toggleSearch.classList.remove("hidden"); // Show search icon
-            setTimeout(() => searchContainer.classList.add("hidden"), 300);
-        }
-    });
-
-    // Close search box when clicking outside
-    document.addEventListener("click", (event) => {
-        if (!searchContainer.contains(event.target) && !toggleSearch.contains(event.target)) {
-            searchContainer.classList.add("opacity-0");
-            setTimeout(() => {
-                searchContainer.classList.add("hidden");
-                toggleSearch.classList.remove("hidden"); // Show search icon again
-            }, 300);
-        }
-    });
-
-    const handleSearch = async () => {
-        const query = searchInput.value.trim();
-
-        if (query === "") {
-            resultsContainer.innerHTML = "";
-            return;
-        }
-
-        try {
-            const response = await fetch(`http://localhost/mywebsite/function/product.php?search=${encodeURIComponent(query)}`);
-            if (!response.ok) throw new Error("Network response was not ok");
-
-            const data = await response.json();
-            console.log("Fetched Data:", data); // Debugging log
-
-            const products = data.message || [];
-            displayResults(products);
-        } catch (error) {
-            console.error("Search error:", error);
-            resultsContainer.innerHTML = `<p class="text-red-500 text-sm">Error fetching results. Check console.</p>`;
-        }
-    };
-
-    const productUrl = 'http://localhost/mywebsite/image/';
-
-    const searchResults = document.getElementById("searchResults");
-
-    const displayResults = (products) => {
-    if (!Array.isArray(products) || products.length === 0) {
-        searchResults.innerHTML = `<p class="text-gray-500 text-sm p-2">No products found.</p>`;
-        searchResults.classList.remove("hidden");
-        return;
-    }
-
-    searchResults.innerHTML = products.map(product => `
-        <div class="w-full p-4 flex items-center gap-4 border-b last:border-none hover:bg-gray-100 transition duration-200 cursor-pointer"
-            onclick="window.location.href='shop/product.html?id=${product.id}'">
-            <img src="http://localhost/mywebsite/image/${product.image}" alt="${product.title}" class="w-16 h-16 object-cover rounded-md"/>
-            <div class="flex-1">
-                <p class="text-gray-800 font-semibold">${product.title}</p>
-            </div>
-        </div>
-    `).join("");
-
-    searchResults.classList.remove("hidden");
-};
-
-    searchInput.addEventListener("input", handleSearch);
-    searchButton.addEventListener("click", handleSearch);
-}
-
-function initializeMenu() {
-    const menu = document.getElementById("menu");
-    const menuIcon = document.getElementById("menuIcon");
-    const closeMenu = document.getElementById("closeMenu");
-
-    if (menu && menuIcon && closeMenu) {
-        // Open menu
-        menuIcon.addEventListener("click", function () {
-            menu.classList.remove("hidden"); // Show menu
-            menuIcon.classList.add("hidden"); // Hide menu icon
-        });
-
-        // Close menu
-        closeMenu.addEventListener("click", function () {
-            menu.classList.add("hidden"); // Hide menu
-            menuIcon.classList.remove("hidden"); // Show menu icon
-        });
-    }
-}
-
-function initializeCountrySelect() {
-    const countrySelect = document.getElementById("countrySelect");
-    const flagImg = document.getElementById("flag");
-
-    countrySelect.addEventListener("change", function () {
-        const selectedOption = this.options[this.selectedIndex];
-        flagImg.src = selectedOption.getAttribute("data-flag");
-        flagImg.alt = selectedOption.textContent;
-    });
-
-    // Initialize with the first selected country's flag All
-    const initialOption = countrySelect.options[countrySelect.selectedIndex];
-    flagImg.src = initialOption.getAttribute("data-flag");
-    flagImg.alt = initialOption.textContent;
-}
-
-        // Call the function after the page loads
-
-        document.addEventListener("DOMContentLoaded", function () {
-    // Apply category filtering when the page loads
-    applyCategoryFilter();
-});
-
-// Toggle dropdown visibility
-function toggleDropdown() {
-    const dropdown = document.getElementById("categoryDropdown");
-    dropdown.classList.toggle("hidden");
-}
-
-// Function to redirect to categorypage.html with selected category
-function filterCategory(category) {
-    toggleDropdown(); // Close the dropdown
-    window.location.href = `categorypage.html?category=${encodeURIComponent(category)}`;
-}
-
-    
-searchMenu()
-initializeCountrySelect() 
-initializeMenu()
-
-    </script>
 </body>
 </html>

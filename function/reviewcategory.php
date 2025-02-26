@@ -15,12 +15,13 @@ if (!$input) {
     exit;
 }
 
-if (!isset($input['product_id']) || empty($input['product_id'])) {
-    echo json_encode(["success" => false, "message" => "Product ID is required"]);
+// 🛠️ FIXED: Corrected Error Message
+if (!isset($input['category_id']) || empty($input['category_id'])) {
+    echo json_encode(["success" => false, "message" => "Category ID is required"]);
     exit;
 }
 
-$product_id = intval($input['product_id']);
+$category_id = intval($input['category_id']);
 $user_id = intval($input['user_id']);
 $review_text = trim($input['review_text']);
 $rating = intval($input['rating']);
@@ -34,9 +35,9 @@ global $conn;
 
 try {
     // Insert review into database
-    $query = "INSERT INTO reviews (user_id, product_id, rating, review_text) VALUES (?, ?, ?, ?)";
+    $query = "INSERT INTO reviews (user_id, category_id, rating, review_text) VALUES (?, ?, ?, ?)";
     $stmt = $conn->prepare($query);
-    $stmt->bind_param("iiis", $user_id, $product_id, $rating, $review_text);
+    $stmt->bind_param("iiis", $user_id, $category_id, $rating, $review_text);
     
     if ($stmt->execute()) {
         echo json_encode(["success" => true, "message" => "Review added successfully"]);

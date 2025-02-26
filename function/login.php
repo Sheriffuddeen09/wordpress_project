@@ -67,7 +67,7 @@ if ($_SERVER["REQUEST_METHOD"] === "POST") {
     // Return response
     echo json_encode([
         "status" => "success",
-        "redirect" => "dashboard/dashboard.html",
+        "redirect" => "dashboard/profile.html",
         "user" => [
             "id" => $user["ID"],
             "firstname" => $user["firstname"],

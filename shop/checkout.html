@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Pet Rental</title>
+    <title>Shopping Cart</title>
     <script src="https://cdn.tailwindcss.com"></script>
 </head>
 
@@ -12,7 +12,7 @@
     background-color: #20bc7e;
   }
 </style>
-<body>
+<body class="p-">
     <header>
         <div class="head font-roboto text-center text-sm sm:block hidden text-white p-1 -mb-2">
             Special Discount Alert: Flat 20% Off on Your Rental Needs!
@@ -165,213 +165,272 @@
 
     
 </header>
+    <div style="background-image: url('../shop/image/background.png');" class=" my-10 sm:mx-5 flex justify-around p-4 items-end flex-row sm:flex-nowrap flex-wrap">
+        <div class="max-w-3xl mx-auto p-6 ">
+            <div id="cart-container" class="rounded-lg border-pink-700 border"></div>  
+        </div>
 
+    <div class="bg-white border-2 border-pink-700 rounded-xl sm:w-96 w-72 p-5 h-96 mx-auto">
+        <div class="flex flex-row justify-around text-pink-700 my-4 font-bold">
+            <div>Your Order</div>
+            <div>Subtotal</div>
+        </div>
+        <div class="sm:w-80 w-64 bg-blue-400 h-0.5 block mx-auto"></div>
+        <div class="flex flex-row justify-around my-4 font-bold">
+            <div>Product</div>
+            <div>$480</div>
+        </div>
+        <div class="sm:w-80 w-64 bg-blue-400 h-0.5 block mx-auto"></div>
+        <div class="flex flex-row justify-around my-4 font-bold items-center">
+            <div>Subtotal</div>
+            <div class="mt-4 text-lg font-semibold text-s"> $<span id="total-price">0</span></div>
+        </div>
+        <div class="sm:w-80 w-64 bg-blue-400 h-0.5 block mx-auto"></div>
 
+        <div class="flex justify-center gap-4 mt-10">
+            <img src="../shop/image/paypal.png" alt="PayPal" class="w-20 h-12 cursor-pointer" />
+            <img src="../shop/image/googlepay.png" alt="Google Pay" class="w-16 h-12 cursor-pointer" />
+            <img src="../shop/image/visa.png" alt="Visa" class="w-20 h-12 cursor-pointer" />
+        </div>
 
-    <div id="shipping" class="tab-content hidden">
-        <div class="max-w-10xl mx-auto bg-white shadow-md rounded-lg sm:p-6 py-6">
-            <form id="checkoutForm" class="border w-72 px-2 sm:py-4 sm:px-2 sm:w-4/12 border-pink-600 flex flex-col justify-center mx-auto sm:mx-40 font-bold rounded">
-                <p class="text-sm sm:text-xl font-bold my-2 text-black">Kindly enter your Information Details</p>
-                
-                <label class="text-sm mt-2 text-black">Recipient First Name:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_firstname" required>
-                
-                <label class="text-sm mt-2 text-black">Recipient Last Name:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_lastname" required>
-                
-                <label class="text-sm mt-2 text-black">Recipient Phone Number:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="recipient_phone" required>
-                
-                <label class="text-sm mt-2 text-black">Recipient Address:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="address" required>
-                
-                <label class="text-sm mt-2 text-black">Country:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="country" required>
-                
-                <label class="text-sm mt-2 text-black">City:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="city" required>
-                
-                <label class="text-sm mt-2 text-black">State:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="state" required>
-                
-                <label class="text-sm mt-2 text-black">Zip Code:</label>
-                <input class="border-2 border-red-200 w-64 sm:w-96 p-1 my-1 rounded-lg outline-none" type="text" id="zip_code" required>
-                
-                <button type="submit" class="my-5 w-64 bg-red-500 text-white sm:w-96 mx-auto p-1 my-1 rounded-lg outline-none">Submit Form</button>
-            </form>
-            <p id="message" class="text-red-600 text-center my-2 font-bold"></p>
+        <button id="checkout-btn" class="bg-pink-700 p-2 rounded-lg mx-auto text-white w-32 flex justify-center items-center my-3">Rent</button>
+    </div>
+    
+</div>
+    
+
+<footer class="bg-cover bg-center bg-no-repeat py-8 px-6" style="background-image: url('../shop/image/background.png');">
+    <div class="container mx-auto flex flex-wrap justify-around items-start gap-8">
+        <!-- Left Section -->
+        <div class="max-w-sm -mt-5">
+            <div class="logo">
+                <a href="/">
+                    <img src="../shop/image/logo.png" alt="Logo" class='w-28 h-16'>
+                </a>
+            </div>
+            
+            <p class="mt-2 text-sm text-black font-bold">
+                Create heartwarming memories with this lovable Golden Retriever puppy – 
+                the perfect addition to your special moments! 🐾
+            </p>
+
+            <div class="mt-4">
+                <form action="/subscribe" method="POST">
+                    <input type="email" name="email" placeholder="Email Address" class="p-2 w-full border border-pink-400 rounded-xl focus:outline-none text-sm" required />
+                    <button type="submit" class="mt-2 w-full text-sm bg-pink-600 text-white py-2 rounded-xl hover:bg-black transition">
+                        Sign Up
+                    </button>
+                </form>
+            </div>
+
+            <!-- Social Icons -->
+            <div class="flex space-x-4 mt-4">
+                <a href="#" class="text-black text-xl"><i class="fab fa-facebook"></i></a>
+                <a href="#" class="text-black text-xl"><i class="fab fa-instagram"></i></a>
+                <a href="#" class="text-black text-xl"><i class="fab fa-google"></i></a>
+                <a href="#" class="text-black text-xl"><i class="fab fa-x-twitter"></i></a>
+                <a href="#" class="text-black text-xl"><i class="fab fa-linkedin"></i></a>
+            </div>
+        </div>
+
+        <!-- Middle Section -->
+        <div class="grid grid-cols-2 gap-6 text-sm">
+            <div>
+                <h3 class="font-bold text-black">Quick Links</h3>
+                <ul class="space-y-1 mt-2">
+                    <li><a href="../aboutpage.html" class="hover:text-pink-700">About Us</a></li>
+                    <li><a href="../contactpage.html" class="hover:text-pink-700">Contact Us</a></li>
+                    <li><a href="../blogpage.html" class="hover:text-pink-700">Blog</a></li>
+                    <li><a href="../inquirypage.html" class="hover:text-pink-700">FAQ</a></li>
+                    <li><a href="../contactpage.html" class="hover:text-pink-700">Help</a></li>
+                    <li><a href="../index.html" class="hover:text-pink-700">Returns</a></li>
+                </ul>
+            </div>
+
+            <div>
+                <h3 class="font-bold text-black">Product</h3>
+                <ul class="space-y-1 mt-2">
+                    <li><a href="../categorypage.html" class="hover:text-pink-700">Pet Clothing</a></li>
+                    <li><a href="#../categorypage.html" class="hover:text-pink-700">Pet Carriers</a></li>
+                    <li><a href="../categorypage.html" class="hover:text-pink-700">Dog & Cat Beds</a></li>
+                    <li><a href="../shop.html" class="hover:text-pink-700">Shop</a></li>
+                    <li><a href="../shop/shipment.html" class="hover:text-pink-700">Shipping</a></li>
+                    <li><a href="../order/orderhistory.html" class="hover:text-pink-700">Delivery</a></li>
+                </ul>
+            </div>
+        </div>
+
+        <!-- Right Section -->
+        <div class="text-sm">
+            <h3 class="font-bold text-black">Our Locations</h3>
+            <p class="mt-2 inline-flex gap-1">
+                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                </svg>
+                635 Rogers Street <br/> Downers Grove, IL 60515 USA
+            </p>
+            <p class="mt-1">
+                <a href="tel:+12345472344376" class="hover:text-pink-700">📞 +1 (234) 547 234 4376</a>
+            </p>
+            <div class="mt-4 flex sm:flex-col flex-row gap-2">
+                <img src="../layout/image/store.png" alt="Store" class='w-32 h-10'>
+                <img src="../layout/image/play.png" alt="Play Store" class='w-32 h-10'>
+            </div>
         </div>
     </div>
 
+    <hr class="my-6 border-pink-400"/>
+    <p class="text-center text-sm font-bold">&copy; 2025 Shofx. All rights reserved.</p>
+</footer>
 
-    <footer class="bg-cover bg-center bg-no-repeat py-8 px-6" style="background-image: url('../shop/image/background.png');">
-        <div class="container mx-auto flex flex-wrap justify-around items-start gap-8">
-            <!-- Left Section -->
-            <div class="max-w-sm -mt-5">
-                <div class="logo">
-                    <a href="/">
-                        <img src="../shop/image/logo.png" alt="Logo" class='w-28 h-16'>
-                    </a>
-                </div>
-                
-                <p class="mt-2 text-sm text-black font-bold">
-                    Create heartwarming memories with this lovable Golden Retriever puppy – 
-                    the perfect addition to your special moments! 🐾
-                </p>
-    
-                <div class="mt-4">
-                    <form action="/subscribe" method="POST">
-                        <input type="email" name="email" placeholder="Email Address" class="p-2 w-full border border-pink-400 rounded-xl focus:outline-none text-sm" required />
-                        <button type="submit" class="mt-2 w-full text-sm bg-pink-600 text-white py-2 rounded-xl hover:bg-black transition">
-                            Sign Up
-                        </button>
-                    </form>
-                </div>
-    
-                <!-- Social Icons -->
-                <div class="flex space-x-4 mt-4">
-                    <a href="#" class="text-black text-xl"><i class="fab fa-facebook"></i></a>
-                    <a href="#" class="text-black text-xl"><i class="fab fa-instagram"></i></a>
-                    <a href="#" class="text-black text-xl"><i class="fab fa-google"></i></a>
-                    <a href="#" class="text-black text-xl"><i class="fab fa-x-twitter"></i></a>
-                    <a href="#" class="text-black text-xl"><i class="fab fa-linkedin"></i></a>
-                </div>
-            </div>
-    
-            <!-- Middle Section -->
-            <div class="grid grid-cols-2 gap-6 text-sm">
-                <div>
-                    <h3 class="font-bold text-black">Quick Links</h3>
-                    <ul class="space-y-1 mt-2">
-                        <li><a href="../aboutpage.html" class="hover:text-pink-700">About Us</a></li>
-                        <li><a href="../contactpage.html" class="hover:text-pink-700">Contact Us</a></li>
-                        <li><a href="../blogpage.html" class="hover:text-pink-700">Blog</a></li>
-                        <li><a href="../inquirypage.html" class="hover:text-pink-700">FAQ</a></li>
-                        <li><a href="../contactpage.html" class="hover:text-pink-700">Help</a></li>
-                        <li><a href="../index.html" class="hover:text-pink-700">Returns</a></li>
-                    </ul>
-                </div>
-    
-                <div>
-                    <h3 class="font-bold text-black">Product</h3>
-                    <ul class="space-y-1 mt-2">
-                        <li><a href="../categorypage.html" class="hover:text-pink-700">Pet Clothing</a></li>
-                        <li><a href="#../categorypage.html" class="hover:text-pink-700">Pet Carriers</a></li>
-                        <li><a href="../categorypage.html" class="hover:text-pink-700">Dog & Cat Beds</a></li>
-                        <li><a href="../shop.html" class="hover:text-pink-700">Shop</a></li>
-                        <li><a href="../shop/shipment.html" class="hover:text-pink-700">Shipping</a></li>
-                        <li><a href="../order/orderhistory.html" class="hover:text-pink-700">Delivery</a></li>
-                    </ul>
-                </div>
-            </div>
-    
-            <!-- Right Section -->
-            <div class="text-sm">
-                <h3 class="font-bold text-black">Our Locations</h3>
-                <p class="mt-2 inline-flex gap-1">
-                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                    </svg>
-                    635 Rogers Street <br/> Downers Grove, IL 60515 USA
-                </p>
-                <p class="mt-1">
-                    <a href="tel:+12345472344376" class="hover:text-pink-700">📞 +1 (234) 547 234 4376</a>
-                </p>
-                <div class="mt-4 flex sm:flex-col flex-row gap-2">
-                    <img src="../layout/image/store.png" alt="Store" class='w-32 h-10'>
-                    <img src="../layout/image/play.png" alt="Play Store" class='w-32 h-10'>
-                </div>
-            </div>
-        </div>
-    
-        <hr class="my-6 border-pink-400"/>
-        <p class="text-center text-sm font-bold">&copy; 2025 Shofx. All rights reserved.</p>
-    </footer>
-    
 
     <script>
-document.addEventListener("DOMContentLoaded", function () {
-    document.getElementById("shipping").classList.remove("hidden");
-    document.getElementById("checkoutForm").addEventListener("submit", async function (e) {
-    e.preventDefault();
-
-    let userId = localStorage.getItem("user_id");
-    if (!userId) {
-        console.log("Error: User ID is missing in localStorage");
-        return;
+        let order = [];
+        let totalPrice = 0;
+        const userId = localStorage.getItem("user_id");
+        const cartContainer = document.getElementById("cart-container");
+        const totalPriceElement = document.getElementById("total-price");
+        const cartImage = 'http://localhost/mywebsite/image/';
+    
+        async function fetchCart() {
+            try {
+                const response = await fetch(`http://localhost/mywebsite/function/cart.php?user_id=${userId}`);
+                const data = await response.json();
+                
+                if (data.success && data.cart) {
+                    order = data.cart.map(item => ({
+                ...item,
+                pick_up_date: item.pick_up_date || "",
+                pick_up_time: item.pick_up_time || "",
+                drop_off_date: item.drop_off_date || "",
+                drop_off_time: item.drop_off_time || ""
+            }));
+            renderCart();
+            calculateTotal();
+        } else {
+            cartContainer.innerHTML = "<p class='text-center text-gray-600'>Your cart is empty.</p>";
+        }
+    } catch (error) {
+        console.error("Error fetching cart:", error);
     }
+        }
+    
+        function calculateTotal() {
+            totalPrice = order.reduce((acc, item) => acc + item.price * item.quantity, 0);
+            totalPriceElement.textContent = totalPrice.toFixed(2);
+        }
+    
+        function updateOrder(index, key, value) {
+                order[index][key] = value;
+                localStorage.setItem("cart", JSON.stringify(order));
+                calculateTotal();
+                renderCart();
+            }
 
-    let order = [];
-
-    console.log("Parsed Cart Data:", order);
-
-    if (!Array.isArray(order) || order.length === 0) {
-        console.log("Cart is empty, stopping checkout.");
-        document.getElementById("message").textContent = "Your cart is empty.";
-        return;
-    }
-
-    let shipment = {
-        recipient_firstname: document.getElementById("recipient_firstname").value,
-        recipient_lastname: document.getElementById("recipient_lastname").value,
-        recipient_phone: document.getElementById("recipient_phone").value,
-        address: document.getElementById("address").value,
-        city: document.getElementById("city").value,
-        state: document.getElementById("state").value,
-        zip_code: document.getElementById("zip_code").value,
-        country: document.getElementById("country").value
-    };
-
-    let requestData = {
-        user_id: userId,
-        payment_method: "",  // Change this if needed
-        total_price: order.reduce((sum, item) => sum + (item.price * item.quantity), 0),
-        shipment: shipment,
-        items: order.map(item => ({
-            product_id: item.product_id,
-            image: item.image,
-            title: item.title,
-            price: item.price,
-            color: item.color,
-            size: item.size,
-            quantity: item.quantity,
-            pick_up_date: item.pick_up_date,
-            pick_up_time: item.pick_up_time,
-            drop_off_date: item.drop_off_date,
-            drop_off_time: item.drop_off_time
-        }))
-    };
-
-    console.log("Sending Order Data:", requestData); // Debugging
-
+    
+        function renderCart() {
+            cartContainer.innerHTML = "";
+            order.forEach((item, index) => {
+                cartContainer.innerHTML += `
+                    <div class="flex items-center gap-4 p-4 ">
+                        <img src="${cartImage}${item.image}" alt="${item.title} class="border-b border-pink-700 border-2 rounded-l w-60 h-72 rounded-tl-2xl rounded-bl-2xl object-cover">
+                        <div>
+                            <p class="font-bold text-black">${item.title}</p>
+                            <p class="font-bold mt-2 text-black">Price: $${item.price}</p>
+                            <p class="font-bold my-2">Color</p>
+                            <div class="inline-flex flex-wrap">
+                                <img src="../shop/image/Rectangle 81.png" alt="color" class="w-5 h-5"/>
+                                <img src="../shop/image/Rectangle 82.png" alt="color" class="w-5 h-5"/>
+                                <img src="../shop/image/Rectangle 83.png" alt="color" class="w-5 h-5"/>
+                                <img src="../shop/image/Rectangle 84.png" alt="color" class="w-5 h-5"/>
+                            </div>
+                            <div class="flex flex-col ">
+                            <label class="block my-2 font-bold text-black">Size</label>
+                             <select onchange="updateOrder(${index}, 'size', this.value)" class="border p-1 rounded border-pink-700 border-2 w-36 h-10 border-pink-700 border-2">
+                                    <option value="S" ${item.size === 'S' ? 'selected' : ''}>S</option>
+                                    <option value="M" ${item.size === 'M' ? 'selected' : ''}>M</option>
+                                    <option value="L" ${item.size === 'L' ? 'selected' : ''}>L</option>
+                                    <option value="XL" ${item.size === 'XL' ? 'selected' : ''}>XL</option>
+                                </select>
+                            </div>
+                            <div>
+                            <label class="block my-2 font-bold text-black">Quantity</label>
+                            <select onchange="updateOrder(${index}, 'quantity', parseInt(this.value))" class="border p-1 rounded border-pink-700 border-2 w-36 h-10 border-pink-700 border-2">
+                                    ${[...Array(10).keys()].map(num => `<option value="${num}" ${item.quantity == num ? 'selected' : ''}>${num}</option>`).join('')}
+                                </select>
+                            </div>
+                            <div class="inline-flex gap-6 flex-wrap my-4 ">
+                            <div class="flex flex-col gap-2">
+                               <label class="mt-2 font-bold text-sm">Pickup Date</label>
+                               <input type="date" class="border p-1 rounded w-36 h-10 border-pink-700 border-2" value="${item.pick_up_date || ''}" onchange="updateOrder(${index}, 'pick_up_date', this.value)">
+                            </div>
+                            <div class="flex flex-col gap-2">
+                            <label class="mt-2 font-bold text-sm">Pickup Time</label>    
+                                <input type="time" class="border p-1 rounded w-36 h-10 border-pink-700 border-2" value="${item.pick_up_time || ''}" onchange="updateOrder(${index}, 'pick_up_time', this.value)">
+                            </div>
+                            </div>
+                             <div class="inline-flex gap-6 flex-wrap ">
+                            <div class="flex flex-col gap-2">
+                            <label class="mt-2 font-bold text-sm">Drop-off Date</label>
+                             <input type="date" class="border p-1 rounded w-36 h-10 border-pink-700 border-2" value="${item.drop_off_date || ''}" onchange="updateOrder(${index}, 'drop_off_date', this.value)">
+                            </div>
+                            <div class="flex flex-col gap-2">
+                            <label class="mt-2 font-bold text-sm">Drop-off Time</label>
+                             <input type="time" class="border p-1 rounded w-36 h-10 border-pink-700 border-2" value="${item.drop_off_time || ''}" onchange="updateOrder(${index}, 'drop_off_time', this.value)">
+                            </div>
+                            </div>
+                        </div>
+                       
+                    </div>
+                `;
+            });
+        }
+        async function fetchOrder() {
     try {
-        let response = await fetch("http://localhost/mywebsite/function/checkout.php", {
-            method: "POST",
-            headers: { "Content-Type": "application/json" },
-            body: JSON.stringify(requestData)
+        const response = await fetch('http://localhost/mywebsite/function/checkout.php', {
+            method: 'POST',
+            headers: { 'Content-Type': 'application/json' },
+            body: JSON.stringify({
+                user_id: userId,
+                total_price: totalPrice,
+                payment_method: document.getElementById("payment-method").value, // Get selected payment method
+                items: order.map(item => ({
+                    product_id: item.product_id,
+                    image: item.image,
+                    title: item.title,
+                    price: item.price,
+                    color: item.color,
+                    size: item.size,
+                    quantity: item.quantity,
+                    pick_up_date: item.pick_up_date,
+                    pick_up_time: item.pick_up_time,
+                    drop_off_date: item.drop_off_date,
+                    drop_off_time: item.drop_off_time
+                }))
+            })
         });
 
-        let data = await response.json();
-        console.log("Server Response:", data);
-
+        const data = await response.json();
         if (data.success) {
-            document.getElementById("message").textContent = "Your order has been placed successfully!";
-            localStorage.removeItem("cart"); // Clear cart after successful order
-            window.location.href = "shop/checkout.html"; // Redirect to checkout page
+            if (data.redirect) {
+                window.location.href = data.redirect; // Redirect to payment
+            } else {
+                window.location.href = "/order-tracking?order_id=" + data.order_id; // Redirect to order tracking
+            }
         } else {
-            document.getElementById("message").textContent = "Order submission failed. Please try again.";
+            alert("An error occurred. Please try again.");
         }
-    } catch (err) {
-        console.error("Error submitting order:", err);
-        document.getElementById("message").textContent = "An error occurred. Please try again.";
+    } catch (error) {
+        console.error("Checkout error:", error);
     }
-});
+}
 
-});
+        document.getElementById("checkout-btn").addEventListener("click", fetchOrder);
+        fetchCart();
 
 
-             
+                     
 function searchMenu() {
     const toggleSearch = document.getElementById("toggleSearch");
     const searchContainer = document.getElementById("searchContainer");
@@ -515,5 +574,6 @@ initializeCountrySelect()
 initializeMenu()
 
     </script>
+    
 </body>
 </html>

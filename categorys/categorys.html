@@ -84,19 +84,27 @@
             { title: "Dog & Cat Beds"}
         ];
     
-        document.addEventListener("DOMContentLoaded", function () {
-    // Get the category from the URL
-    const urlParams = new URLSearchParams(window.location.search);
-    const category = urlParams.get("category") || ''; // Default to all categories
-
-    fetchCategory(category);
-});
-
-async function fetchCategory(category = '') {
+        function categoriesFunction() {
+            fetchCategory();
+            loadCategories();
+        }
+    
+        function loadCategories() {
+            const categoryContainer = document.getElementById("categoryList");
+            categoryContainer.innerHTML = ""; // Clear previous content
+            categories.forEach(category => {
+                const button = document.createElement("button");
+                button.className = "flex flex-col text-xs justify-center items-center mx-auto px-3 h-16 rounded border hover:bg-gray-200 hover:text-black w-52 border border-pink-400 shadow-md";
+                button.innerHTML = `<img src="${category.icon}" alt="icon" class="h-6 sm:h-8">${category.title}`;
+                button.onclick = () => fetchCategory(category.title);
+                categoryContainer.appendChild(button);
+            });
+        }
+    
+        async function fetchCategory(category = '') {
     const categoryContainer = document.getElementById("categorysList");
     categoryContainer.innerHTML = "<p>Loading Category...</p>";
 
-    // Fetch filtered products based on selected category
     let url = `http://localhost/mywebsite/function/category.php${category ? `?category=${encodeURIComponent(category)}` : ''}`;
 
     try {
@@ -105,18 +113,18 @@ async function fetchCategory(category = '') {
 
         if (Array.isArray(data.message)) {
             categoryContainer.innerHTML = "";
-            const colors = ["bg-pink-700", "bg-blue-300"];
+            const colors = ["bg-pink-700", "bg-blue-300"]; // Using bg-sky-400 instead
 
             data.message.forEach((product, index) => {
                 const productDiv = document.createElement("div");
                 productDiv.className = "relative group border p-4 shadow-lg sm:w-80 w-72";
 
-                const buttonColor = colors[index % 2];
+                const buttonColor = colors[index % 2]; // Alternating colors
 
                 productDiv.innerHTML = `
                     <div class="relative group w-72 sm:w-80">
-                        <a href="categorys/categoryid.html?id=${product.id}" class="block relative z-10">
-                            <img src="${product.image}" alt="${product.title}" class="w-full h-64 object-cover cursor-pointer">
+                        <a href="categorys/categorysid.html?id=${product.id}" class="block relative z-10">
+                            <img src="${productUrl}${product.image}" alt="${product.title}" class="w-full h-64 object-cover cursor-pointer">
                             <button class="absolute bottom-4 left-1/2 transform -translate-x-1/2 flex items-center px-4 py-2 rounded-full w-60 justify-between text-white ${buttonColor}">
                                 <p style="font-size: 12px;" class="font-bold">${product.title}</p>
                                 <span class="text-lg bg-white p-1 rounded-full translate-x-4">
@@ -139,7 +147,7 @@ async function fetchCategory(category = '') {
         categoryContainer.innerHTML = `<p class="text-center text-sm text-red-500 font-semibold">Error loading products</p>`;
     }
 }
-
+    
         function handleAddToCart(product) {
             console.log("Added to cart:", product);
             const userId = parseInt(localStorage.getItem('user_id'), 10) || null;

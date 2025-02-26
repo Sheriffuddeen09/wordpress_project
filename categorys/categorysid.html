@@ -64,11 +64,14 @@
     }
 }
 
+.head{
+    background-color: #20bc7e;
+  }
 </style>
 
 <body class="">
     <header>
-        <div class="head font-roboto text-center text-sm sm:block hidden text-white p-1 -mb-8">
+        <div class="head font-roboto text-center text-sm sm:block hidden text-white p-1 -mb-2">
             Special Discount Alert: Flat 20% Off on Your Rental Needs!
         </div>
         <div class="head font-roboto text-center sm:hidden block text-white p-1 -mb-2" style="font-size: 8px;">
@@ -76,49 +79,66 @@
         </div>
         <div class="flex flex-row justify-between items-center p-1 shadow-md">
             <div class="inline-flex sm:gap-6 items-center">
-                <span>
-                    <img src="../shop/image/logo.png" alt="Logo" class="w-20 sm:h-16 relative left-6 sm:left-0 sm:h-12 h-10 mt-2">
+                <a href="index.html">
+                    <img src="../layout/image/logo.png" alt="Logo" class="sm:w-20 w-32 sm:h-16  h-10 mt-2">
 
-                </span>
+                </a>
                 <div class="sm:block hidden">
                     <ul class="inline-flex gap-6 mt-4 items-center text-sm">
-                        <li><a href="index.html" class="hover:bg-gray-100 px-2 py-1 rounded">Home</a></li>
-                        <li><a href="../shoppage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Shop</a></li>
-                        <li class="inline-flex items-center">
-                            <a href="category.html" class="hover:bg-gray-100 px-2 py-1 rounded">Category</a>
-                            <svg onclick="toggleDropdown()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-4 w-4 font-bold">
+                        <li><a href="../index.html" class="hover:bg-gray-100 px-2 py-1 rounded">Home</a></li>
+                        <li><a href="../shop.html" class="hover:bg-gray-100 px-2 py-1 rounded">Shop</a></li>
+                        <li class="relative inline-flex items-center">
+                            <!-- Category Button -->
+                            <a href="../categorypage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Category</a>
+                        
+                            <!-- Dropdown Toggle Button -->
+                            <svg onclick="toggleDropdown()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
+                                class="h-4 w-4 font-bold cursor-pointer">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5"></path>
                             </svg>
+                        
+                            <!-- Dropdown List -->
+                            <div id="categoryDropdown" class="hidden absolute top-9 left-0 mt-2 w-48 bg-white border border-gray-200 rounded-lg shadow-lg p-2 z-50">
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('')">All</p>
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Dogs')">Dogs</p>
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Cats')">Cats</p>
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Pet Carriers')">Pet Carriers</p>
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Pet Clothing')">Pet Clothing</p>
+                                <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Dog & Cat Beds')">Dog & Cat Beds</p>
+                            </div>
                         </li>
-                        <li><a href="../aboutpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">About</a></li>
+                         
+                          <li><a href="../aboutpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">About</a></li>
                         <li><a href="../blogpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Blogs</a></li>
                     </ul>
                 </div>
             </div>
-            <div class="inline-flex sm:gap-6 mt-4 text-sm sm:mr-10 items-center">
-                <a href="contact.html" class="hover:bg-gray-100 whitespace-nowrap px-2 py-1 rounded sm:block hidden">Help Center</a>
-                <div class="flex flex-col w-full max-w-md mx-auto mt-4">
-                    <div class="relative sm:left-0 left-5">
+            <div class="inline-flex sm:gap-6 mt-4 text-sm sm:mr-10 mr-10 items-center">
+                <a href="../contactpage.html" class="hover:bg-gray-100 whitespace-nowrap px-2 py-1 rounded sm:block hidden">Help Center</a>
+                <div class="flex flex-col w-full max-w-md mx-auto mt-2">
+                    <div class="relative">
                         <!-- Search Button (Icon) -->
-                        <button id="toggleSearch" class=" p-2 sm:ml-10 rounded-full hover:bg-blue-600 transition">
-                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 text-black">
+                        <button id="toggleSearch" class="px-1 pt-2 pb-1 rounded-full hover:bg-gray-200 transition">
+                            <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5 sm:-mt-2 -mt-3 text-black">
                                 <path stroke-linecap="round" stroke-linejoin="round" d="m21 21-5.197-5.197m0 0A7.5 7.5 0 1 0 5.196 5.196a7.5 7.5 0 0 0 10.607 10.607Z"></path>
                             </svg>
                         </button>
-                    
-                        <!-- Search Input (Initially Hidden) -->
-                        <div id="searchContainer" class="fixed flex justify-center  mx-auto trans right-0 top-0 w-full h-full p-3 shadow-lg rounded-lg border border-gray-300 hidden duration-300">
-                            <div class=" bg-white w-full inline-flex items-center h-10 rounded-lg">
-                                <input type="text" id="searchInput" placeholder="Search products..." class="w-full p-2 border bg-white border-gray-300 rounded-lg focus:outline-none">
-                                <button id="searchButton" class="bg-blue-500 text-white px-4 py-2 ml-2 rounded-lg hover:bg-blue-600 transition">
-                                    Search
-                                </button>
+                
+                        <!-- Transparent Background (Still Clickable) -->
+                        <div id="searchContainer" class="fixed w-full z-10 inset-0 bg-black/40 hidden duration-300 flex justify-center trans">
+                            <!-- Search Box (On Top of Transparency) -->
+                            <div class="relative bg-white w-full p-4 rounded-lg shadow-lg z-50">
+                                <div class="flex items-center border border-gray-300 rounded-lg bg-white">
+                                    <input type="text" id="searchInput" placeholder="Search products..." class="w-full p-2 bg-white focus:outline-none rounded-lg">
+                                    <button id="searchButton" class="bg-blue-500 text-white p-4 rounded-lg hover:bg-gray-200 transition">Search</button>
+                                </div>
+                                <!-- Search Results (On Top of Transparency) -->
+                                <div id="searchResults" class="mt-3 w-full bg-white border border-gray-300 shadow-md rounded-lg hidden flex flex-col z-50"></div>
                             </div>
-                            <div id="searchResults" class="mt-2"></div>
                         </div>
-                    </div>                    
-                    <div id="searchResults" class="mt-3 w-full"></div>
+                    </div>
                 </div>
+                
                 <div class="relative w-28 flex items-center">
                     <!-- Flag Image -->
                     <div class="absolute left-2 flex items-center">
@@ -126,7 +146,7 @@
                     </div>
                 
                     <!-- Select Dropdown -->
-                    <select id="countrySelect" class="w-full p-3 pl-10 outline-pink-700 rounded-md appearance-none cursor-pointer">
+                    <select id="countrySelect" class="w-full p-3 pl-10 border outline-pink-700 rounded-md appearance-none cursor-pointer">
                         <option value="+1" data-flag="https://flagcdn.com/w40/us.png">United States (+1)</option>
                         <option value="+44" data-flag="https://flagcdn.com/w40/gb.png">United Kingdom (+44)</option>
                         <option value="+1" data-flag="https://flagcdn.com/w40/ca.png">Canada (+1)</option>
@@ -137,16 +157,16 @@
                         <option value="+234" data-flag="https://flagcdn.com/w40/ng.png">Nigeria (+234)</option>
                     </select>
                 </div>
-                                <a href="dashboard.html" class="size-10 hover:bg-gray-100 mt-3 px-2 py-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-black">
+                                <a href="../dashboard/profile.html" class=" sm:block hidden hover:bg-gray-100 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-black">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   </svg>
                   </a>
-                <a href="cart.html" class="inline-flex size-10 hover:bg-gray-100 px-2 mt-3 py-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-black w-5 h-5">
+                <a href="../cart/carts.html" class="inline-flex hover:bg-gray-100 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-black w-5 h-5">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                   </svg>
-                   <span id="cartCount">0</span></a>
+                   <span id="cartCount hidden">0</span></a>
             </div>
-            <div id="menuIcon" class="sm:hidden relative top-1 mt-1 left-0 bg-none z-50 p-2 rounded-full cursor-pointer">
+            <div id="menuIcon" class="sm:hidden relative top-1 mt-1 right-0 bg-none z-50 p-2 rounded-full cursor-pointer">
                 <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M3.75 6.75h16.5M3.75 12h16.5m-16.5 5.25h16.5" />
                   </svg>
@@ -158,7 +178,7 @@
         <div class="flex flex-col h-full">
             <!-- Menu Header -->
             <div class="flex justify-between items-center p-4">
-                <img src="layout/image/logo.png" alt="Logo" class="w-32 h-20">
+                <img src="../layout/image/logo.png" alt="Logo" class="w-32 h-20">
                 <svg id="closeMenu" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-8 h-8 cursor-pointer">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M6 18 18 6M6 6l12 12" />
                 </svg>
@@ -166,15 +186,15 @@
 
             <!-- Navigation Links -->
             <nav class="flex flex-col gap-4 p-4">
-                <a href="/" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Home</a>
+                <a href="../index.html" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Home</a>
                 <div class="w-full bg-gray-200 h-0.5"></div>
 
-                <a href="shoppage" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Shop</a>
+                <a href="../shop.html" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Shop</a>
                 <div class="w-full bg-gray-200 h-0.5"></div>
 
                 <!-- Category Dropdown -->
                 <div id="dropMobileButton" class="flex items-center justify-between cursor-pointer hover:bg-gray-100 px-5 py-1 rounded">
-                    <p class="text-black font-bold text-sm">Category</p>
+                    <a href="../categorypage.html" class="text-black font-bold text-sm">Category</a>
                     <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-5 h-5">
                         <path stroke-linecap="round" stroke-linejoin="round" d="m19.5 8.25-7.5 7.5-7.5-7.5" />
                     </svg>
@@ -186,19 +206,23 @@
                 </div>
 
                 <div class="w-full bg-gray-200 h-0.5"></div>
-                <a href="/about" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">About</a>
+                <a href="../aboutpage.html" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">About</a>
                 <div class="w-full bg-gray-200 h-0.5"></div>
 
-                <a href="/blogs" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Blogs</a>
+                <a href="../blogpage.html" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Blogs</a>
                 <div class="w-full bg-gray-200 h-0.5"></div>
 
-                <a href="/help" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Help Center</a>
+                <a href="../helppage.html" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Help Center</a>
+                <div class="w-full bg-gray-200 h-0.5"></div>
+
+                <a href="../dashboard/profile.html" class="text-black font-bold text-sm hover:bg-gray-100 px-5 py-1 rounded">Dashboard</a>
             </nav>
         </div>
     </div>
 
     
 </header>
+
 
     <div id="product-container" class="flex sm:px-16 p-3 sm:py-5 flex-wrap sm:flex-nowrap justify-around sm:gap-12 sm:my-5">
         <div class="flex flex-col">
@@ -356,100 +380,99 @@
         </div>
     </div>
 
-<footer class="bg-cover bg-center bg-no-repeat py-8 px-6" style="background-image: url('../shop/image/background.png');">
-    <div class="container mx-auto flex flex-wrap justify-around items-start gap-8">
-        <!-- Left Section -->
-        <div class="max-w-sm -mt-5">
-            <div class="logo">
-                <a href="/">
-                    <img src="../shop/image/logo.png" alt="Logo" class='w-28 h-16'>
-                </a>
+    <footer class="bg-cover bg-center bg-no-repeat py-8 px-6" style="background-image: url('../shop/image/background.png');">
+        <div class="container mx-auto flex flex-wrap justify-around items-start gap-8">
+            <!-- Left Section -->
+            <div class="max-w-sm -mt-5">
+                <div class="logo">
+                    <a href="/">
+                        <img src="../shop/image/logo.png" alt="Logo" class='w-28 h-16'>
+                    </a>
+                </div>
+                
+                <p class="mt-2 text-sm text-black font-bold">
+                    Create heartwarming memories with this lovable Golden Retriever puppy – 
+                    the perfect addition to your special moments! 🐾
+                </p>
+    
+                <div class="mt-4">
+                    <form action="/subscribe" method="POST">
+                        <input type="email" name="email" placeholder="Email Address" class="p-2 w-full border border-pink-400 rounded-xl focus:outline-none text-sm" required />
+                        <button type="submit" class="mt-2 w-full text-sm bg-pink-600 text-white py-2 rounded-xl hover:bg-black transition">
+                            Sign Up
+                        </button>
+                    </form>
+                </div>
+    
+                <!-- Social Icons -->
+                <div class="flex space-x-4 mt-4">
+                    <a href="#" class="text-black text-xl"><i class="fab fa-facebook"></i></a>
+                    <a href="#" class="text-black text-xl"><i class="fab fa-instagram"></i></a>
+                    <a href="#" class="text-black text-xl"><i class="fab fa-google"></i></a>
+                    <a href="#" class="text-black text-xl"><i class="fab fa-x-twitter"></i></a>
+                    <a href="#" class="text-black text-xl"><i class="fab fa-linkedin"></i></a>
+                </div>
             </div>
-            
-            <p class="mt-2 text-sm text-black font-bold">
-                Create heartwarming memories with this lovable Golden Retriever puppy – 
-                the perfect addition to your special moments! 🐾
-            </p>
-
-            <div class="mt-4">
-                <form action="/subscribe" method="POST">
-                    <input type="email" name="email" placeholder="Email Address" class="p-2 w-full border border-pink-400 rounded-xl focus:outline-none text-sm" required />
-                    <button type="submit" class="mt-2 w-full text-sm bg-pink-600 text-white py-2 rounded-xl hover:bg-black transition">
-                        Sign Up
-                    </button>
-                </form>
+    
+            <!-- Middle Section -->
+            <div class="grid grid-cols-2 gap-6 text-sm">
+                <div>
+                    <h3 class="font-bold text-black">Quick Links</h3>
+                    <ul class="space-y-1 mt-2">
+                        <li><a href="../aboutpage.html" class="hover:text-pink-700">About Us</a></li>
+                        <li><a href="../contactpage.html" class="hover:text-pink-700">Contact Us</a></li>
+                        <li><a href="../blogpage.html" class="hover:text-pink-700">Blog</a></li>
+                        <li><a href="../inquirypage.html" class="hover:text-pink-700">FAQ</a></li>
+                        <li><a href="../contactpage.html" class="hover:text-pink-700">Help</a></li>
+                        <li><a href="../index.html" class="hover:text-pink-700">Returns</a></li>
+                    </ul>
+                </div>
+    
+                <div>
+                    <h3 class="font-bold text-black">Product</h3>
+                    <ul class="space-y-1 mt-2">
+                        <li><a href="../categorypage.html" class="hover:text-pink-700">Pet Clothing</a></li>
+                        <li><a href="#../categorypage.html" class="hover:text-pink-700">Pet Carriers</a></li>
+                        <li><a href="../categorypage.html" class="hover:text-pink-700">Dog & Cat Beds</a></li>
+                        <li><a href="../shop.html" class="hover:text-pink-700">Shop</a></li>
+                        <li><a href="../shop/shipment.html" class="hover:text-pink-700">Shipping</a></li>
+                        <li><a href="../order/orderhistory.html" class="hover:text-pink-700">Delivery</a></li>
+                    </ul>
+                </div>
             </div>
-
-            <!-- Social Icons -->
-            <div class="flex space-x-4 mt-4">
-                <a href="#" class="text-black text-xl"><i class="fab fa-facebook"></i></a>
-                <a href="#" class="text-black text-xl"><i class="fab fa-instagram"></i></a>
-                <a href="#" class="text-black text-xl"><i class="fab fa-google"></i></a>
-                <a href="#" class="text-black text-xl"><i class="fab fa-x-twitter"></i></a>
-                <a href="#" class="text-black text-xl"><i class="fab fa-linkedin"></i></a>
+    
+            <!-- Right Section -->
+            <div class="text-sm">
+                <h3 class="font-bold text-black">Our Locations</h3>
+                <p class="mt-2 inline-flex gap-1">
+                    <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
+                        <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
+                    </svg>
+                    635 Rogers Street <br/> Downers Grove, IL 60515 USA
+                </p>
+                <p class="mt-1">
+                    <a href="tel:+12345472344376" class="hover:text-pink-700">📞 +1 (234) 547 234 4376</a>
+                </p>
+                <div class="mt-4 flex sm:flex-col flex-row gap-2">
+                    <img src="../layout/image/store.png" alt="Store" class='w-32 h-10'>
+                    <img src="../layout/image/play.png" alt="Play Store" class='w-32 h-10'>
+                </div>
             </div>
         </div>
-
-        <!-- Middle Section -->
-        <div class="grid grid-cols-2 gap-6 text-sm">
-            <div>
-                <h3 class="font-bold text-black">Quick Links</h3>
-                <ul class="space-y-1 mt-2">
-                    <li><a href="/about" class="hover:text-pink-700">About Us</a></li>
-                    <li><a href="/contact" class="hover:text-pink-700">Contact Us</a></li>
-                    <li><a href="/blogs" class="hover:text-pink-700">Blog</a></li>
-                    <li><a href="#" class="hover:text-pink-700">FAQ</a></li>
-                    <li><a href="/help" class="hover:text-pink-700">Help</a></li>
-                    <li><a href="#" class="hover:text-pink-700">Returns</a></li>
-                </ul>
-            </div>
-
-            <div>
-                <h3 class="font-bold text-black">Product</h3>
-                <ul class="space-y-1 mt-2">
-                    <li><a href="#" class="hover:text-pink-700">Pet Clothing</a></li>
-                    <li><a href="#" class="hover:text-pink-700">Pet Carriers</a></li>
-                    <li><a href="/category/dog-cat-beds" class="hover:text-pink-700">Dog & Cat Beds</a></li>
-                    <li><a href="shoppage.html" class="hover:text-pink-700">Shop</a></li>
-                    <li><a href="#" class="hover:text-pink-700">Shipping</a></li>
-                    <li><a href="#" class="hover:text-pink-700">Delivery</a></li>
-                </ul>
-            </div>
-        </div>
-
-        <!-- Right Section -->
-        <div class="text-sm">
-            <h3 class="font-bold text-black">Our Locations</h3>
-            <p class="mt-2 inline-flex gap-1">
-                <svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="w-6 h-6">
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M15 10.5a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
-                    <path stroke-linecap="round" stroke-linejoin="round" d="M19.5 10.5c0 7.142-7.5 11.25-7.5 11.25S4.5 17.642 4.5 10.5a7.5 7.5 0 1 1 15 0Z" />
-                </svg>
-                635 Rogers Street <br/> Downers Grove, IL 60515 USA
-            </p>
-            <p class="mt-1">
-                <a href="tel:+12345472344376" class="hover:text-pink-700">📞 +1 (234) 547 234 4376</a>
-            </p>
-            <div class="mt-4 flex sm:flex-col flex-row gap-2">
-                <img src="layout/image/store.png" alt="Store" class='w-32 h-10'>
-                <img src="layout/image/play.png" alt="Play Store" class='w-32 h-10'>
-            </div>
-        </div>
-    </div>
-
-    <hr class="my-6 border-pink-400"/>
-    <p class="text-center text-sm font-bold">&copy; 2025 Shofx. All rights reserved.</p>
-</footer>
-
-
+    
+        <hr class="my-6 border-pink-400"/>
+        <p class="text-center text-sm font-bold">&copy; 2025 Shofx. All rights reserved.</p>
+    </footer>
+    
     <script>
       document.addEventListener("DOMContentLoaded", function() {
     const urlParams = new URLSearchParams(window.location.search);
-    const productId = urlParams.get("id");
-    const productUrl = 'http://localhost/mywebsite/image/';
+    const categoryId = urlParams.get("id");
+    const productUrl = 'http://localhost/mywebsite/category/';
 
-    if (productId) {
-        fetch(`http://localhost/mywebsite/function/productid.php?id=${productId}`)
+    if (categoryId) {
+        fetch(`http://localhost/mywebsite/function/categoryid.php?id=${categoryId}`)
             .then(response => response.json())
             .then(data => {
                 console.log("Fetched Data:", data); // ✅ Debugging log
@@ -545,9 +568,6 @@
             });
 
             // ✅ Call the function to initialize the menu after inserting header
-            initializeMenu();
-            searchMenu()
-            initializeCountrySelect()
         })
         .catch(error => console.error("Error loading header:", error));
 
@@ -567,127 +587,6 @@
         })
         .catch(error => console.error("Error loading footer:", error));
 });
-
-
-function searchMenu () {
-    const toggleSearch = document.getElementById("toggleSearch");
-    const searchContainer = document.getElementById("searchContainer");
-    const searchInput = document.getElementById("searchInput");
-    const searchButton = document.getElementById("searchButton");
-    const resultsContainer = document.getElementById("searchResults");
-
-    toggleSearch.addEventListener("click", () => {
-        // Toggle visibility
-        if (searchContainer.classList.contains("hidden")) {
-            searchContainer.classList.remove("hidden");
-            setTimeout(() => searchContainer.classList.remove("opacity-0"), 10);
-            searchInput.focus(); // Focus on input when opened
-        } else {
-            searchContainer.classList.add("opacity-0");
-            setTimeout(() => searchContainer.classList.add("hidden"), 300);
-        }
-    });
-
-    // Close search box when clicking outside
-    document.addEventListener("click", (event) => {
-        if (!searchContainer.contains(event.target) && !toggleSearch.contains(event.target)) {
-            searchContainer.classList.add("opacity-0");
-            setTimeout(() => searchContainer.classList.add("hidden"), 300);
-        }
-    });
-
-    const handleSearch = async () => {
-        const query = searchInput.value.trim();
-
-        if (query === "") {
-            resultsContainer.innerHTML = "";
-            return;
-        }
-
-        try {
-            const response = await fetch(`http://localhost/mywebsite/function/product.php?search=${encodeURIComponent(query)}`);
-            const data = await response.json();
-            displayResults(data.products || []);
-        } catch (error) {
-            console.error("Search error:", error);
-        }
-    };
-
-    const displayResults = (products) => {
-        resultsContainer.innerHTML = products.length === 0
-            ? `<p class="text-gray-500 text-sm">No products found.</p>`
-            : products.map(product => `
-                <div class="flex items-center gap-3 p-2 hover:bg-gray-100 cursor-pointer transition duration-200 border-b last:border-none"
-                    onclick="window.location.href='/shop/${product.id}'">
-                    <img src="${productUrl}${product.image}" alt="${product.title}" class="w-10 h-10 object-cover rounded-md"/>
-                    <span class="text-gray-700 font-medium">${product.title}</span>
-                </div>
-            `).join("");
-
-    };
-
-    searchInput.addEventListener("input", handleSearch);
-    searchButton.addEventListener("click", handleSearch);
-}
-
-function initializeMenu() {
-    const menu = document.getElementById("menu");
-    const menuIcon = document.getElementById("menuIcon");
-    const closeMenu = document.getElementById("closeMenu");
-
-    if (menu && menuIcon && closeMenu) {
-        // Open menu
-        menuIcon.addEventListener("click", function () {
-            menu.classList.remove("hidden"); // Show menu
-            menuIcon.classList.add("hidden"); // Hide menu icon
-        });
-
-        // Close menu
-        closeMenu.addEventListener("click", function () {
-            menu.classList.add("hidden"); // Hide menu
-            menuIcon.classList.remove("hidden"); // Show menu icon
-        });
-    }
-}
-
-function initializeCountrySelect() {
-    const countrySelect = document.getElementById("countrySelect");
-    const flagImg = document.getElementById("flag");
-
-    countrySelect.addEventListener("change", function () {
-        const selectedOption = this.options[this.selectedIndex];
-        flagImg.src = selectedOption.getAttribute("data-flag");
-        flagImg.alt = selectedOption.textContent;
-    });
-
-    // Initialize with the first selected country's flag
-    const initialOption = countrySelect.options[countrySelect.selectedIndex];
-    flagImg.src = initialOption.getAttribute("data-flag");
-    flagImg.alt = initialOption.textContent;
-}
-
-// Call the function after the page loads
-document.addEventListener("DOMContentLoaded", initializeCountrySelect);
-
-
-function showTab(tabId, element) {
-            // Hide all tab contents
-            document.querySelectorAll(".tab-content").forEach(el => el.classList.add("hidden"));
-            document.getElementById(tabId).classList.remove("hidden");
-
-            // Remove pink underline from all tabs
-            document.querySelectorAll(".tab-btn").forEach(el => el.classList.remove("border-pink-500", "text-pink-500"));
-
-            // Add pink underline to active tab
-            element.classList.add("border-pink-500", "text-pink-500");
-        }
-
-        
-
-        initializeCountrySelect()
-        initializeMenu()
-        searchMenu()
-
 
 // shipment data
 
@@ -783,6 +682,7 @@ function showTab(tabId, element) {
 // reviews data
 
 document.addEventListener("DOMContentLoaded", function() {
+    const urlImage = 'http://localhost/mywebsite/'
             const reviewsList = document.getElementById("reviewsList");
             const reviewForm = document.getElementById("reviewForm");
             const rating = document.getElementById("rating");
@@ -791,32 +691,48 @@ document.addEventListener("DOMContentLoaded", function() {
             const message = document.getElementById("message");
 
             const userId = localStorage.getItem("user_id");
-            const productId = 1; // Replace with actual product ID if dynamic
 
-            function fetchReviews() {
-                fetch("http://localhost/mywebsite/function/categoryid.php?product_id=" + productId)
-                    .then(response => response.json())
-                    .then(data => {
-                        if (data.length === 0) {
-                            reviewsList.innerHTML = "<p class='text-gray-500'>No reviews yet.</p>";
-                        } else {
-                            reviewsList.innerHTML = data.map(review => `
-                                <div class='border-b border-gray-200 py-2'>
-                                    <strong class='text-pink-600'>${review.firstname} ${review.lastname}</strong> - ${review.rating}⭐
-                                    <p class='text-gray-700'>${review.review_text}</p>
-                                </div>
-                            `).join("");
-                        }
-                    })
-                    .catch(error => {
-                        console.error("Error fetching reviews:", error);
-                        reviewsList.innerHTML = "<p class='text-red-500'>Error loading reviews.</p>";
-                    });
+    const categoryId = new URLSearchParams(window.location.search).get("id"); // Get product ID dynamically
+
+    if (!categoryId) {
+        console.error("Product ID is missing in the URL");
+        return;
+    }
+
+    fetch(`http://localhost/mywebsite/function/categoryid.php?id=${categoryId}`)
+        .then(response => response.json())
+        .then(data => {
+            console.log("API Response:", data); // Debugging log
+
+            if (!data.reviews || !Array.isArray(data.reviews)) {
+                console.error("Invalid reviews data:", data.reviews);
+                reviewsList.innerHTML = "<p class='text-gray-500'>No reviews available.</p>";
+                return;
             }
 
-            fetchReviews();
+            if (data.reviews.length === 0) {
+                reviewsList.innerHTML = "<p class='text-gray-500'>No reviews yet.</p>";
+            } else {
+                reviewsList.innerHTML = data.reviews.map(review => 
+                    `<div class='border-b border-gray-200 py-2'>
+                        <div class="flex flex-row">
+                            <img src="${urlImage}${review.profile_image}" alt="User" class="w-10 h-10 rounded-full mr-2" />
+                            <strong class='text-black'>${review.firstname} ${review.lastname}</strong>
+                        </div>
+                        <p class="">Review: ${review.rating}⭐</p>
+                        <p class='text-gray-700'>${review.review_text}</p>
+                    </div>`
+                ).join("");
+            }
+        })
+        .catch(error => {
+            console.error("Error fetching reviews:", error);
+            reviewsList.innerHTML = "<p class='text-red-500'>Error loading reviews.</p>";
+        });
 
-            reviewForm.addEventListener("submit", function(e) {
+
+         
+        reviewForm.addEventListener("submit", function(e) {
                 e.preventDefault();
                 if (!userId) {
                     alert("User not logged in!");
@@ -826,12 +742,12 @@ document.addEventListener("DOMContentLoaded", function() {
                 submitBtn.disabled = true;
                 message.textContent = "Submitting...";
 
-                fetch("http://localhost/mywebsite/review.php", {
+                fetch("http://localhost/mywebsite/function/reviewcategory.php", {
                     method: "POST",
                     headers: { "Content-Type": "application/json" },
                     body: JSON.stringify({
                         user_id: userId,
-                        product_id: productId,
+                        category_id: categoryId,
                         review_text: reviewText.value,
                         rating: rating.value
                     })
@@ -851,6 +767,149 @@ document.addEventListener("DOMContentLoaded", function() {
                 });
             });
         });
+
+        
+function searchMenu() {
+    const toggleSearch = document.getElementById("toggleSearch");
+    const searchContainer = document.getElementById("searchContainer");
+    const searchInput = document.getElementById("searchInput");
+    const searchButton = document.getElementById("searchButton");
+    const resultsContainer = document.getElementById("searchResults");
+
+    toggleSearch.addEventListener("click", () => {
+        if (searchContainer.classList.contains("hidden")) {
+            searchContainer.classList.remove("hidden");
+            toggleSearch.classList.add("hidden"); // Hide search icon
+            setTimeout(() => searchContainer.classList.remove("opacity-0"), 10);
+            searchInput.focus();
+        } else {
+            searchContainer.classList.add("opacity-0");
+            toggleSearch.classList.remove("hidden"); // Show search icon
+            setTimeout(() => searchContainer.classList.add("hidden"), 300);
+        }
+    });
+
+    // Close search box when clicking outside
+    document.addEventListener("click", (event) => {
+        if (!searchContainer.contains(event.target) && !toggleSearch.contains(event.target)) {
+            searchContainer.classList.add("opacity-0");
+            setTimeout(() => {
+                searchContainer.classList.add("hidden");
+                toggleSearch.classList.remove("hidden"); // Show search icon again
+            }, 300);
+        }
+    });
+
+    const handleSearch = async () => {
+        const query = searchInput.value.trim();
+
+        if (query === "") {
+            resultsContainer.innerHTML = "";
+            return;
+        }
+
+        try {
+            const response = await fetch(`http://localhost/mywebsite/function/product.php?search=${encodeURIComponent(query)}`);
+            if (!response.ok) throw new Error("Network response was not ok");
+
+            const data = await response.json();
+            console.log("Fetched Data:", data); // Debugging log
+
+            const products = data.message || [];
+            displayResults(products);
+        } catch (error) {
+            console.error("Search error:", error);
+            resultsContainer.innerHTML = `<p class="text-red-500 text-sm">Error fetching results. Check console.</p>`;
+        }
+    };
+
+    const productUrl = 'http://localhost/mywebsite/image/';
+
+    const searchResults = document.getElementById("searchResults");
+
+    const displayResults = (products) => {
+    if (!Array.isArray(products) || products.length === 0) {
+        searchResults.innerHTML = `<p class="text-gray-500 text-sm p-2">No products found.</p>`;
+        searchResults.classList.remove("hidden");
+        return;
+    }
+
+    searchResults.innerHTML = products.map(product => `
+        <div class="w-full p-4 flex items-center gap-4 border-b last:border-none hover:bg-gray-100 transition duration-200 cursor-pointer"
+            onclick="window.location.href='shop/product.html?id=${product.id}'">
+            <img src="http://localhost/mywebsite/image/${product.image}" alt="${product.title}" class="w-16 h-16 object-cover rounded-md"/>
+            <div class="flex-1">
+                <p class="text-gray-800 font-semibold">${product.title}</p>
+            </div>
+        </div>
+    `).join("");
+
+    searchResults.classList.remove("hidden");
+};
+
+    searchInput.addEventListener("input", handleSearch);
+    searchButton.addEventListener("click", handleSearch);
+}
+
+function initializeMenu() {
+    const menu = document.getElementById("menu");
+    const menuIcon = document.getElementById("menuIcon");
+    const closeMenu = document.getElementById("closeMenu");
+
+    if (menu && menuIcon && closeMenu) {
+        // Open menu
+        menuIcon.addEventListener("click", function () {
+            menu.classList.remove("hidden"); // Show menu
+            menuIcon.classList.add("hidden"); // Hide menu icon
+        });
+
+        // Close menu
+        closeMenu.addEventListener("click", function () {
+            menu.classList.add("hidden"); // Hide menu
+            menuIcon.classList.remove("hidden"); // Show menu icon
+        });
+    }
+}
+
+function initializeCountrySelect() {
+    const countrySelect = document.getElementById("countrySelect");
+    const flagImg = document.getElementById("flag");
+
+    countrySelect.addEventListener("change", function () {
+        const selectedOption = this.options[this.selectedIndex];
+        flagImg.src = selectedOption.getAttribute("data-flag");
+        flagImg.alt = selectedOption.textContent;
+    });
+
+    // Initialize with the first selected country's flag All
+    const initialOption = countrySelect.options[countrySelect.selectedIndex];
+    flagImg.src = initialOption.getAttribute("data-flag");
+    flagImg.alt = initialOption.textContent;
+}
+
+        // Call the function after the page loads
+
+        document.addEventListener("DOMContentLoaded", function () {
+    // Apply category filtering when the page loads
+    applyCategoryFilter();
+});
+
+// Toggle dropdown visibility
+function toggleDropdown() {
+    const dropdown = document.getElementById("categoryDropdown");
+    dropdown.classList.toggle("hidden");
+}
+
+// Function to redirect to categorypage.html with selected category
+function filterCategory(category) {
+    toggleDropdown(); // Close the dropdown
+    window.location.href = `categorypage.html?category=${encodeURIComponent(category)}`;
+}
+
+    
+searchMenu()
+initializeCountrySelect() 
+initializeMenu()
     </script>
 </body>
 

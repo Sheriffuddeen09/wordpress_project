@@ -39,31 +39,32 @@
     errorMessage.innerText = ""; // Clear previous error
 
     try {
-        let response = await fetch("http://localhost/mywebsite/function/login.php", {
-            method: "POST",
-            body: formData
-        });
+    let response = await fetch("http://localhost/mywebsite/function/login.php", {
+        method: "POST",
+        body: formData,
+        credentials: "include" // Ensures cookies (sessions) are sent with the request
+    });
 
-        let result = await response.json();
-        console.log("API Response:", result); // Debugging: log response
+    let result = await response.json();
+    console.log("API Response:", result); // Debugging: log response
 
-        if (result.status === "success" && result.user) {
-            // Store user info in localStorage
-            localStorage.setItem("user_id", result.user.id);
-            localStorage.setItem("user_firstname", result.user.firstname);
-            localStorage.setItem("user_lastname", result.user.lastname);
-            localStorage.setItem("user_email", result.user.email);
-            localStorage.setItem("user_profile_image", result.user.profile_image || "default.jpg");
+    if (result.status === "success" && result.user) {
+        // Store user info in localStorage
+        localStorage.setItem("user_id", result.user.id);
+        localStorage.setItem("user_firstname", result.user.firstname);
+        localStorage.setItem("user_lastname", result.user.lastname);
+        localStorage.setItem("user_email", result.user.email);
+        localStorage.setItem("user_profile_image", result.user.profile_image || "default.jpg");
 
-            // Redirect to dashboard
-            window.location.href = result.redirect;
-        } else {
-            errorMessage.innerText = result.message || "An unexpected error occurred.";
-        }
-    } catch (error) {
-        console.error("Fetch Error:", error);
-        errorMessage.innerText = "An error occurred. Please try again.";
+        // Redirect to dashboard
+        window.location.href = result.redirect;
+    } else {
+        errorMessage.innerText = result.message || "An unexpected error occurred.";
     }
+} catch (error) {
+    console.error("Fetch Error:", error);
+    errorMessage.innerText = "An error occurred. Please try again.";
+}
 
     // Re-enable button after login attempt
     button.disabled = false;
@@ -143,7 +144,7 @@
         </form>
 
         <div class="text-center mt-4">
-            <a href="reset_page.html" class="text-red-500 text-sm font-semibold">Forgot Password?</a>
+            <a href="formdata/reset_password.html" class="text-red-500 text-sm font-semibold">Forgot Password?</a>
         </div>
         <div class="text-center mt-4 text-sm">
             No account? <a href="register.html" class="text-red-500 font-semibold">Create one</a>

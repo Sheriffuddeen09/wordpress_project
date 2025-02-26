@@ -1,9 +1,11 @@
 <?php
 session_start();
+header("Access-Control-Allow-Credentials: true");
+header("Content-Type: application/json");
+
 require_once dirname(__DIR__) . '/wp-load.php';
 require_once '../database/function.php';
 
-header('Content-Type: application/json');
 
 // ✅ Handle logout first
 if (isset($_GET['logout']) && $_GET['logout'] === 'true') {

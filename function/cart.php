@@ -1,11 +1,17 @@
 <?php
 
 require_once '../database/function.php';
-
 header("Content-Type: application/json");
 
 error_reporting(E_ALL);
 ini_set('display_errors', 1);
+
+global $conn; // Ensure $conn is available
+if (!$conn) {
+    echo json_encode(["success" => false, "error" => "Database connection failed."]);
+    exit;
+}
+
 
 // Get user_id from request (GET or POST)
 $data = json_decode(file_get_contents("php://input"), true);
@@ -19,7 +25,6 @@ if (!$user_id) {
 }
 
 try {
-    global $conn;
 
     // SQL Query to fetch cart items
     $query = "SELECT 

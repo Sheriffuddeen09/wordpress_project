@@ -65,6 +65,11 @@ define('WP_DEBUG_LOG', false);
 @ini_set('display_errors', 0);
 
 
+define('COOKIE_DOMAIN', '');
+define('COOKIEPATH', '/');
+define('SITECOOKIEPATH', '/');
+
+
 /**#@-*/
 
 /**
