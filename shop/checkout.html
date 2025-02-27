@@ -394,7 +394,7 @@
             body: JSON.stringify({
                 user_id: userId,
                 total_price: totalPrice,
-                payment_method: document.getElementById("payment-method").value, // Get selected payment method
+                payment_method: document.getElementById("payment-method").value,
                 items: order.map(item => ({
                     product_id: item.product_id,
                     image: item.image,
@@ -414,9 +414,9 @@
         const data = await response.json();
         if (data.success) {
             if (data.redirect) {
-                window.location.href = data.redirect; // Redirect to payment
+                window.location.href = data.redirect;
             } else {
-                window.location.href = "/order-tracking?order_id=" + data.order_id; // Redirect to order tracking
+                window.location.href = "/order-tracking?order_id=" + data.order_id; 
             }
         } else {
             alert("An error occurred. Please try again.");
@@ -451,13 +451,12 @@ function searchMenu() {
         }
     });
 
-    // Close search box when clicking outside
     document.addEventListener("click", (event) => {
         if (!searchContainer.contains(event.target) && !toggleSearch.contains(event.target)) {
             searchContainer.classList.add("opacity-0");
             setTimeout(() => {
                 searchContainer.classList.add("hidden");
-                toggleSearch.classList.remove("hidden"); // Show search icon again
+                toggleSearch.classList.remove("hidden"); 
             }, 300);
         }
     });
@@ -475,7 +474,7 @@ function searchMenu() {
             if (!response.ok) throw new Error("Network response was not ok");
 
             const data = await response.json();
-            console.log("Fetched Data:", data); // Debugging log
+            console.log("Fetched Data:", data); 
 
             const products = data.message || [];
             displayResults(products);
@@ -521,14 +520,14 @@ function initializeMenu() {
     if (menu && menuIcon && closeMenu) {
         // Open menu
         menuIcon.addEventListener("click", function () {
-            menu.classList.remove("hidden"); // Show menu
-            menuIcon.classList.add("hidden"); // Hide menu icon
+            menu.classList.remove("hidden"); 
+            menuIcon.classList.add("hidden");
         });
 
         // Close menu
         closeMenu.addEventListener("click", function () {
-            menu.classList.add("hidden"); // Hide menu
-            menuIcon.classList.remove("hidden"); // Show menu icon
+            menu.classList.add("hidden"); 
+            menuIcon.classList.remove("hidden"); 
         });
     }
 }
@@ -543,28 +542,23 @@ function initializeCountrySelect() {
         flagImg.alt = selectedOption.textContent;
     });
 
-    // Initialize with the first selected country's flag All
     const initialOption = countrySelect.options[countrySelect.selectedIndex];
     flagImg.src = initialOption.getAttribute("data-flag");
     flagImg.alt = initialOption.textContent;
 }
 
-        // Call the function after the page loads
 
         document.addEventListener("DOMContentLoaded", function () {
-    // Apply category filtering when the page loads
     applyCategoryFilter();
 });
 
-// Toggle dropdown visibility
 function toggleDropdown() {
     const dropdown = document.getElementById("categoryDropdown");
     dropdown.classList.toggle("hidden");
 }
 
-// Function to redirect to categorypage.html with selected category
 function filterCategory(category) {
-    toggleDropdown(); // Close the dropdown
+    toggleDropdown();
     window.location.href = `categorypage.html?category=${encodeURIComponent(category)}`;
 }
 

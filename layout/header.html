@@ -12,7 +12,148 @@
     </head>
 
     <body>
-        
+        <style>
+           .home{
+    background-color: rgb(222, 47, 34);
+    content: '';
+    height: 4px;
+    translate: 0px;
+    left: 6px;
+    margin-top: -1px;
+    font-weight: bold;
+    color: blue;
+    width: 40px;
+    position: relative;
+    top: 2.5px;
+  }
+
+  .category{
+    background-color: rgb(222, 47, 34);
+    content: '';
+    height: 4px;
+    translate: 0px;
+    right: 123px;
+    margin: 20px -30px 0px;
+    font-weight: bold;
+
+    color: blue;
+    width: 50px;
+    position: relative;
+    top: 15.5px;
+  }
+  .shop{
+    background-color: rgb(222, 47, 34);
+    content: '';
+    height: 4px;
+    translate: 0px;
+    left: 6px;
+    margin-top: -1px;
+    font-weight: bold;
+    color: blue;
+    width: 40px;
+    position: relative;
+    top: 2.5px;
+  }
+  .about{
+    background-color: rgb(222, 47, 34);
+    content: '';
+    height: 4px;
+    translate: 0px;
+    left: 6px;
+    margin-top: -1px;
+    font-weight: bold;
+    color: blue;
+    width: 44px;
+    position: relative;
+    top: 2.5px;
+  }
+  .blogs{
+    background-color: rgb(222, 47, 34);
+    content: '';
+    height: 4px;
+    translate: 0px;
+    left: 6px;
+    margin-top: -1px;
+    font-weight: bold;
+    color: blue;
+    width: 35px;
+    position: relative;
+    top: 2.5px;
+  }
+  .help{
+    background-color: rgb(222, 47, 34);
+    content: '';
+    height: 4px;
+    translate: 0px;
+    left: 6px;
+    margin-top: -1px;
+    font-weight: bold;
+    color: blue;
+    width: 80px;
+    position: relative;
+    top: 2.5px;
+  }
+  .user{
+    color: red;
+  }
+  .cart{
+    color: red;
+  }
+
+        </style>
+        <script>
+
+                const pathname = window.location.pathname.split('/').pop(); 
+
+               
+                const homeLink = document.getElementById('indexLink');
+                const shopLink = document.getElementById('shopLink');
+                const categorLink = document.getElementById('categorLink');
+                const aboutLink = document.getElementById('aboutLink');
+                const blogsLink = document.getElementById('blogsLink');
+                const helpLink = document.getElementById('helpLink');
+                const userLink = document.getElementById('userLink');
+                const cartLink = document.getElementById('cartLink');
+
+
+
+
+
+                
+                if (pathname === "" || pathname === "index.html") {
+                    homeLink.classList.add('home');
+                }
+
+               
+                if (pathname === "shop.html") {
+                    shopLink.classList.add('shop');
+                }
+
+                if (pathname === "categorypage.html") {
+                    categorLink.classList.add('category');
+                }
+
+                if (pathname === "aboutpage.html") {
+                    aboutLink.classList.add('about');
+                }
+
+                if (pathname === "blogpage.html") {
+                    blogsLink.classList.add('blogs');
+                }
+
+                if (pathname === "contactpage.html") {
+                    helpLink.classList.add('help');
+                }
+
+                if (pathname === "dashboard/profile.html") {
+                    userLink.classList.add('user');
+                }
+
+                if (pathname === "cart/carts.html") {
+                    cartLink.classList.add('cart');
+                }
+
+        </script>
         <header>
         <div class="head font-roboto text-center text-sm sm:block hidden text-white p-1 -mb-2">
             Special Discount Alert: Flat 20% Off on Your Rental Needs!
@@ -28,12 +169,18 @@
                 </a>
                 <div class="sm:block hidden">
                     <ul class="inline-flex gap-6 mt-4 items-center text-sm">
-                        <li><a href="index.html" class="hover:bg-gray-100 px-2 py-1 rounded">Home</a></li>
-                        <li><a href="shop.html" class="hover:bg-gray-100 px-2 py-1 rounded">Shop</a></li>
+                        <li>
+                            <a  href="index.html" class="hover:bg-gray-100 px-2 py-1 rounded">Home</a>
+                            <div id="indexLink" class=""></div>
+                        </li>
+                        <li>
+                            <a href="shop.html" class="hover:bg-gray-100 px-2 py-1 rounded">Shop</a>
+                            <div id="shopLink" class=""></div>
+                        </li>
+                        <li class="flex flex-col">
                         <li class="relative inline-flex items-center">
                             <!-- Category Button -->
                             <a href="categorypage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Category</a>
-                        
                             <!-- Dropdown Toggle Button -->
                             <svg onclick="toggleDropdown()" xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor"
                                 class="h-4 w-4 font-bold cursor-pointer">
@@ -50,14 +197,26 @@
                                 <p class="cursor-pointer hover:bg-gray-100 p-2 rounded" onclick="filterCategory('Dog & Cat Beds')">Dog & Cat Beds</p>
                             </div>
                         </li>
+                        <div id="categorLink" class=""></div>
+
+                        </li>
                          
-                          <li><a href="aboutpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">About</a></li>
-                        <li><a href="blogpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Blogs</a></li>
+                          <li>
+                            <a href="aboutpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">About</a>
+                            <div id="aboutLink" class=""></div>
+                        </li>
+                        <li>
+                            <a href="blogpage.html" class="hover:bg-gray-100 px-2 py-1 rounded">Blogs</a>
+                            <div id="blogsLink" class=""></div>
+                        </li>
                     </ul>
                 </div>
             </div>
             <div class="inline-flex sm:gap-6 mt-4 text-sm sm:mr-10 mr-10 items-center">
+              
                 <a href="contactpage.html" class="hover:bg-gray-100 whitespace-nowrap px-2 py-1 rounded sm:block hidden">Help Center</a>
+                
+               
                 <div class="flex flex-col w-full max-w-md mx-auto mt-2">
                     <div class="relative">
                         <!-- Search Button (Icon) -->
@@ -100,11 +259,11 @@
                         <option value="+234" data-flag="https://flagcdn.com/w40/ng.png">Nigeria (+234)</option>
                     </select>
                 </div>
-                                <a href="dashboard/profile.html" class="size-10 sm:block hidden hover:bg-gray-100 px-2 py-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-black">
+                                <a  href="dashboard/profile.html" class="size-10 sm:block hidden hover:bg-gray-100 px-2 py-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" id="userLink" stroke-width="1.5" stroke="currentColor" class="h-5 w-5 text-black">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M17.982 18.725A7.488 7.488 0 0 0 12 15.75a7.488 7.488 0 0 0-5.982 2.975m11.963 0a9 9 0 1 0-11.963 0m11.963 0A8.966 8.966 0 0 1 12 21a8.966 8.966 0 0 1-5.982-2.275M15 9.75a3 3 0 1 1-6 0 3 3 0 0 1 6 0Z" />
                   </svg>
                   </a>
-                <a href="cart/carts.html" class="inline-flex size-10 hover:bg-gray-100 px-2 py-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-black w-5 h-5">
+                <a href="cart/carts.html" class="inline-flex size-10 hover:bg-gray-100 px-2 py-1 rounded-full"><svg xmlns="http://www.w3.org/2000/svg" fill="none" viewBox="0 0 24 24" stroke-width="1.5" stroke="currentColor" class="text-black w-5 h-5" id="cartLink">
                     <path stroke-linecap="round" stroke-linejoin="round" d="M2.25 3h1.386c.51 0 .955.343 1.087.835l.383 1.437M7.5 14.25a3 3 0 0 0-3 3h15.75m-12.75-3h11.218c1.121-2.3 2.1-4.684 2.924-7.138a60.114 60.114 0 0 0-16.536-1.84M7.5 14.25 5.106 5.272M6 20.25a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Zm12.75 0a.75.75 0 1 1-1.5 0 .75.75 0 0 1 1.5 0Z" />
                   </svg>
                    <span id="cartCount">0</span></a>

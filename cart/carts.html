@@ -183,7 +183,7 @@
     
 </header>
 
-    <div class="flex flex-col sm:flex-row gap-5 sm:mx-10">
+    <div id="protected-content" class="flex flex-col sm:flex-row gap-5 sm:mx-10">
 
         <div class="border border-pink-700 p-4 w-72 mx-auto mt-10 sm:w-96 mb-10 bg-white shadow-lg rounded-lg">
             <h2 class="text-pink-700 font-bold text-lg">Rental Duration</h2>
@@ -693,6 +693,26 @@ searchMenu()
 initializeCountrySelect() 
 initializeMenu()
 
+
+// Check if the user is logged in based on localStorage or sessionStorage
+const isLoggedIn = localStorage.getItem('user_id') || sessionStorage.getItem('user_id');
+        
+        // Function to handle the page redirect if not logged in
+        function checkLoginStatus() {
+            if (!isLoggedIn) {
+                // Redirect to login page if not logged in
+                window.location.replace("/mywebsite/login.html");
+            } else {
+                // Display the protected content if logged in
+                document.getElementById("protected-content").style.display = "block";
+            }
+        }
+
+        // Initially hide the protected content to simulate conditional rendering
+        document.getElementById("protected-content").style.display = "none";
+
+        // Run the checkLoginStatus function to either redirect or show content
+        checkLoginStatus();
     </script>
 </body>
 </html>

@@ -222,6 +222,7 @@
     background-color: #20bc7e;
   }
 </style>
+<div id="protected-content">
     <div id="categoryList" class="flex text-xs scroll-wi mx-2 mx-auto my-2 gap-3">
         <a href="profile.html">
             <button class='bg-pink-200 p-2 sm:w-28 w-32 rounded flex items-center gap-2 font-bold text-sm text-pink-700 justify-center'>
@@ -302,7 +303,7 @@
             </div>
         </div>
     </div>
-
+</div>
 
     <footer class="bg-cover bg-center bg-no-repeat py-8 px-6" style="background-image: url('../shop/image/background.png');">
         <div class="container mx-auto flex flex-wrap justify-around items-start gap-8">
@@ -502,7 +503,8 @@ function logout() {
             if (data.success) {
                 console.log("Logout successful. Redirecting to login page...");
                 localStorage.clear();
-                window.location.href = "../loginuser.html";
+                localStorage.removeItem("user"); 
+                window.location.href = "../login.html";
             } else {
                 throw new Error(data.error || "Logout failed");
             }
@@ -661,6 +663,27 @@ searchMenu()
 initializeCountrySelect() 
 initializeMenu()
 
+
+// Check if the user is logged in based on localStorage or sessionStorage
+const isLoggedIn = localStorage.getItem('user_id') || sessionStorage.getItem('user_id');
+        
+        // Function to handle the page redirect if not logged in
+        function checkLoginStatus() {
+            if (!isLoggedIn) {
+                // Redirect to login page if not logged in
+                window.location.replace("/mywebsite/login.html");
+            } else {
+                // Display the protected content if logged in
+                document.getElementById("protected-content").style.display = "block";
+            }
+        }
+
+        // Initially hide the protected content to simulate conditional rendering
+        document.getElementById("protected-content").style.display = "none";
+
+        // Run the checkLoginStatus function to either redirect or show content
+        checkLoginStatus();
+        
    </script>
 </body>
 </html>

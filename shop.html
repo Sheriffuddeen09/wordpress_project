@@ -25,7 +25,6 @@
                 document.body.appendChild(newScript); // Append to execute
             });
 
-            // ✅ Call the function to initialize the menu after inserting header
             initializeMenu();
             searchMenu()
             initializeCountrySelect()
@@ -38,11 +37,10 @@
             const shopContainer = document.getElementById("shoppage");
             shopContainer.innerHTML = data;
 
-            // ✅ Manually execute any script tags inside header.html
             shopContainer.querySelectorAll("script").forEach(script => {
                 const newScript = document.createElement("script");
                 newScript.textContent = script.textContent;
-                document.body.appendChild(newScript); // Append to execute
+                document.body.appendChild(newScript); 
             });
 
             categoriesFunction()
@@ -55,11 +53,10 @@
             const footerContainer = document.getElementById("footer");
             footerContainer.innerHTML = data;
 
-            // ✅ Manually execute any script tags inside header.html
             footerContainer.querySelectorAll("script").forEach(script => {
                 const newScript = document.createElement("script");
                 newScript.textContent = script.textContent;
-                document.body.appendChild(newScript); // Append to execute
+                document.body.appendChild(newScript); 
             });
         })
         .catch(error => console.error("Error loading footer:", error));

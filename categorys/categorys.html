@@ -69,10 +69,13 @@
     }
 </style>
 <body>
-    
+<div id="protected-content">
     <div class="flex flex-col text-sm items-center justify-center w-full">
-        <div id="categorysList" class="grid sm:grid-cols-3 grid-cols gap-4 p-4 mx-auto justify-center justify-items-center"></div>
+        <div id="categorysList" class="grid sm:grid-cols-3 grid-cols gap-4 p-4 mx-auto justify-center justify-items-center">
+        </div>
     </div>
+</div>
+
 
     <script>
         const productUrl = 'http://localhost/mywebsite/category/';
@@ -190,6 +193,27 @@
         }
     
         document.addEventListener("DOMContentLoaded", categoriesFunction);
+
+
+        // Check if the user is logged in based on localStorage or sessionStorage
+        const isLoggedIn = localStorage.getItem('user_id') || sessionStorage.getItem('user_id');
+        
+        // Function to handle the page redirect if not logged in
+        function checkLoginStatus() {
+            if (!isLoggedIn) {
+                // Redirect to login page if not logged in
+                window.location.replace("/mywebsite/login.html");
+            } else {
+                // Display the protected content if logged in
+                document.getElementById("protected-content").style.display = "block";
+            }
+        }
+
+        // Initially hide the protected content to simulate conditional rendering
+        document.getElementById("protected-content").style.display = "none";
+
+        // Run the checkLoginStatus function to either redirect or show content
+        checkLoginStatus();
     </script>    
 </body>
 </html>

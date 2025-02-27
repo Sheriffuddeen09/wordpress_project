@@ -42,11 +42,11 @@
     let response = await fetch("http://localhost/mywebsite/function/login.php", {
         method: "POST",
         body: formData,
-        credentials: "include" // Ensures cookies (sessions) are sent with the request
+        credentials: "include"
     });
 
     let result = await response.json();
-    console.log("API Response:", result); // Debugging: log response
+    console.log("API Response:", result);
 
     if (result.status === "success" && result.user) {
         // Store user info in localStorage
@@ -56,10 +56,12 @@
         localStorage.setItem("user_email", result.user.email);
         localStorage.setItem("user_profile_image", result.user.profile_image || "default.jpg");
 
-        // Redirect to dashboard
-        window.location.href = result.redirect;
+        localStorage.setItem("user", JSON.stringify(result.user));
+
+        const lastPage = localStorage.getItem("lastPage") || "dashboard/profile.html";
+        window.location.href = lastPage;
     } else {
-        errorMessage.innerText = result.message || "An unexpected error occurred.";
+        document.getElementById("error-message").innerText = result.message;
     }
 } catch (error) {
     console.error("Fetch Error:", error);
